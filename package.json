@@ -1,0 +1,23 @@
+{
+  "name": "icarus",
+  "version": "0.0.0",
+  "description": "A photo sharing app",
+  "main": "index.js",
+  "scripts": {
+    "test": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SucculentWall/Icarus.git"
+  },
+  "keywords": [
+    "photo",
+    "sharing"
+  ],
+  "author": "JP Ji, Edwin Lin, Albert Tang, Ning Xia",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SucculentWall/Icarus/issues"
+  },
+  "homepage": "https://github.com/SucculentWall/Icarus#readme"
+}

@@ -1,12 +1,13 @@
-# Project Name
+# Icarus
 
-> Pithy project description
+> An on demand photo sharing app that allows users to both post their own original photos and request new photos from others.
 
 ## Team
 
-  - __Product Owner__: teamMember
-  - __Scrum Master__: teamMember
-  - __Development Team Members__: teamMember, teamMember
+  - __Product Owner__: JP Ji
+  - __Scrum Master__: Edwin Lin
+  - __Front-end Lead__: Ning Xia
+  - __Back-end Lead__: Albert Tang
 
 ## Table of Contents
 
@@ -20,15 +21,10 @@
 
 ## Usage
 
-> Some usage instructions
+> Go to the website and start using it!
 
 ## Requirements
 
-- Node 0.10.x
-- Redis 2.6.x
-- Postgresql 9.1.x
-- etc
-- etc
 
 ## Development
 
@@ -44,7 +40,7 @@ bower install
 
 ### Roadmap
 
-View the project roadmap [here](LINK_TO_PROJECT_ISSUES)
+View the project roadmap [here](https://github.com/SucculentWall/Icarus/issues)
 
 
 ## Contributing
