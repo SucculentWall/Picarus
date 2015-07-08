@@ -17,28 +17,28 @@ Once the project moves into development, the press release can be used as a touc
  -->
  
 ## Heading ##
-  > Name the product in a way the reader (i.e. your target customers) will understand.
+  Icarus: On Demand, Community Generated Original Photos
 
 ## Sub-Heading ##
-  > Describe who the market for the product is and what benefit they get. One sentence only underneath the title.
+  Unique, authentic photo content for publications, media, and businesses.
 
 ## Summary ##
-  > Give a summary of the product and the benefit. Assume the reader will not read anything else so make this paragraph good.
+  Unique, eye catching photos will make your content stand above the crowd.  Connect with a community of photographers to get the exact photo you're looking for, anywhere in the world.
 
 ## Problem ##
-  > Describe the problem your product solves.
+  Stock photos are boring and stale.  They don't speak to your audience.  You want your brand and its images to be unique and memorable.
 
 ## Solution ##
-  > Describe how your product elegantly solves the problem.
+  Get inspiring, original photographs from a community of photographers around the world.
 
 ## Quote from You ##
-  > A quote from a spokesperson in your company.
+  "Discerning consumers are tired of seeing the same stale stock photos being used all over the web. Don't make the mistake of using those in your content.  Icarus provides stunning, unique images on demand that will connect with your audience." - JP Ji, VP of Product
 
 ## How to Get Started ##
-  > Describe how easy it is to get started.
+  Visit Icarus to browse photos from the community.  Login to request a original image in 60 seconds.
 
 ## Customer Quote ##
-  > Provide a quote from a hypothetical customer that describes how they experienced the benefit.
+  "We have used stock photos for our marketing marketing and they never quite matched what we wanted... and they always came off a little bland and boring.  Now, with Icarus, we get truly original and stunning photos that our audience loves." - Ann Heffer, Director of Marketing, Albuquerque Tourism Association
 
 ## Closing and Call to Action ##
-  > Wrap it up and give pointers where the reader should go next.
+  Get started at Icarus
