@@ -1,11 +1,13 @@
-var React = require('react');
+var React = require("react");
+var Request = require("./app-request");
+var MakeRequest = require("./app-makeRequest");
 
 // dummy data, change when server hooked
 var photoRequests = [
   {
     description: "JP's bike",
-    tags: ['bicycle', 'handsome asian'],
-    location: 'san francisco'
+    tags: ["bicycle", "handsome asian"],
+    location: "san francisco"
   },
   {
     description: "Albert sleeping",
@@ -26,16 +28,11 @@ var Feed = React.createClass({
   },
   render: function(){
     var photoRequests = this.state.photoRequests.map(function(request){
-      return (
-        <li>
-          <span>{request.description}</span>
-          <span>{request.tags}</span>
-          <span>{request.location}</span>
-        </li>
-      )
+      return <Request data={request} />
     });
     return (
-      <div>
+      <div className = "feed">
+        <MakeRequest />
         <ul>
           {photoRequests}
         </ul>
