@@ -2,6 +2,8 @@ var User = require('../db/models/user');
 var Photo = require('../db/models/photo');
 var Photos = require('../db/collections/photos');
 
+var utils = require('../utils/utils');
+
 var Busboy = require('busboy');
 var fs = require('fs');
 var inspect = require('util').inspect;
@@ -17,7 +19,8 @@ module.exports = {
     });
 
     busboy.on('file', function (fieldname, filestream, filename, encoding, mimetype) {
-      var output = fs.createWriteStream('/photos/testfile' + '.' + data.filetype);
+      var name = data.filename + utils.makeid();
+      var output = fs.createWriteStream('photos/' + name + '.' + data.filetype);
       filestream.pipe(output);
     });
 
