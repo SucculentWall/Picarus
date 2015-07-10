@@ -39,7 +39,7 @@
   "dependencies": {
     "bookshelf": "^0.8.1",
     "knex": "^0.8.6",
-    "pg": "^4.4.0"
+    "pg": "^4.4.0",
     "flux": "^2.0.3",
     "react": "^0.13.3",
     "react-async": "^2.1.0",
