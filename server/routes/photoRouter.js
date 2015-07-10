@@ -1,13 +1,13 @@
 var express = require('express');
-var requestController = require('../controllers/requestController');
+var photoController = require('../controllers/photoController');
 var router = express.Router();
 
 router.post('/', function(req,res,next){
-  requestController.addRequest(req, res, next);
+  photoController.addPhoto(req, res, next);
 });
 
 router.get('/', function(req,res,next){
-  requestController.getAllRequests(req, res, next);
+  photoController.getAllPhotos(req, res, next);
 });
 
 
