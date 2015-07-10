@@ -4,9 +4,8 @@ var Request = React.createClass({
   render: function(){
     return (
       <li className = "req">
-        <span className = "req-description">{this.props.data.description}</span>
-        <span className = "req-tags">{this.props.data.tags}</span>
-        <span className = "req-location">{this.props.data.location}</span>
+        <span className = "req-username">{this.props.data.username}</span>
+        <span className = "req-text">{this.props.data.text}</span>
       </li>
     );
   }

@@ -9,17 +9,19 @@ var EventEmitter = require('events').EventEmitter;
 var _requestList = {};
 
 var _addRequest = function(request){
-  // TODO: send ajax POST request to db  
+  // TODO: send ajax POST request to db
+
+   
 };
 
 
 var _receiveRequests = function(requests) {
   for (var i = 0; i < requests.length; i++) {
-    _requestList[request[i].id] = request[i];
+    _requestList[requests[i].id] = requests[i];
   }
 };
 
-var FeedStore = assign(EventEmitter.prototype, {
+var FeedStore = assign({},EventEmitter.prototype, {
   getAllRequests: function() {
     return _requestList;
   },
@@ -39,7 +41,6 @@ var FeedStore = assign(EventEmitter.prototype, {
   removeChangeListener: function(callback) {
     this.removeListener('change', callback);
   }
-
 });
 
 FeedStore.dispatchToken = AppDispatcher.register(function(action) {
@@ -47,9 +48,11 @@ FeedStore.dispatchToken = AppDispatcher.register(function(action) {
   switch(action.type) {
 
     case AppConstants.RECEIVE_REQUESTS:
-      _receiveRequests(action.data);
+      _receiveRequests(action.data.data);
       FeedStore.emitChange();
       break;
+
+
 
     default:
   }

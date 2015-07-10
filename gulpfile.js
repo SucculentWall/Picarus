@@ -23,7 +23,7 @@ gulp.task('scripts', function() {
       .pipe(source('main.js'))
       .pipe(buffer())
       .pipe(plumber())
-      .pipe(uglify())
+      //.pipe(uglify())
       //.pipe(rename('app.min.js'))
       .pipe(gulp.dest('dist/js'));
 });
