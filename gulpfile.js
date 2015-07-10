@@ -20,9 +20,9 @@ gulp.task('scripts', function() {
       .bundle()
       .pipe(source('main.js'))
       .pipe(plumber())
-      .pipe(uglify())
-      .pipe(rename('app.min.js'))
-      .pipe(gulp.dest('build/js'));
+      // .pipe(uglify())
+      // .pipe(rename('app.min.js'))
+      .pipe(gulp.dest('dist/js'));
 });
 
 //Styles: Compile, Minify 
@@ -45,16 +45,17 @@ gulp.task('images', function() {
 });
 
 gulp.task('copy', function() {
-  gulp.src('src/index.html')
+  gulp.src('dev/index.html')
       .pipe(gulp.dest('dist'));
 });
 
-gulp.task('clean', function(done) {
+// calls each options first and then deletes /dist
+gulp.task('clean', ['cleanhtml', 'cleanjs', 'cleancss'], function(done) {
   del(['./dist'], done);
 });
 
 gulp.task('cleanhtml', function(done) {
-  del(['./dist/*.html'], done);
+  del(['./dist/index.html'], done);
 });
 
 gulp.task('cleanjs', function(done) {
@@ -81,6 +82,7 @@ gulp.task('watch', function() {
   gulp.watch('dev/less/*.less', ['cleancss','styles']);
 });
 
+// cleans first, then builds the files again
 gulp.task('default', ['clean','scripts', 'styles', 'images', 'copy', 'watch']);
 
 
