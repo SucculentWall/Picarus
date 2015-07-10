@@ -40,12 +40,13 @@ db.knex.schema.hasTable('requests').then(function(exists) {
 
 db.knex.schema.hasTable('photos').then(function(exists) {
   if (!exists) {
-    db.knex.schema.createTable('photos', function (request) {
-      request.increments('id').primary();
-      request.string('filename', 100);
-      request.string('filetype', 100);
-      request.integer('user_id').unsigned().references('id').inTable('users');
-      request.timestamps();
+    db.knex.schema.createTable('photos', function (photo) {
+      photo.increments('id').primary();
+      photo.string('filename', 100);
+      photo.string('filetype', 100);
+      photo.integer('user_id').unsigned().references('id').inTable('users');
+      photo.integer('request_id').unsigned().references('id').inTable('requests');
+      photo.timestamps();
     }).then(function(table) {
       console.log('Created photos table');
     });

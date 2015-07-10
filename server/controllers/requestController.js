@@ -25,7 +25,9 @@ module.exports = {
 
   getAllRequests: function (req, res, next) {
     Requests.reset()
-      .fetch()
+      .fetch({
+        withRelated: ['user'] // refers to property on model
+      })
       .then(function(requests){
         console.log(requests);
         res.send(requests.models);
