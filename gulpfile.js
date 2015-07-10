@@ -7,10 +7,12 @@ var gulp = require('gulp'),
     imagemin = require('gulp-imagemin'),
     prefix = require('gulp-autoprefixer'),
     rename = require('gulp-rename'),
+    runSequence = require('run-sequence'),
     browserify = require('browserify'),
     del = require('del'),
     reactify = require('reactify'),
     source = require('vinyl-source-stream'),
+    buffer = require('vinyl-buffer'),
     nodemon = require('gulp-nodemon');
 
 //Scripts : Browserify, Reactify, Uglify
@@ -19,9 +21,10 @@ gulp.task('scripts', function() {
       .transform('reactify')
       .bundle()
       .pipe(source('main.js'))
+      .pipe(buffer())
       .pipe(plumber())
-      // .pipe(uglify())
-      // .pipe(rename('app.min.js'))
+      .pipe(uglify())
+      //.pipe(rename('app.min.js'))
       .pipe(gulp.dest('dist/js'));
 });
 
@@ -31,8 +34,8 @@ gulp.task('styles', function () {
       .pipe(plumber())
       .pipe(less())
       .pipe(prefix())
-      //.pipe(minifyCSS())
-      .pipe(rename('app.min.css'))
+      .pipe(minifyCSS())
+      //.pipe(rename('app.min.css'))
       .pipe(gulp.dest('dist/css'))
       .pipe(livereload());
 });
@@ -50,8 +53,8 @@ gulp.task('copy', function() {
 });
 
 // calls each options first and then deletes /dist
-gulp.task('clean', ['cleanhtml', 'cleanjs', 'cleancss'], function(done) {
-  del(['./dist'], done);
+gulp.task('clean', function(done) {
+  del(['./dist/**/*'], done);
 });
 
 gulp.task('cleanhtml', function(done) {
@@ -59,11 +62,11 @@ gulp.task('cleanhtml', function(done) {
 });
 
 gulp.task('cleanjs', function(done) {
-  del(['./dist/js'], done);
+  del(['./dist/js/**/*', './dist/js'], done);
 });
 
 gulp.task('cleancss', function(done) {
-  del(['./dist/css'], done);
+  del(['./dist/css/**/*', './dist/css'], done);
 });
 
 gulp.task('nodemon', function() {
@@ -75,14 +78,22 @@ gulp.task('nodemon', function() {
 
 // Watch: Scripts, Styles, Images, LiveReload
 gulp.task('watch', function() {
-  var server = livereload();
-  gulp.watch('dev/index.html',['cleanhtml','copy']);
+  livereload.listen();
+  gulp.watch('dev/index.html',function() {
+    return runSequence('cleanhtml','copy');
+  });
   gulp.watch('dev/img/*', ['images']);
-  gulp.watch('dev/js/**/*.js', ['cleanjs','scripts']);
-  gulp.watch('dev/less/*.less', ['cleancss','styles']);
+  gulp.watch('dev/js/**/*.js', function() {
+    return runSequence('cleanjs', 'scripts');
+  });
+  gulp.watch('dev/less/**/*.less', function() {
+    return runSequence('cleancss', 'styles');
+  });
 });
 
 // cleans first, then builds the files again
-gulp.task('default', ['clean','scripts', 'styles', 'images', 'copy', 'watch']);
+gulp.task('default', function () {
+  runSequence('clean','scripts', 'styles', 'images', 'copy', 'watch');
+});
 
 

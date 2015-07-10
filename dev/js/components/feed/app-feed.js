@@ -1,6 +1,6 @@
 var React = require("react");
-var Request = require("./app-request");
-var MakeRequest = require("./app-makeRequest");
+var Request = require("./feed-request");
+var MakeRequest = require("./feed-makeRequest");
 
 // dummy data, change when server hooked
 var photoRequests = [
