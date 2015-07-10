@@ -3,9 +3,8 @@ var React = require("react");
 var MakeRequest = React.createClass({
   render: function(){
     return (
-      <form className="req-form" onSubmit={}>
+      <form className="req-form">
         <input id="req-text" type="text" placeholder="Make a request" />
-      {/*TODO: add tags too? */}
         <input type="submit" />
       </form>
     );
