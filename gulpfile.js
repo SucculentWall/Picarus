@@ -20,9 +20,9 @@ gulp.task('scripts', function() {
       .bundle()
       .pipe(source('main.js'))
       .pipe(plumber())
-      .pipe(uglify())
-      .pipe(rename('app.min.js'))
-      .pipe(gulp.dest('build/js'));
+      // .pipe(uglify())
+      // .pipe(rename('app.min.js'))
+      .pipe(gulp.dest('dist/js'));
 });
 
 //Styles: Compile, Minify 
