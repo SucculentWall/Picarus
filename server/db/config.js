@@ -20,7 +20,7 @@ db.knex.schema.hasTable('users').then(function(exists) {
       user.string('username', 100).unique();
       user.timestamps();
     }).then(function(table) {
-      console.log('Created table:', table);
+      console.log('Created users table');
     });
   }
 });
@@ -33,9 +33,24 @@ db.knex.schema.hasTable('requests').then(function(exists) {
       request.integer('user_id').unsigned().references('id').inTable('users');
       request.timestamps();
     }).then(function(table) {
-      console.log('Created table:', table);
+      console.log('Created requests table');
     });
   }
 });
+
+db.knex.schema.hasTable('photos').then(function(exists) {
+  if (!exists) {
+    db.knex.schema.createTable('photos', function (request) {
+      request.increments('id').primary();
+      request.string('filename', 100);
+      request.string('filetype', 100);
+      request.integer('user_id').unsigned().references('id').inTable('users');
+      request.timestamps();
+    }).then(function(table) {
+      console.log('Created photos table');
+    });
+  }
+});
+
 
 module.exports = db;
