@@ -4,15 +4,24 @@ var assign = require("react/lib/Object.assign");
 var EventEmitter = require('events').EventEmitter;
 
 
+
 //  all or most recent photo requests
-var _requestList = [];
+var _requestList = {};
 
 var _addRequest = function(request){
-  // TODO: send ajax POST request to db  
+  // TODO: send ajax POST request to db
+
+   
 };
 
 
-var FeedStore = assign(EventEmitter.prototype, {
+var _receiveRequests = function(requests) {
+  for (var i = 0; i < requests.length; i++) {
+    _requestList[requests[i].id] = requests[i];
+  }
+};
+
+var FeedStore = assign({},EventEmitter.prototype, {
   getAllRequests: function() {
     return _requestList;
   },
@@ -32,13 +41,20 @@ var FeedStore = assign(EventEmitter.prototype, {
   removeChangeListener: function(callback) {
     this.removeListener('change', callback);
   }
-
 });
 
 FeedStore.dispatchToken = AppDispatcher.register(function(action) {
   
   switch(action.type) {
 
+    case AppConstants.RECEIVE_REQUESTS:
+      _receiveRequests(action.data.data);
+      FeedStore.emitChange();
+      break;
+
+
+
+    default:
   }
 });
 

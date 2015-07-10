@@ -1,6 +1,7 @@
 var React = require("react");
 var Request = require("./feed-request");
 var MakeRequest = require("./feed-makeRequest");
+var FeedStore = require("../../stores/app-feedStore");
 
 // dummy data, change when server hooked
 var photoRequests = [
@@ -19,17 +20,34 @@ var photoRequests = [
 var getPhotoRequests = function(){
   // TODO: retrieve photo requests from server
   // dummy data
-   return {photoRequests: photoRequests}
-}
+  //return {photoRequests: photoRequests}
+  console.log('data');
+  //console.log(FeedStore.getAllRequests().data);
+  return {photoRequests: FeedStore.getAllRequests()};
+};
 
 var Feed = React.createClass({
   getInitialState: function(){
-    return getPhotoRequests();
+    return {photoRequests: photoRequests};
+  },
+  _onChange: function () {
+    console.log('change triggered');
+    this.setState(getPhotoRequests());
+  },
+
+  componentDidMount: function() {
+    console.log('mounted');
+    FeedStore.addChangeListener(this._onChange);
+  },
+  componentWillUnmount: function() {
+    FeedStore.removeChangeListener(this._onChange);
   },
   render: function(){
-    var photoRequests = this.state.photoRequests.map(function(request){
-      return <Request data={request} />
-    });
+    photoRequests = [];
+    var reqs = this.state.photoRequests;
+    for (var key in reqs) {
+      photoRequests.push(<Request data={reqs[key]} />);
+    }
     return (
       <div className = "feed">
         <MakeRequest />
