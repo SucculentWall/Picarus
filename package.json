@@ -4,7 +4,8 @@
   "description": "A photo sharing app",
   "main": "server/server.js",
   "scripts": {
-    "test": "echo 'hello world!'"
+    "test": "echo 'hello world!'",
+    "start": "nodemon server/server.js"
   },
   "repository": {
     "type": "git",

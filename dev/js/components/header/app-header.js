@@ -6,7 +6,7 @@ var Header = React.createClass({
   render: function(){
     return (
       <div className = "nav">
-        <span id="logo">Icarus</span>
+        <Link href="/"><span id="logo">Icarus</span></Link>
         <span className="sign">Sign In</span>
         <span className="sign">Sign Up</span>
         <Link href="/request" className="sign">Request</Link>

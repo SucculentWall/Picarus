@@ -8,6 +8,7 @@ var EventEmitter = require('events').EventEmitter;
 var _request = {};
 
 var _receiveRequest = function(data) {
+  console.log('data: ', data);
   _request = data;
 };
 
@@ -29,11 +30,15 @@ var RequestStore = assign({},EventEmitter.prototype, {
   },
 
   getUsername: function () {
-    return _request.username;
+    return _request.user.username;
   },
 
   getTags: function () {
     return _request.tags;
+  },
+
+  getText: function () {
+    return _request.text;
   },
 
   emitChange: function() {
