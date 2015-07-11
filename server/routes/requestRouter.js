@@ -14,5 +14,4 @@ router.get('/', function(req,res,next){
   requestController.getAllRequests(req, res, next);
 });
 
-
 module.exports = router;

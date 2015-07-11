@@ -1,12 +1,14 @@
 var Request = require('../db/models/request');
 var User = require('../db/models/user');
 var Requests = require('../db/collections/requests');
+var RequestTag = require('../db/models/requestTag');
+var tagController = require('./tagController');
 
 module.exports = {
   
   addRequest: function (req, res, next) {
     //TODO: write function to save request
-    var data = req.body;  // {username: 'myname', text: 'some request'}
+    var data = req.body;  // {username: 'myname', text: 'some request', tags: ['barcelona', 'sunset']}
     console.log(data);
     new User({username: data.username})
       .fetch()
@@ -15,10 +17,24 @@ module.exports = {
           res.send('User not found');
         } else {
           new Request({text: data.text, user_id: found.id})
-          .save()
-          .then(function(created){
-            res.send(created);
-          });
+            .save()
+            .then(function(createdRequest){
+              // create tags
+              if (data.tags) {
+                for (var i = 0; i < data.tags.length; i++) {
+                  tagController.findOrCreate(data.tags[i])
+                    .then(function(tag){
+                      // put tag id and request id in join table
+                      new RequestTag({request_id: createdRequest.id, tag_id: tag.id})
+                        .save()
+                        .then(function(requestTag){
+                          console.log('created a request tag relationship: ', requestTag.attributes.request_id + " " + requestTag.attributes.tag_id);
+                        })
+                    })
+                }
+              }
+              res.send(createdRequest);
+            });
         }
       });
   },
@@ -38,7 +54,7 @@ module.exports = {
     var requestId = req.params.requestId;
     new Request({id: requestId})
       .fetch({
-        withRelated: ['photos', 'user']
+        withRelated: ['photos', 'user', 'tags']
       })
       .then(function(request){
         console.log(request);
