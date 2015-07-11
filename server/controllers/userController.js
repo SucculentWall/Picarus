@@ -18,6 +18,22 @@ module.exports = {
             });
         }
       });
+  },
+
+  getInfoForUser: function(req, res, next) {
+    var username = req.params.username;
+
+    new User({username: username})
+      .fetch({
+        withRelated: ['requests', 'photos']
+      })
+      .then(function (found) {
+        if (found) {
+          res.send(found);
+        } else {
+          res.send('User not found!');
+        }
+      });
   }
 
 }

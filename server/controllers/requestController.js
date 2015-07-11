@@ -32,6 +32,18 @@ module.exports = {
         console.log(requests);
         res.send(requests.models);
       });
+  },
+
+  getInfoForRequest: function (req, res, next) {
+    var requestId = req.params.requestId;
+    new Request({id: requestId})
+      .fetch({
+        withRelated: ['photos', 'user']
+      })
+      .then(function(request){
+        console.log(request);
+        res.send(request);
+      });
   }
 
 }
