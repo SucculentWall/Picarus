@@ -31,7 +31,7 @@ var Request = React.createClass({
     var photosList = [];
     var photos = this.state.photos;
     for (var key in photos) {
-      photosList.push(<Photo data={photos[key]} />);
+      photosList.push(<Photo key={key} data={photos[key]} />);
     }
     return (
       <div className = "request">

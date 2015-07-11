@@ -6,7 +6,7 @@ var MakeRequest = React.createClass({
     e.preventDefault();
     var text = React.findDOMNode(this.refs.text).value;
     AppActions.addRequest(text, 'BOB'); //Hardcoded 'BOB', change later
-    React.findDOMNode(this.refs.text).value('');
+    React.findDOMNode(this.refs.text).value = '';
   },
   render: function(){
     return (

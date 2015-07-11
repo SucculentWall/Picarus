@@ -27,7 +27,7 @@ var Gallery = React.createClass({
     photos = [];
     var list = this.state.photos;
     for (var key in list) {
-      photos.push(<GalleryPhoto data={list[key]} />);
+      photos.push(<GalleryPhoto key={key} data={list[key]} />);
     }
     return (
       <div className = "gallery">
