@@ -19,6 +19,24 @@ module.exports = {
       })
       .catch(reject);
     }); // close Promise   
+  },
+
+  getInfoForTag: function(req, res, next){
+    var tag = req.params.tag;
+
+    new Tag({tagname: tag})
+      .fetch({
+        withRelated: ['requests', 'photos']
+      })
+      .then(function(found){
+        if (found) {
+          res.send(found);
+        } else {
+          res.send('no tag found');
+        }
+      }); 
+    // requests
+    // photos
   }
 }
 
