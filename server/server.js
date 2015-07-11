@@ -10,6 +10,7 @@ var app = express();
 var userRouter = require('./routes/userRouter');
 var requestRouter = require('./routes/requestRouter');
 var photoRouter = require('./routes/photoRouter');
+var tagRouter = require('./routes/tagRouter');
 
 // for data parsing
 app.use(bodyParser.json());
@@ -26,6 +27,7 @@ app.use('/photos', express.static(path.join(__dirname, '../photos')));
 app.use('/users', userRouter);
 app.use('/requests', requestRouter);
 app.use('/photos', photoRouter);
+app.use('/tags', tagRouter);
 
 // listen on port
 var port = process.env.PORT || 8888;

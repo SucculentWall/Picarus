@@ -53,5 +53,36 @@ db.knex.schema.hasTable('photos').then(function(exists) {
   }
 });
 
+db.knex.schema.hasTable('tags').then(function(exists) {
+  if (!exists) {
+    db.knex.schema.createTable('tags', function(tag) {
+      tag.increments('id').primary();
+      tag.string('tagname', 60);
+    });
+  }
+});
+
+db.knex.schema.hasTable('photos_tags').then(function(exists) {
+  if (!exists) {
+    db.knex.schema.createTable('photos_tags', function(photo_tag) {
+      photo_tag.increments('id').primary();
+      photo_tag.integer('photo_id');
+      photo_tag.integer('tag_id');
+    });
+  }
+});
+
+db.knex.schema.hasTable('requests_tags').then(function(exists) {
+  if (!exists) {
+    db.knex.schema.createTable('requests_tags', function(request_tag) {
+      request_tag.increments('id').primary();
+      request_tag.integer('request_id');
+      request_tag.integer('tag_id');
+    });
+  }
+});
+
+
+
 
 module.exports = db;
