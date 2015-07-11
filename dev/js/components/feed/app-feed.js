@@ -18,17 +18,12 @@ var photoRequests = [
 ];
 
 var getPhotoRequests = function(){
-  // TODO: retrieve photo requests from server
-  // dummy data
-  //return {photoRequests: photoRequests}
-  console.log('data');
-  //console.log(FeedStore.getAllRequests().data);
   return {photoRequests: FeedStore.getAllRequests()};
 };
 
 var Feed = React.createClass({
   getInitialState: function(){
-    return {photoRequests: photoRequests};
+    return getPhotoRequests();
   },
   _onChange: function () {
     console.log('change triggered');

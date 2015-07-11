@@ -27,5 +27,15 @@ module.exports = {
       .catch(function(error) {
         console.log(error);
       });
+  },
+
+  getAllPhotos: function() {
+    axios.get('/photos')
+      .then(function(response) {
+        AppActions.receiveAllPhotos(response);      
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
   }
 };
