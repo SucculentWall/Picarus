@@ -2,6 +2,8 @@ var User = require('../db/models/user');
 var Photo = require('../db/models/photo');
 var Photos = require('../db/collections/photos');
 
+var tagController = require('./tagController');
+
 var utils = require('../utils/utils');
 
 var Busboy = require('busboy');
@@ -34,7 +36,8 @@ module.exports = {
     busboy.on('finish', function () {
       console.log('data ', data);
       new User({
-          username: data.username
+          // username: data.username
+          username: 'BOB'
         })
         .fetch()
         .then(function (found) {
@@ -45,17 +48,33 @@ module.exports = {
                 filename: data.filename,
                 filetype: data.filetype,
                 user_id: found.id,
-                request_id: data.requestId // assume this is how front-end passes it
+                request_id: data.request_id, // assume this is how front-end passes it
               })
-              .save();
+              .save()
+              .then(function(createdPhoto){
+                // assume that tags are also passed in
+                if (data.tags) {
+                  for (var i = 0; i < data.tags.length; i++) {
+                    tagController.findOrCreate(data.tags[i])
+                      .then(function(tag){
+                        // put tag id and request id in join table
+                        new PhotoTag({photo_id: createdPhoto.id, tag_id: tag.id})
+                          .save()
+                          .then(function(PhotoTag){
+                            console.log('created a Photo tag relationship: ', PhotoTag.attributes.photo_id + " " + PhotoTag.attributes.tag_id);
+                          })
+                      })
+                  }
+                }
+              });
+            // res.writeHead(303, {
+            //   Connection: 'close',
+            //   Location: '/'
+            // });
+            // res.end();
+            res.send('photo added');
           }
         });
-      // res.writeHead(303, {
-      //   Connection: 'close',
-      //   Location: '/'
-      // });
-      // res.end();
-      res.send('photo added');
     });
 
     req.pipe(busboy);
