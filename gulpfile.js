@@ -49,6 +49,7 @@ gulp.task('images', function() {
 
 gulp.task('copy', function() {
   gulp.src('dev/index.html')
+      .pipe(plumber())
       .pipe(gulp.dest('dist'));
 });
 

@@ -4,7 +4,7 @@
   "description": "A photo sharing app",
   "main": "index.js",
   "scripts": {
-    "test": "node index.js"
+    "test": "echo 'hello world!'"
   },
   "repository": {
     "type": "git",
