@@ -2,6 +2,10 @@ var express = require('express');
 var requestController = require('../controllers/requestController');
 var router = express.Router();
 
+router.get('/:requestId', function(req, res, next){
+  requestController.getInfoForRequest(req, res, next);
+});
+
 router.post('/', function(req,res,next){
   requestController.addRequest(req, res, next);
 });

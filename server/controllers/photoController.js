@@ -63,6 +63,7 @@ module.exports = {
   },
 
   getAllPhotos: function (req, res, next) {
+    console.log('this is req: ', req);
     Photos.reset()
       .fetch({
         withRelated: ['user']
@@ -71,6 +72,10 @@ module.exports = {
         console.log(photos);
         res.send(photos.models);
       });
+  },
+
+  getPhotosForRequest: function(req, res, next) {
+    
   }
 
 }
