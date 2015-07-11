@@ -3,24 +3,23 @@ var AppConstants = require("../constants/app-constants");
 var assign = require("react/lib/Object.assign");
 var EventEmitter = require('events').EventEmitter;
 
-
-
 //  all or most recent photo requests
-var _requestList = {};
+var _photoList = {};
 
-var _receiveRequests = function(requests) {
-  for (var i = 0; i < requests.length; i++) {
-    _requestList[requests[i].id] = requests[i];
+var _receivePhotos = function(photos) {
+  for (var i = 0; i < photos.length; i++) {
+    _photoList[photos[i].id] = photos[i];
   }
 };
 
-var FeedStore = assign({},EventEmitter.prototype, {
-  getAllRequests: function() {
-    return _requestList;
+var GalleryStore = assign({},EventEmitter.prototype, {
+
+  getAllPhotos: function() {
+    return _photoList;
   },
 
-  getRequest: function(id) {
-    return _requestList[id];
+  getPhoto: function (id) {
+    return _photoList(id);
   },
 
   emitChange: function() {
@@ -36,13 +35,13 @@ var FeedStore = assign({},EventEmitter.prototype, {
   }
 });
 
-FeedStore.dispatchToken = AppDispatcher.register(function(action) {
+GalleryStore.dispatchToken = AppDispatcher.register(function(action) {
   
   switch(action.type) {
 
-    case AppConstants.RECEIVE_REQUESTS:
-      _receiveRequests(action.data.data);
-      FeedStore.emitChange();
+    case AppConstants.RECEIVE_PHOTOS:
+      _receivePhotos(action.data.data);
+      GalleryStore.emitChange();
       break;
 
 
@@ -52,5 +51,5 @@ FeedStore.dispatchToken = AppDispatcher.register(function(action) {
 });
 
 
-module.exports = FeedStore;
+module.exports = GalleryStore;
 
