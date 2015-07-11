@@ -44,6 +44,7 @@ db.knex.schema.hasTable('photos').then(function(exists) {
       photo.increments('id').primary();
       photo.string('filename', 100);
       photo.string('filetype', 100);
+      photo.string('username', 100);
       photo.integer('user_id').unsigned().references('id').inTable('users');
       photo.integer('request_id').unsigned().references('id').inTable('requests');
       photo.timestamps();

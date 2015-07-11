@@ -51,8 +51,8 @@ module.exports = {
   },
 
   getInfoForRequest: function (req, res, next) {
-    var requestId = req.params.requestId;
-    new Request({id: requestId})
+    var request_id = req.params.request_id;
+    new Request({id: request_id})
       .fetch({
         withRelated: ['photos', 'user', 'tags']
       })
