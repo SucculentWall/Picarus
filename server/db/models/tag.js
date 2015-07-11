@@ -4,7 +4,6 @@ require('./request');
 
 var Tag = db.Model.extend({
   tableName: 'tags',
-  hasTimestamps: true,
   requests: function() {
     return this.belongsToMany('Request');
   },

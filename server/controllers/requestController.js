@@ -1,6 +1,8 @@
 var Request = require('../db/models/request');
 var User = require('../db/models/user');
 var Requests = require('../db/collections/requests');
+var RequestTag = require('../db/models/requestTag');
+var tagController = require('./tagController');
 
 module.exports = {
   
@@ -14,24 +16,24 @@ module.exports = {
         if (!found) {
           res.send('User not found');
         } else {
-          // // checks for #thisIsHashtag
-          // var tagRegEx = /\S*#(?:\[[^\]]+\]|\S+)/ig;
-          // var tags = data.text.match(tagRegEx); // ['#barcelona, #sunset']
-          // ^--- move into client! 
-
-          // loop over the tags
-          // for (var i = 0; i < data.tags.length; i++) {
-          //   var tag = data.tags[i];
-          //   // find or create each tag
-          //   new Tag({tagname: tag})
-          //     .fetch()
-          //     .then(function)
-          // }
-
           new Request({text: data.text, user_id: found.id})
             .save()
-            .then(function(created){
-              res.send(created);
+            .then(function(createdRequest){
+              // create tags
+              if (data.tags) {
+                for (var i = 0; i < data.tags.length; i++) {
+                  tagController.findOrCreate(data.tags[i])
+                    .then(function(tag){
+                      // put tag id and request id in join table
+                      new RequestTag({request_id: createdRequest.id, tag_id: tag.id})
+                        .save()
+                        .then(function(requestTag){
+                          console.log('created a request tag relationship: ', requestTag.attributes.request_id + " " + requestTag.attributes.tag_id);
+                        })
+                    })
+                }
+              }
+              res.send(createdRequest);
             });
         }
       });
@@ -52,7 +54,7 @@ module.exports = {
     var requestId = req.params.requestId;
     new Request({id: requestId})
       .fetch({
-        withRelated: ['photos', 'user']
+        withRelated: ['photos', 'user', 'tags']
       })
       .then(function(request){
         console.log(request);

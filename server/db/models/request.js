@@ -12,7 +12,7 @@ var Request = db.Model.extend({
   photos: function() {
     return this.hasMany('Photo');
   },
-  tag: function(){
+  tags: function(){
     return this.belongsToMany('Tag');
   }
 });
