@@ -8,12 +8,14 @@ var photoRequests = [
   {
     description: "JP's bike",
     tags: ["bicycle", "handsome asian"],
-    location: "san francisco"
+    location: "san francisco",
+    id: 3
   },
   {
     description: "Albert sleeping",
     tags: ['whiteboarding', 'handsome asian'],
-    location: 'san francisco'
+    location: 'san francisco',
+    id:4
   }
 ];
 

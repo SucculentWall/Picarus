@@ -4,20 +4,23 @@ var RequestHeader = require("./request-header");
 var Photo = require("./request-photo");
 var PhotoUpload = require("./request-photoUpload");
 
-var getCommentsAndPhotos = function(){
+var getData = function(){
   return {
-    comments: RequestStore.getAllComments(),
-    photos: RequestStore.getAllPhotos()
+    id: RequestStore.getId(),
+    photos: RequestStore.getPhotos(),
+    username: RequestStore.getUsername(),
+    tags: RequestStore.getTags()
   };
 };
 
 var Request = React.createClass({
   getInitialState: function(){
-    return getCommentsAndPhotos();
+    return getData();
   },
+
   _onChange: function () {
     console.log('change triggered');
-    this.setState(getCommentsAndPhotos);
+    this.setState(getData());
   },
 
   componentDidMount: function() {

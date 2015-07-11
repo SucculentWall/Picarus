@@ -4,19 +4,18 @@ var AppConstants = require("../constants/app-constants");
 
 module.exports = {
 
-  //User Action
-  addRequest: function(text, username){
+  //User Actions
+  addRequest: function(text, username, tags){
     var dbUtils = require("../utils/database-utils");
-    dbUtils.addRequest(text, username);
-    // AppDispatcher.dispatch({
-    //   type: AppConstants.ADD_REQUEST,
-    //   username: 'BOB', //hardcoded for testing
-    //   text: text
-    // });
+    dbUtils.addRequest(text, username, tags);
   },
 
+  pickRequest: function(id) {
+    var dbUtils = require("../utils/database-utils");
+    dbUtils.getRequest(id);
+  },
 
-  // Server Action
+  // Server Actions
   receiveAllRequests: function(data) {
     AppDispatcher.dispatch({
       type: AppConstants.RECEIVE_REQUESTS,
@@ -24,18 +23,13 @@ module.exports = {
     });
   },
 
-  //User Action
-  // addPhoto: function(text, username){
-  //   var dbUtils = require("../utils/database-utils");
-  //   dbUtils.addPhoto(text, username);
-  //   AppDispatcher.dispatch({
-  //     type: AppConstants.ADD_PHOTO,
-  //     username: 'BOB', //hardcoded for testing
-  //     text: text
-  //   });
-  // },
+  receiveRequest: function (data) {
+    AppDispatcher.dispatch({
+      type: AppConstants.RECEIVE_REQUEST,
+      data: data
+    });
+  },
 
-  // Server Action
   receiveAllPhotos: function(data) {
     AppDispatcher.dispatch({
       type: AppConstants.RECEIVE_PHOTOS,

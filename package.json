@@ -2,9 +2,9 @@
   "name": "icarus",
   "version": "0.0.0",
   "description": "A photo sharing app",
-  "main": "index.js",
+  "main": "server/server.js",
   "scripts": {
-    "test": "node index.js"
+    "test": "echo 'hello world!'"
   },
   "repository": {
     "type": "git",

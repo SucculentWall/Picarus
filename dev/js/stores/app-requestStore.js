@@ -5,24 +5,35 @@ var EventEmitter = require('events').EventEmitter;
 
 
 //  all or most recent photo requests
-var _commentList = {};
-var _photoList = {};
+var _request = {};
+
+var _receiveRequest = function(data) {
+  _request = data;
+};
 
 var RequestStore = assign({},EventEmitter.prototype, {
-  getAllComments: function() {
-    return _commentList;
+  // getAllComments: function() {
+  //   return _commentList;
+  // },
+
+  // getComment: function(id) {
+  //   return _commentList[id];
+  // },
+
+  getPhotos: function() {
+    return _request.photos;
   },
 
-  getComment: function(id) {
-    return _commentList[id];
+  getId: function () {
+    return _request.id;
   },
 
-  getAllPhotos: function() {
-    return _photoList;
+  getUsername: function () {
+    return _request.username;
   },
 
-  getPhoto: function (id) {
-    return _photoList(id);
+  getTags: function () {
+    return _request.tags;
   },
 
   emitChange: function() {
@@ -42,10 +53,10 @@ RequestStore.dispatchToken = AppDispatcher.register(function(action) {
   
   switch(action.type) {
 
-    // case AppConstants.RECEIVE_REQUESTS:
-    //   _receiveRequests(action.data.data);
-    //   RequestStore.emitChange();
-    //   break;
+    case AppConstants.RECEIVE_REQUEST:
+      _receiveRequest(action.data.data);
+      RequestStore.emitChange();
+      break;
 
 
 

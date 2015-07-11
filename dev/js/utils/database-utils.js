@@ -14,11 +14,22 @@ module.exports = {
       });
   },
 
-  addRequest: function(text, username) {
+  getRequest:function (id) {
+    axios.get('/requests/'+id)
+      .then(function(response) {
+        AppActions.receiveRequest(response);      
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
+  },
+
+  addRequest: function(text, username, tags) {
     var context = this;
     axios.post('/requests', {
         text: text,
-        username: username
+        username: username,
+        tags: tags
       })
       .then(function(response) {
         //Once added, requery the database
