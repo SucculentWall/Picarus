@@ -47,6 +47,7 @@ module.exports = {
             new Photo({
                 filename: data.filename,
                 filetype: data.filetype,
+                username: data.username,
                 user_id: found.id,
                 request_id: data.request_id, // assume this is how front-end passes it
               })
