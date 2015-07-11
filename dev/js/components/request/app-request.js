@@ -9,13 +9,20 @@ var getData = function(){
     id: RequestStore.getId(),
     photos: RequestStore.getPhotos(),
     username: RequestStore.getUsername(),
-    tags: RequestStore.getTags()
+    tags: RequestStore.getTags(),
+    text: RequestStore.getText()
   };
 };
 
 var Request = React.createClass({
   getInitialState: function(){
-    return getData();
+    return {
+      id: '',
+      photos: [],
+      username: '',
+      tags: [],
+      text: ''
+    };
   },
 
   _onChange: function () {
@@ -33,16 +40,16 @@ var Request = React.createClass({
   render: function(){
     var photosList = [];
     var photos = this.state.photos;
-    for (var key in photos) {
-      photosList.push(<Photo key={key} data={photos[key]} />);
+    for (var i=0; i<photos.length; i++) {
+      photosList.push(<Photo key={i} data={photos[i]} />);
     }
     return (
       <div className = "request col-xs-6">
-        <RequestHeader />
+        <RequestHeader data={this.state} />
         <ul>
           {photosList}
         </ul>
-        <PhotoUpload />
+        <PhotoUpload data={this.state} />
       </div>
     );
   }
