@@ -41,7 +41,7 @@ var Feed = React.createClass({
     photoRequests = [];
     var reqs = this.state.photoRequests;
     for (var key in reqs) {
-      photoRequests.push(<Request data={reqs[key]} />);
+      photoRequests.push(<Request key={key} data={reqs[key]} />);
     }
     return (
       <div className = "feed">
