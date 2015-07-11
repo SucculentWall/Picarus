@@ -34,7 +34,7 @@ var Request = React.createClass({
       photosList.push(<Photo key={key} data={photos[key]} />);
     }
     return (
-      <div className = "request">
+      <div className = "request col-xs-6">
         <RequestHeader />
         <ul>
           {photosList}
