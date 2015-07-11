@@ -1,12 +1,16 @@
 var db = require('../config');
 require('./user');
+require('./request');
 
 var Photo = db.Model.extend({
   tableName: 'photos',
   hasTimestamps: true,
-  photos: function () {
+  user: function () {
     return this.belongsTo('User');
+  },
+  request: function() {
+    return this.belongsTo('Request');
   }
 });
 
-module.exports = Photo;
+module.exports = db.model('Photo', Photo);
