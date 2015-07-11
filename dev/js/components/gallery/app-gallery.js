@@ -1,6 +1,7 @@
 var React = require("react");
 var GalleryStore = require("../../stores/app-galleryStore");
-var Request = require("./feed-request");
+var GalleryPhoto = require("./gallery-photo");
+var GalleryHeader = require("./gallery-header");
 
 var getPhotos = function(){
   // TODO: retrieve photo requests from server
@@ -30,7 +31,7 @@ var Gallery = React.createClass({
       photos.push(<GalleryPhoto key={key} data={list[key]} />);
     }
     return (
-      <div className = "gallery">
+      <div className = "gallery col-xs-6">
         <GalleryHeader />
         <ul>
           {photos}

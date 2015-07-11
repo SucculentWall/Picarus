@@ -1,16 +1,16 @@
 var React = require("react"),
-    Logo = require("./header-logo"),
-    Signin = require("./header-signin"),
-    Signup = require("./header-signup");
+    Link = require('react-router-component').Link;
 
 // dummy data, change when server hooked
 var Header = React.createClass({
   render: function(){
     return (
       <div className = "nav">
-        <Logo />
-        <Signin />
-        <Signup />
+        <span id="logo">Icarus</span>
+        <span className="sign">Sign In</span>
+        <span className="sign">Sign Up</span>
+        <Link href="/request" className="sign">Request</Link>
+        <Link href="/" className="sign">Gallery</Link>
       </div>
     );
   }
