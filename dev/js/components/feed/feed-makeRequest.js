@@ -13,8 +13,8 @@ var MakeRequest = React.createClass({
   render: function(){
     return (
       <form className="req-form" onSubmit={this._onSubmit}>
-        <input ref="text" id="req-text" type="text" placeholder="Make a request" />
-        <input ref="tags" id="req-tags" type="text" placeholder="Tags(with spaces between)" />
+        <input ref="text" type="text" placeholder="Make a request" />
+        <input ref="tags" type="text" placeholder="Tags(with spaces between)" />
         <input type="submit" />
       </form>
     );
