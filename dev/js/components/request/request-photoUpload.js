@@ -1,6 +1,5 @@
 var React = require('react');
 var AppActions = require('../../actions/app-actions');
-var axios = require('axios');
 
 var PhotoUpload = React.createClass({
   getInitialState: function() {
