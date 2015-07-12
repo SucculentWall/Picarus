@@ -5,7 +5,7 @@ var Photo = React.createClass({
     console.log('Photo render ',this.props.data);
     return (
       <li className = "photo">
-        <span className = "photo-username">User Id: {this.props.data.user_id}</span>
+        <span className = "photo-username">Submitted by: {this.props.data.username}</span>
         <img className = "requestphoto" src={'/photos/' + this.props.data.filename} />
       </li>
     );
