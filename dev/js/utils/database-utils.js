@@ -48,7 +48,8 @@ module.exports = {
     data.append('photo', photo);
     axios.post('/photos', data)
       .then(function(response) {
-        // TODO: Refresh the view
+        //Once added, requery the database
+        context.getRequest(request_id);
       })
       .catch(function(error) {
         console.log(error);
