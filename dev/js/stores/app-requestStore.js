@@ -8,7 +8,7 @@ var EventEmitter = require('events').EventEmitter;
 var _request = {};
 
 var _receiveRequest = function(data) {
-  console.log('data: ', data);
+  console.log('requestStore.js data: ', data);
   _request = data;
 };
 

@@ -4,7 +4,6 @@ var Link = require("react-router-component").Link;
 
 var Request = React.createClass({
   _handleClick: function(e) {
-    console.log(this.props.data.id);
     AppActions.pickRequest(this.props.data.id);
   },
   render: function(){

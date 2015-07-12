@@ -15,6 +15,11 @@ module.exports = {
     dbUtils.getRequest(id);
   },
 
+  addPhoto: function(photo, username, request_id){
+    var dbUtils = require("../utils/database-utils");
+    dbUtils.addPhoto(photo, username, request_id);
+  },
+
   // Server Actions
   receiveAllRequests: function(data) {
     AppDispatcher.dispatch({
