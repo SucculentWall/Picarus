@@ -47,6 +47,7 @@ module.exports = {
     data.append('request_id', request_id);
     data.append('photo', photo);
     data.append('tags', JSON.stringify(tags));
+    console.log('these are strung tags: ', JSON.stringify(tags));
     axios.post('/photos', data)
       .then(function(response) {
         //Once added, requery the database

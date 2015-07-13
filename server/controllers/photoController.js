@@ -58,9 +58,12 @@ module.exports = {
               .save()
               .then(function(createdPhoto){
                 // assume that tags are also passed in
-                if (data.tags) {
-                  for (var i = 0; i < data.tags.length; i++) {
-                    tagController.findOrCreate(data.tags[i])
+                var parsedTags = JSON.parse(data.tags);
+                console.log('these are parsed tags: ', parsedTags);
+                if (parsedTags) {
+                  console.log();
+                  for (var i = 0; i < parsedTags.length; i++) {
+                    tagController.findOrCreate(parsedTags[i])
                       .then(function(tag){
                         // put tag id and request id in join table
                         new PhotoTag({photo_id: createdPhoto.id, tag_id: tag.id})
