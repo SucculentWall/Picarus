@@ -29,6 +29,16 @@ app.use('/api/requests', requestRouter);
 app.use('/api/photos', photoRouter);
 app.use('/api/tags', tagRouter);
 
+// socket.io
+var http = require('http').Server(app);
+var io = require('socket.io')(http);
+io.on('connection', function (socket) {
+  socket.on('newRequest', function(createdRequest){
+    console.log('sup!');
+    io.emit('updateRequest');
+  });
+});
+
 // listen on port
 var port = process.env.PORT || 8888;
 app.listen(port);
