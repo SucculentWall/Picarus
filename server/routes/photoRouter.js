@@ -10,5 +10,9 @@ router.get('/', function(req,res,next){
   photoController.getAllPhotos(req, res, next);
 });
 
+router.get('/:photo_id', function(req, res, next){
+  photoController.getInfoForPhoto(req, res, next);
+});
+
 
 module.exports = router;

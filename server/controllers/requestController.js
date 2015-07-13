@@ -57,7 +57,7 @@ module.exports = {
         withRelated: ['photos', 'user', 'tags']
       })
       .then(function(request){
-        console.log(request);
+        console.log('photo request: ', request);
         res.send(request);
       });
   }

@@ -9,10 +9,10 @@ var Photo = db.Model.extend({
   user: function () {
     return this.belongsTo('User');
   },
-  request: function() {
+  requests: function() {
     return this.belongsTo('Request');
   },
-  tag: function() {
+  tags: function() {
     return this.belongsToMany('Tag');
   }
 });

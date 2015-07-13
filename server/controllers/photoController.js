@@ -19,13 +19,16 @@ module.exports = {
     var busboy = new Busboy({
       headers: req.headers
     });
+    console.log('req headers: ', req.headers);
 
     // fieldnames are the keys passed in with form data (eg with postman)
     busboy.on('field', function (fieldname, val, fieldnameTruncated, valTruncated) {
       data[fieldname] = val;
+      console.log('testing data: ', data);
     });
 
     busboy.on('file', function (fieldname, filestream, filename, encoding, mimetype) {
+      console.log('data from file: ', data);
       data.filename = utils.makeid(10) + '_' + filename; // random alphanum string + icarus.jpg
       data.filetype = filename.split('.').pop();
       var output = fs.createWriteStream('photos/' + data.filename);
@@ -94,8 +97,16 @@ module.exports = {
       });
   },
 
-  getPhotosForRequest: function(req, res, next) {
-    
+  getInfoForPhoto: function(req, res, next) {
+    var photo_id = req.params.photo_id;
+    new Photo({id: photo_id})
+      .fetch({
+        withRelated: ['user', 'requests', 'tags']
+      })
+      .then(function(photo){
+        console.log('photo: ', photo);
+        res.send(photo);
+      })
   }
 
 }
