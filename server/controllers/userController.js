@@ -3,7 +3,6 @@ var User = require('../db/models/user');
 module.exports = {
   addUser: function (req, res, next) {
     var data = req.body;  // {username: 'myname'}
-    // console.log(data);
 
     new User({username: data.username})
       .fetch()

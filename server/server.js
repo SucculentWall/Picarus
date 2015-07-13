@@ -6,11 +6,19 @@ var path = require('path');
 var bodyParser = require('body-parser');
 var morgan = require('morgan');
 var app = express();
+// socket.io
+var http = require('http').Server(app);
+var io = require('socket.io')(http);
+module.exports = io;
 // routes
 var userRouter = require('./routes/userRouter');
 var requestRouter = require('./routes/requestRouter');
 var photoRouter = require('./routes/photoRouter');
 var tagRouter = require('./routes/tagRouter');
+
+io.on('connection', function (socket) {
+  console.log('connected');
+});
 
 // for data parsing
 app.use(bodyParser.json());
@@ -31,5 +39,5 @@ app.use('/api/tags', tagRouter);
 
 // listen on port
 var port = process.env.PORT || 8888;
-app.listen(port);
+http.listen(port);
 console.log('Server started on port: ', port);
