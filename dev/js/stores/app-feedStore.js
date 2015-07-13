@@ -14,6 +14,10 @@ var _receiveRequests = function(requests) {
   }
 };
 
+var _addToRequestList = function(request) {
+  _requestList[request.id] = request;
+};
+
 var FeedStore = assign({},EventEmitter.prototype, {
   getAllRequests: function() {
     return _requestList;
@@ -45,7 +49,10 @@ FeedStore.dispatchToken = AppDispatcher.register(function(action) {
       FeedStore.emitChange();
       break;
 
-
+    case AppConstants.UPDATE_FEED:
+      _addToRequestList(action.data);
+      FeedStore.emitChange();
+      break;
 
     default:
   }

@@ -9,7 +9,7 @@ var Request = React.createClass({
   render: function(){
     return (
       <li className = "req">
-        <Link href="/request" onClick={this._handleClick}>
+        <Link href={"/request/" + this.props.data.id} onClick={this._handleClick}>
           <span className = "req-username">{this.props.data.username}</span>
           <span className = "req-text">{this.props.data.text}</span>
           {this.props.data.id}
