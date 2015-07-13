@@ -1,4 +1,5 @@
 var React = require("react");
+var AppActions = require("../../actions/app-actions");
 var RequestStore = require("../../stores/app-requestStore");
 var RequestHeader = require("./request-header");
 var Photo = require("./request-photo");
