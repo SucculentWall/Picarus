@@ -1,6 +1,7 @@
 var User = require('../db/models/user');
 var Photo = require('../db/models/photo');
 var Photos = require('../db/collections/photos');
+var PhotoTag = require('../db/models/photoTag');
 
 var tagController = require('./tagController');
 
@@ -19,13 +20,16 @@ module.exports = {
     var busboy = new Busboy({
       headers: req.headers
     });
+    console.log('req headers: ', req.headers);
 
     // fieldnames are the keys passed in with form data (eg with postman)
     busboy.on('field', function (fieldname, val, fieldnameTruncated, valTruncated) {
       data[fieldname] = val;
+      console.log('testing data: ', data);
     });
 
     busboy.on('file', function (fieldname, filestream, filename, encoding, mimetype) {
+      console.log('data from file: ', data);
       data.filename = utils.makeid(10) + '_' + filename; // random alphanum string + icarus.jpg
       data.filetype = filename.split('.').pop();
       var output = fs.createWriteStream('photos/' + data.filename);
@@ -54,9 +58,12 @@ module.exports = {
               .save()
               .then(function(createdPhoto){
                 // assume that tags are also passed in
-                if (data.tags) {
-                  for (var i = 0; i < data.tags.length; i++) {
-                    tagController.findOrCreate(data.tags[i])
+                var parsedTags = JSON.parse(data.tags);
+                console.log('these are parsed tags: ', parsedTags);
+                if (parsedTags) {
+                  console.log();
+                  for (var i = 0; i < parsedTags.length; i++) {
+                    tagController.findOrCreate(parsedTags[i])
                       .then(function(tag){
                         // put tag id and request id in join table
                         new PhotoTag({photo_id: createdPhoto.id, tag_id: tag.id})
@@ -94,8 +101,16 @@ module.exports = {
       });
   },
 
-  getPhotosForRequest: function(req, res, next) {
-    
+  getInfoForPhoto: function(req, res, next) {
+    var photo_id = req.params.photo_id;
+    new Photo({id: photo_id})
+      .fetch({
+        withRelated: ['user', 'requests', 'tags']
+      })
+      .then(function(photo){
+        console.log('photo: ', photo);
+        res.send(photo);
+      })
   }
 
 }

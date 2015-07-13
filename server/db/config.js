@@ -58,7 +58,7 @@ db.knex.schema.hasTable('tags').then(function(exists) {
   if (!exists) {
     db.knex.schema.createTable('tags', function(tag) {
       tag.increments('id').primary();
-      tag.string('tagname', 60);
+      tag.string('tagname', 60).unique();
     }).then(function(table) {
       console.log('Created tags table');
     });

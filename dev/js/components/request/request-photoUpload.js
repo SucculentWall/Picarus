@@ -13,8 +13,12 @@ var PhotoUpload = React.createClass({
     var request_id = this.props.data.id;
     // photo from state
     var photo = this.state.photo;
+    // tags from data passed down from app-request
+    var tags = this.props.data.tags.map(function(tagObj){
+      return tagObj.tagname;
+    });
     // action
-    AppActions.addPhoto(photo, username, request_id);
+    AppActions.addPhoto(photo, username, request_id, tags);
     // clear file value
     React.findDOMNode(this.refs.file).value = null;
   },
