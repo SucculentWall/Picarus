@@ -34,7 +34,7 @@ var RequestStore = assign({},EventEmitter.prototype, {
   },
 
   getTags: function () {
-    return _request.tags;
+    return _request.tags; // [{tagname: 'dogs'}, {}, {} ]
   },
 
   getText: function () {

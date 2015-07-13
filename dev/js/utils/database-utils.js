@@ -40,12 +40,13 @@ module.exports = {
       });
   },
 
-  addPhoto: function(photo, username, request_id) {
+  addPhoto: function(photo, username, request_id, tags) {
     var context = this;
     var data = new FormData();
     data.append('username', username);
     data.append('request_id', request_id);
     data.append('photo', photo);
+    data.append('tags', JSON.stringify(tags));
     axios.post('/photos', data)
       .then(function(response) {
         //Once added, requery the database

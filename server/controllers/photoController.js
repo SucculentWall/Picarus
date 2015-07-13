@@ -1,6 +1,7 @@
 var User = require('../db/models/user');
 var Photo = require('../db/models/photo');
 var Photos = require('../db/collections/photos');
+var PhotoTag = require('../db/models/photoTag');
 
 var tagController = require('./tagController');
 

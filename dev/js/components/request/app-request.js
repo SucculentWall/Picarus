@@ -9,7 +9,7 @@ var getData = function(){
     id: RequestStore.getId(),
     photos: RequestStore.getPhotos(),
     username: RequestStore.getUsername(),
-    tags: RequestStore.getTags(),
+    tags: RequestStore.getTags(), // [{tagname: 'dogs'}, {}, {} ]
     text: RequestStore.getText()
   };
 };
