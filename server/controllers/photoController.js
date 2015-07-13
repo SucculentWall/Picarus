@@ -6,6 +6,7 @@ var PhotoTag = require('../db/models/photoTag');
 var tagController = require('./tagController');
 
 var utils = require('../utils/utils');
+var io = require('../server.js');
 
 var Busboy = require('busboy');
 var fs = require('fs');
@@ -69,6 +70,9 @@ module.exports = {
                       })
                   }
                 }
+              })
+              .then(function (createdPhoto) {
+                io.emit('updateRequest', createdPhoto);
               });
             // res.writeHead(303, {
             //   Connection: 'close',

@@ -6,11 +6,19 @@ var path = require('path');
 var bodyParser = require('body-parser');
 var morgan = require('morgan');
 var app = express();
+// socket.io
+var http = require('http').Server(app);
+var io = require('socket.io')(http);
+module.exports = io;
 // routes
 var userRouter = require('./routes/userRouter');
 var requestRouter = require('./routes/requestRouter');
 var photoRouter = require('./routes/photoRouter');
 var tagRouter = require('./routes/tagRouter');
+
+io.on('connection', function (socket) {
+  console.log('connected');
+});
 
 // for data parsing
 app.use(bodyParser.json());
@@ -29,27 +37,7 @@ app.use('/api/requests', requestRouter);
 app.use('/api/photos', photoRouter);
 app.use('/api/tags', tagRouter);
 
-// socket.io
-var http = require('http').Server(app);
-var io = require('socket.io')(http);
-io.on('connection', function (socket) {
-  socket.on('newRequest', function(createdRequest){
-    console.log('sup!');
-    io.emit('updateRequest');
-  });
-});
-
-// socket.io
-var http = require('http').Server(app);
-var io = require('socket.io')(http);
-io.on('connection', function (socket) {
-  socket.on('newRequest', function(createdRequest){
-    console.log('sup!');
-    io.emit('updateRequest');
-  });
-});
-
 // listen on port
 var port = process.env.PORT || 8888;
-app.listen(port);
+http.listen(port);
 console.log('Server started on port: ', port);

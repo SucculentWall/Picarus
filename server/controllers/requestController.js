@@ -3,8 +3,7 @@ var User = require('../db/models/user');
 var Requests = require('../db/collections/requests');
 var RequestTag = require('../db/models/requestTag');
 var tagController = require('./tagController');
-// socket.io
-var io = require('socket.io')();
+var io = require('../server.js');
 
 module.exports = {
 
@@ -45,8 +44,7 @@ module.exports = {
               res.send(createdRequest);
             })
             .then(function (createdRequest) {
-              // broadcast
-              io.emit('newRequest', createdRequest);
+              io.emit('updateFeed', createdRequest);
             });
         }
       });
@@ -75,4 +73,4 @@ module.exports = {
       });
   }
 
-}
+};
