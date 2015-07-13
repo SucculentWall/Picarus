@@ -24,10 +24,10 @@ app.use(express.static(path.join(__dirname, '../dist')));
 app.use('/photos', express.static(path.join(__dirname, '../photos')));
 
 // routing
-app.use('/users', userRouter);
-app.use('/requests', requestRouter);
-app.use('/photos', photoRouter);
-app.use('/tags', tagRouter);
+app.use('/api/users', userRouter);
+app.use('/api/requests', requestRouter);
+app.use('/api/photos', photoRouter);
+app.use('/api/tags', tagRouter);
 
 // listen on port
 var port = process.env.PORT || 8888;

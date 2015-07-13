@@ -14,7 +14,7 @@ var App = React.createClass({
       <Template>
         <Locations>
           <Location path="/" handler={Gallery} />
-          <Location path="/request/:requestId" handler={Request} />
+          <Location path="/requests/:requestId" handler={Request} />
         </Locations>
         <Feed />
       </Template>

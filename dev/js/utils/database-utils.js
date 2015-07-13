@@ -5,7 +5,7 @@ var AppActions = require('../actions/app-actions');
 module.exports = {
   
   getAllRequests: function() {
-    axios.get('/requests')
+    axios.get('/api/requests')
       .then(function(response) {
         AppActions.receiveAllRequests(response);      
       })
@@ -15,7 +15,7 @@ module.exports = {
   },
 
   getRequest:function (id) {
-    axios.get('/requests/'+id)
+    axios.get('/api/requests/'+id)
       .then(function(response) {
         AppActions.receiveRequest(response);      
       })
@@ -26,7 +26,7 @@ module.exports = {
 
   addRequest: function(text, username, tags) {
     var context = this;
-    axios.post('/requests', {
+    axios.post('/api/requests', {
         text: text,
         username: username,
         tags: tags
@@ -48,7 +48,7 @@ module.exports = {
     data.append('photo', photo);
     data.append('tags', JSON.stringify(tags));
     console.log('these are strung tags: ', JSON.stringify(tags));
-    axios.post('/photos', data)
+    axios.post('/api/photos', data)
       .then(function(response) {
         //Once added, requery the database
         context.getRequest(request_id);
@@ -59,7 +59,7 @@ module.exports = {
   },
 
   getAllPhotos: function() {
-    axios.get('/photos')
+    axios.get('/api/photos')
       .then(function(response) {
         AppActions.receiveAllPhotos(response);      
       })
