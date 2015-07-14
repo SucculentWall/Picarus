@@ -1,8 +1,9 @@
 var dbUtils = require('./utils/database-utils.js');
+var AppActions = require('./actions/app-actions.js');
 
 window.checkLoginState = function () {
   FB.getLoginStatus(function(response) {
-    dbUtils.findOrCreateUser(response.authResponse.userID);
+    dbUtils.findOrCreateUser(response.authResponse.userID.toString(), response);
   });
 };
 
@@ -28,7 +29,7 @@ window.fbAsyncInit = function() {
   // These three cases are handled in the callback function.
 
   FB.getLoginStatus(function(response) {
-    dbUtils.findOrCreateUser(response.authResponse.userID.toString());
+    dbUtils.findOrCreateUser(response.authResponse.userID.toString(), response);
   });
 
 };

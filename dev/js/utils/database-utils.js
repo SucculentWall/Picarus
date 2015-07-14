@@ -70,11 +70,10 @@ module.exports = {
       });
   },
 
-  findOrCreateUser: function(id) {
+  findOrCreateUser: function(id, token) {
     axios.post('/api/users', {username: id})
       .then(function(response) {
-        console.log(' == created or found user == ');
-        AppActions.loggedIn(response);
+        AppActions.loggedIn(response.data, token);
       })
       .catch(function(error) {
         AppActions.notLoggedIn(error);

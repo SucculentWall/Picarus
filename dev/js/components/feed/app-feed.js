@@ -2,6 +2,7 @@ var React = require("react");
 var Request = require("./feed-request");
 var MakeRequest = require("./feed-makeRequest");
 var FeedStore = require("../../stores/app-feedStore");
+var AuthStore = require("../../stores/app-authStore");
 
 // dummy data, change when server hooked
 var photoRequests = [

@@ -4,6 +4,7 @@ var RequestStore = require("../../stores/app-requestStore");
 var RequestHeader = require("./request-header");
 var Photo = require("./request-photo");
 var PhotoUpload = require("./request-photoUpload");
+var AuthStore = require("../../stores/app-authStore");
 
 var getData = function(){
   return {

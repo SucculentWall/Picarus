@@ -1,5 +1,6 @@
 var React = require("react");
 var Link = require('react-router').Link;
+var AuthStore = require("../../stores/app-authStore");
 
 // dummy data, change when server hooked
 var Header = React.createClass({

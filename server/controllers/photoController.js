@@ -37,8 +37,7 @@ module.exports = {
 
     busboy.on('finish', function () {
       new User({
-          // username: data.username
-          username: 'BOB'
+          username: data.username
         })
         .fetch()
         .then(function (found) {
