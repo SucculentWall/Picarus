@@ -7,7 +7,7 @@ var Header = React.createClass({
     return (
       <div className = "nav">
         <Link to="/"><span id="logo">Icarus</span></Link>
-        <span className="sign">Sign In</span>
+        <Link to="/signin"><span className="sign">Sign In</span></Link>
         <span className="sign">Sign Up</span>
         <Link to="/request" className="sign">Request</Link>
         <Link to="/" className="sign">Gallery</Link>
