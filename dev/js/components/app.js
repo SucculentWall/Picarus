@@ -3,6 +3,7 @@ var Feed = require('./feed/app-feed');
 var Gallery = require('./gallery/app-gallery');
 var Header = require('./header/app-header');
 var Request = require('./request/app-request');
+var Signin = require('./signin/app-signin');
 var Template = require('./app-template');
 var dbUtils = require('../utils/database-utils');
 
@@ -28,8 +29,9 @@ var App = React.createClass({
 
 var routes = (
   <Route handler={App}>
-    <Route name = "requests" path="/requests/:requestId" handler={Request}/>
-    <Route name = "gallery" path="/" handler={Gallery} />
+    <Route name="requests" path="/requests/:requestId" handler={Request}/>
+    <Route name="gallery" path="/" handler={Gallery} />
+    <Route name="signin" path="/signin" handler={Signin} />
   </Route>
 );
 module.exports = function(){
