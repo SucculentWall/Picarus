@@ -3,7 +3,6 @@ var User = require('../db/models/user');
 module.exports = {
   addUser: function (req, res, next) {
     var data = req.body;  // {username: 'myname'}
-    console.log('GOT HERE', data);
     new User({username: data.username})
       .fetch()
       .then(function (found) {
@@ -18,7 +17,7 @@ module.exports = {
         }
       })
       .catch(function(error) {
-        console.log('FAILED', error);
+        console.log(error);
       });
   },
 
