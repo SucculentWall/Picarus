@@ -66,5 +66,16 @@ module.exports = {
       .catch(function(error) {
         console.log(error);
       });
+  },
+
+  findOrCreateUser: function(id) {
+    axios.post('/api/users', {username: id})
+      .then(function(response) {
+        console.log(' == created or found user == ');
+        AppActions.loggedIn(response);
+      })
+      .catch(function(error) {
+        AppActions.notLoggedIn(error);
+      });
   }
 };

@@ -40,6 +40,20 @@ module.exports = {
       type: AppConstants.RECEIVE_PHOTOS,
       data: data
     });
+  },
+
+  loggedIn: function(data) {
+    AppDispatcher.dispatch({
+      type: AppConstants.LOGGED_IN,
+      data: data
+    });
+  },
+
+  notLoggedIn: function(data) {
+    AppDispatcher.dispatch({
+      type: AppConstants.NOT_LOGGED_IN,
+      data: data
+    });
   }
 
 };
