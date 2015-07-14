@@ -1,5 +1,5 @@
 var express = require('express');
-var userController = require('../controllers/commentController');
+var commentController = require('../controllers/commentController');
 var router = express.Router();
 
 router.get('/photo/:photo_id', function(req, res, next){
