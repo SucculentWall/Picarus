@@ -11,9 +11,8 @@ socket.on('updateFeed', function(data){
 });
 
 socket.on('updateRequest', function(data) {
-  //TODO: pase data to see if it's relevant to this user
-  //update app-requestStore with new data
-
-
-
+  AppDispatcher.dispatch({
+    type: AppConstants.UPDATE_REQUEST,
+    data: data
+  });
 });

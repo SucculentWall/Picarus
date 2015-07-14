@@ -12,6 +12,11 @@ var _receiveRequest = function(data) {
   _request = data;
 };
 
+var _receivePhoto = function(photoData) {
+  console.log('received photo data: ', photoData);
+  _request.photos.push(photoData);
+};
+
 var RequestStore = assign({},EventEmitter.prototype, {
   // getAllComments: function() {
   //   return _commentList;
@@ -63,7 +68,13 @@ RequestStore.dispatchToken = AppDispatcher.register(function(action) {
       RequestStore.emitChange();
       break;
 
-
+    case AppConstants.UPDATE_REQUEST:
+    console.log('checking if getId: ', RequestStore.getId(), action.data.request_id);
+      if (RequestStore.getId() === +action.data.request_id){
+        _receivePhoto(action.data);
+        RequestStore.emitChange();        
+      }
+      break;
 
     default:
   }

@@ -45,12 +45,13 @@ module.exports = {
           if (!found) {
             res.send('User not found');
           } else {
+            console.log('JSON.strung data from photoController: ', JSON.stringify(data));
             new Photo({
                 filename: data.filename,
                 filetype: data.filetype,
                 username: data.username,
                 user_id: found.id,
-                request_id: data.request_id, // assume this is how front-end passes it
+                request_id: parseInt(data.request_id, 10) // assume this is how front-end passes it
               })
               .save()
               .then(function (createdPhoto) {
@@ -70,15 +71,8 @@ module.exports = {
                       })
                   }
                 }
-              })
-              .then(function (createdPhoto) {
                 io.emit('updateRequest', createdPhoto);
               });
-            // res.writeHead(303, {
-            //   Connection: 'close',
-            //   Location: '/'
-            // });
-            // res.end();
             res.send('photo added');
           }
         });
