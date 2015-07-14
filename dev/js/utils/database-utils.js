@@ -51,8 +51,9 @@ module.exports = {
     console.log('these are strung tags: ', JSON.stringify(tags));
     axios.post('/api/photos', data)
       .then(function(response) {
-        //Once added, requery the database
-        context.getRequest(request_id);
+        // no longer need to requery (socket emit will trigger it)
+        // context.getRequest(request_id);
+        console.log('add photo response: ', response);
       })
       .catch(function(error) {
         console.log(error);
