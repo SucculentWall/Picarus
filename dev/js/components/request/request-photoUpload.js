@@ -33,7 +33,7 @@ var PhotoUpload = React.createClass({
   render: function(){
     // BOB is the placeholder in the username for now, but any valid username can be submitted
     return (
-      <form onSubmit={this._onSubmit} enctype="multipart/form-data">
+      <form onSubmit={this._onSubmit} encType="multipart/form-data">
         <input ref="username" type="text" placeholder="BOB" required />
         <input ref="file" type="file" onChange={this._handleFile} required />
         <input type="submit" value="Submit" />

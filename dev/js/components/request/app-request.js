@@ -26,13 +26,29 @@ var Request = React.createClass({
     };
   },
 
+  statics: {
+    willTransitionTo: function(transition, params, element) {
+      console.log('will transition to');
+      AppActions.pickRequest(params.requestId);
+    }
+  },
+
   _onChange: function () {
     console.log('change triggered');
     this.setState(getData());
   },
-
+  // componentDidUpdate: function(){
+  //   console.log('did componentDidUpdate');
+  // },
+  // componentWillUpdate: function(){
+  //   console.log('will componentWillUpdate');
+  //   AppActions.pickRequest(this.props.params.requestId);
+  //   RequestStore.removeChangeListener(this._onChange);
+  // },
   componentDidMount: function() {
-    console.log('mounted');
+    console.log('mounted app-request');
+    console.log('requesting data: ', this.props.params.requestId);
+    AppActions.pickRequest(this.props.params.requestId);
     RequestStore.addChangeListener(this._onChange);
   },
   componentWillUnmount: function() {
