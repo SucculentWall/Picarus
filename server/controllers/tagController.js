@@ -14,7 +14,7 @@ module.exports = {
           newTag.save()
             .then(function (created) {
               resolve(created);
-            });
+          });
         }
       })
       .catch(reject);
@@ -63,6 +63,7 @@ module.exports = {
 // // checks for #thisIsHashtag
 // var tagRegEx = /\S*#(?:\[[^\]]+\]|\S+)/ig;
 // var tags = data.text.match(tagRegEx); // ['#barcelona, #sunset']
+// var refinedTags = tags.map(function(tag){});
 // ^--- move into client! 
 
 // loop over the tags
