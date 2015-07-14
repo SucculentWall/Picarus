@@ -70,6 +70,7 @@ module.exports = {
                       })
                   }
                 }
+                
               })
               .then(function (createdPhoto) {
                 io.emit('updateRequest', createdPhoto);

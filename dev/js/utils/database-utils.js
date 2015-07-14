@@ -32,7 +32,7 @@ module.exports = {
         tags: tags
       })
       .then(function(response) {
-        //Once added, requery the database
+        // NOTE: no longer need to getAllRequests() since socket emitting
         // context.getAllRequests();
         console.log('new request added');
       })

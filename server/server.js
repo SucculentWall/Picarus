@@ -18,7 +18,6 @@ var photoRouter = require('./routes/photoRouter');
 var tagRouter = require('./routes/tagRouter');
 var commentRouter = require('./routes/commentRouter');
 
-
 io.on('connection', function (socket) {
   console.log('connected');
 });
