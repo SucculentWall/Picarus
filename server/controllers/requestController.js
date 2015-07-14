@@ -41,10 +41,8 @@ module.exports = {
                     .then(addTag);
                 }
               }
-              res.send(createdRequest);
-            })
-            .then(function (createdRequest) {
               io.emit('updateFeed', createdRequest);
+              res.send(createdRequest);
             });
         }
       });

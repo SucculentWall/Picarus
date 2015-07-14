@@ -15,6 +15,7 @@ var _receiveRequests = function(requests) {
 };
 
 var _addToRequestList = function(request) {
+  console.log('this is request: ', request);
   _requestList[request.id] = request;
 };
 

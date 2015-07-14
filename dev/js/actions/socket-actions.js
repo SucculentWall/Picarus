@@ -4,6 +4,8 @@ var AppConstants = require("../constants/app-constants");
 var socket = io();
 
 socket.on('updateFeed', function(data){
+  console.log('received updateFeed');
+  console.log('incoming socket data: ', data);
   AppDispatcher.dispatch({
     type: AppConstants.UPDATE_FEED,
     data: data

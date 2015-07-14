@@ -33,7 +33,8 @@ module.exports = {
       })
       .then(function(response) {
         //Once added, requery the database
-        context.getAllRequests();
+        // context.getAllRequests();
+        console.log('new request added');
       })
       .catch(function(error) {
         console.log(error);
