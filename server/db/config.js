@@ -18,7 +18,7 @@ db.knex.schema.hasTable('users').then(function(exists) {
     db.knex.schema.createTable('users', function (user) {
       user.increments('id').primary();
       user.string('username', 100).unique();
-      user.integer('karma', 11);
+      user.integer('karma', 11).defaultTo(0);
       user.timestamps();
     }).then(function(table) {
       console.log('Created users table');
@@ -31,7 +31,7 @@ db.knex.schema.hasTable('requests').then(function(exists) {
     db.knex.schema.createTable('requests', function (request) {
       request.increments('id').primary();
       request.string('text', 255);
-      request.integer('popularity', 100);
+      request.integer('popularity', 100).defaultTo(0);
       request.integer('user_id').unsigned().references('id').inTable('users');
       request.timestamps();
     }).then(function(table) {
@@ -47,7 +47,7 @@ db.knex.schema.hasTable('photos').then(function(exists) {
       photo.string('filename', 100);
       photo.string('filetype', 100);
       photo.string('username', 100);
-      photo.integer('karma', 11);
+      photo.integer('karma', 11).defaultTo(0);
       photo.integer('user_id').unsigned().references('id').inTable('users');
       photo.integer('request_id').unsigned().references('id').inTable('requests');
       photo.timestamps();
@@ -63,7 +63,7 @@ db.knex.schema.hasTable('comments').then(function(exists) {
       comment.increments('id').primary();
       comment.string('text', 255);
       comment.string('username', 100);
-      comment.integer('karma', 11);
+      comment.integer('karma', 11).defaultTo(0);
       comment.integer('user_id').unsigned().references('id').inTable('users');
       comment.integer('photo_id').unsigned().references('id').inTable('photos');
       comment.timestamps();
