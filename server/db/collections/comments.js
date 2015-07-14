@@ -1,8 +1,8 @@
-var db = require('../config');
-var Comment = require('../models/Comment');
+// var db = require('../config');
+// var Comment = require('../models/comment');
 
-var Comments = new db.Collection();
+// var Comments = new db.Collection();
 
-Comments.model = Comment;
+// Comments.model = Comment;
 
-module.exports = Comments;
+// module.exports = Comments;
