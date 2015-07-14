@@ -33,7 +33,7 @@ var Feed = React.createClass({
   },
 
   componentDidMount: function() {
-    console.log('mounted');
+    console.log('mounted feed');
     FeedStore.addChangeListener(this._onChange);
   },
   componentWillUnmount: function() {
