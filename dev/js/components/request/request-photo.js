@@ -19,7 +19,7 @@ var Photo = React.createClass({
     var stateObj = getPhotoComments(this.props.data.id);
     stateObj.loggedIn = AuthStore.loggedIn();
     stateObj.showCommentEntry = false;
-    stateObj.showModal: false
+    stateObj.showModal = false;
     return stateObj;
   },
 
