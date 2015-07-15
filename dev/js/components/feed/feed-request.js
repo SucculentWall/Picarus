@@ -12,7 +12,6 @@ var Request = React.createClass({
         <Link className = "req" to="requests" params={{requestId: this.props.data.id}} >
           <span className = "req">{this.props.data.text}</span>
           <span className = "req">{this.props.data.username}</span>
-          {this.props.data.id}
         </Link>
       </li>
     );

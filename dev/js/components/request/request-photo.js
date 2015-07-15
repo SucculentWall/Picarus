@@ -3,9 +3,9 @@ var AppActions = require('../../actions/app-actions');
 var RequestStore = require('../../stores/app-requestStore');
 var PhotoComment = require('./request-photoComment');
 var MakeComment = require('./request-makeComment');
+var AuthStore = require('../../stores/app-authStore');
 // require specific react-bootstrap component
 var Modal = require('react-bootstrap').Modal;
-var AuthStore = require("../../stores/app-authStore");
 
 var photoComments;
 

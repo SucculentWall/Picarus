@@ -1,7 +1,7 @@
-var React = require("react");
+var React = require('react');
 var Link = require('react-router').Link;
-var AuthStore = require("../../stores/app-authStore");
-var Auth = require("../app-auth");
+var AuthStore = require('../../stores/app-authStore');
+var Auth = require('../app-auth');
 
 // dummy data, change when server hooked
 var Header = React.createClass({
@@ -30,12 +30,11 @@ var Header = React.createClass({
 
   render: function(){
     return (
-      <div className = "nav">
-        <Link to="/"><span id="logo">Icarus</span></Link>
-        <span>Hello {AuthStore.getUsername()} </span>
-        { this.state.loggedIn ? <span onClick={this._handleLogout}>Logout</span> : <Auth/> }
-        <Link to="/request" className="sign">Request</Link>
-        <Link to="/" className="sign">Gallery</Link>
+      <div className = 'nav'>
+        <Link to='/'><span id='logo'>Picarus</span></Link>
+        { AuthStore.getUsername() ? <span className='sign'>Hello, {AuthStore.getUsername()}! </span> : null }
+        <Link to='/' className='sign'>Gallery</Link>
+        { this.state.loggedIn ? <span className='sign' onClick={this._handleLogout}>Logout</span> : <Auth/> }
       </div>
     );
   }
