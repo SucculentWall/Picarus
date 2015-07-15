@@ -23,6 +23,10 @@ var _receiveComments = function(photoData) {
   _comments[photoData.data.id] = photoData.data.comments;
 };
 
+var _receiveNewComment = function(commentData) {
+  _comments[commentData.photo_id].push(commentData);
+};
+
 var RequestStore = assign({},EventEmitter.prototype, {
   getAllComments: function() {
     return _comments;
@@ -85,6 +89,15 @@ RequestStore.dispatchToken = AppDispatcher.register(function(action) {
 
     case AppConstants.RECEIVE_COMMENTS:
       _receiveComments(action.data);
+      RequestStore.emitChange();        
+      break;
+
+    case AppConstants.UPDATE_COMMENT:
+      console.log('detecting change');
+      console.log('here are comments: ', _comments);
+      // ^-- not updating for the other end of socket
+      console.log('this is action.data: ', action.data);
+      _receiveNewComment(action.data);
       RequestStore.emitChange();        
       break;
 
