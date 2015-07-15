@@ -44,7 +44,7 @@ var Gallery = React.createClass({
       count++;
     }
     return (
-      <div className = "gallery col-xs-6">
+      <div className = "gallery col-xs-8">
         <GalleryHeader />
         <div>
           {photos}
