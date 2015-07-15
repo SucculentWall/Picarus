@@ -32,6 +32,7 @@ var Feed = React.createClass({
     FeedStore.addChangeListener(this._onChange);
     AuthStore.addChangeListener(this._onLog);
   },
+  
   componentWillUnmount: function() {
     FeedStore.removeChangeListener(this._onChange);
     AuthStore.removeChangeListener(this._onLog);
