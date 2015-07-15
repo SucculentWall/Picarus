@@ -70,9 +70,9 @@ var Request = React.createClass({
       photosList.push(<Photo key={i} data={photos[i]} />);
     }
     return (
-      <div className = "request col-xs-6">
+      <div className = "request col-xs-8">
         <RequestHeader data={this.state} />
-        <ul>
+        <ul className = "container">
           {photosList}
         </ul>
         { this.state.loggedIn ? <PhotoUpload data={this.state} /> : <Auth/> }

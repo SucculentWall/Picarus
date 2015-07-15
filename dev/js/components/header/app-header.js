@@ -32,7 +32,8 @@ var Header = React.createClass({
     return (
       <div className = "nav">
         <Link to="/"><span id="logo">Icarus</span></Link>
-        { this.state.loggedIn ? <span><span>Hello {AuthStore.getUsername()} </span><span onClick={this._handleLogout}>Logout</span></span> : <Auth/> }
+        <span>Hello {AuthStore.getUsername()} </span>
+        { this.state.loggedIn ? <span onClick={this._handleLogout}>Logout</span> : <Auth/> }
         <Link to="/request" className="sign">Request</Link>
         <Link to="/" className="sign">Gallery</Link>
       </div>

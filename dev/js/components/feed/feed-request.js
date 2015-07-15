@@ -9,9 +9,9 @@ var Request = React.createClass({
   render: function(){
     return (
       <li className = "req">
-        <Link to="requests" params={{requestId: this.props.data.id}} >
-          <span className = "req-username">{this.props.data.username}</span>
-          <span className = "req-text">{this.props.data.text}</span>
+        <Link className = "req" to="requests" params={{requestId: this.props.data.id}} >
+          <span className = "req">{this.props.data.text}</span>
+          <span className = "req">{this.props.data.username}</span>
           {this.props.data.id}
         </Link>
       </li>

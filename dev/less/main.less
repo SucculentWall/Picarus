@@ -1,8 +1,71 @@
+/* http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+  display: block;
+}
+body {
+  line-height: 1;
+}
+ol, ul {
+  list-style: none;
+}
+blockquote, q {
+  quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+  content: '';
+  content: none;
+}
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+/*   CSS RESET END    */
 @purple : #523A54;
+@black : #000;
 @blue : #4F7CAC;
 @grey : #DADAD9;
 @darkgrey : #36382E;
 @offwhite: #FFFBFE;
+@white: #FFF;
+
+body {
+  font-family: "Lato", sans-serif;
+}
+
+.bordered {
+  border: 1px solid @grey;
+  border-radius: 5px;
+}
+.darkbordered {
+  border: 1px solid #000;
+}
 
 #logo {
   font-size: 2em;
@@ -24,22 +87,75 @@
 }
 
 input {
-  height: 50px;
+  height: 2em;
 }
 
 .request-input {
-  width: 400px;
+  width: 22em;
 }
 
 .requestphoto {
   max-width: 100%;
 }
 
-.feed {
+/*Request Page styling*/
+.req-header {
+  background: @purple;
+  color: @white;
+  .bordered;
+  padding: 1em;
+  margin: 1em;
+  .req-title {
+    font-size: 2em;
+  }
+}
+
+.request {
+  li {
+    .bordered;
+    padding: 1em;
+    margin: 1em;
+  }
+  .comment-input {
+    width: 80%;
+    float: left;
+  }
+  .comment-submit {
+    width: 20%;
+  }
+  // color: #fff;
+  .bordered;
+}
+
+/* Feed styling */ 
+.photo-username {
+  color: @purple;
   float: right;
+}
+.req {
+  text-decoration: none;
+  color: @grey;
+  &:hover {
+    color: @darkgrey;
+  }
+}
+.feed {
   padding: 5px;
-  border: 1px solid @grey;
+  .bordered;
   height: 500px;
+  li {
+    &:hover {
+      background: @grey;
+      color: @darkgrey;
+    }
+    color: @offwhite;
+    background: @darkgrey;
+    padding: 1em;
+    list-style-type: none;
+    .bordered;
+    margin: 0.5em;
+  }
+
 }
 
 .modal-title {
