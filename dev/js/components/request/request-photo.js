@@ -9,6 +9,7 @@ var AuthStore = require('../../stores/app-authStore');
 var Modal = require('react-bootstrap').Modal;
 
 var photoComments;
+var currUserId = AuthStore.getId();
 
 var getPhotoComments = function(id){
   return {photoComments: RequestStore.getComment(id)};
@@ -21,6 +22,8 @@ var Photo = React.createClass({
     stateObj.loggedIn = AuthStore.loggedIn();
     stateObj.showCommentEntry = false;
     stateObj.showModal = false;
+    // needs a property for likes
+    stateObj.likes = 0;
     return stateObj;
   },
 
