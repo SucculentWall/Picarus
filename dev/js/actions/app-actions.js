@@ -44,8 +44,7 @@ module.exports = {
   loggedIn: function(data, token) {
     AppDispatcher.dispatch({
       type: AppConstants.LOGGED_IN,
-      username: username,
-      id: id,
+      data: data,
       token: token
     });
   },

@@ -13,19 +13,23 @@ var _logOut = function() {
 };
 
 var _logIn = function(data, token) {
+  _user.FacebookId = data.FacebookId;
   _user.id = data.id;
   _user.username = data.username;
   _user.token = token;
-  console.log(_user);
 };
 
 var AuthStore = assign({},EventEmitter.prototype, {
   loggedIn: function() {
-    return _user.id !== undefined;
+    return _user.username !== undefined;
   },
 
   getId: function() {
     return _user.id;
+  },
+
+  getFacebookId: function() {
+    return _user.FacebookId;
   },
 
   getUsername: function() {

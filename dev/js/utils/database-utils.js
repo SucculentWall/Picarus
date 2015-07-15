@@ -70,8 +70,8 @@ module.exports = {
       });
   },
 
-  findOrCreateUser: function(id, token) {
-    axios.post('/api/users', {username: id})
+  findOrCreateUser: function(id, name, token) {
+    axios.post('/api/users', {FacebookId: id, username: name })
       .then(function(response) {
         AppActions.loggedIn(response.data, token);
       })
