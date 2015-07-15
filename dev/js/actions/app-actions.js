@@ -1,12 +1,17 @@
 var AppDispatcher = require("../dispatchers/app-dispatcher");
 var AppConstants = require("../constants/app-constants");
-//var dbUtils = require("../utils/database-utils"); //can't have it here, causes circular reference
+//var dbUtils = require("../utils/database-utils"); //can't require it here: causes circular reference
 
 var dbUtils;
 
 module.exports = {
 
   //User Actions
+  getAllRequests: function () {
+    dbUtils = require("../utils/database-utils");
+    dbUtils.getAllRequests();
+  },
+
   addRequest: function(text, username, tags){
     dbUtils = require("../utils/database-utils");
     dbUtils.addRequest(text, username, tags);
@@ -15,6 +20,11 @@ module.exports = {
   pickRequest: function(id) {
     dbUtils = require("../utils/database-utils");
     dbUtils.getRequest(id);
+  },
+
+  getAllPhotos: function(id) {
+    dbUtils = require("../utils/database-utils");
+    dbUtils.getAllPhotos();
   },
 
   addPhoto: function(photo, username, request_id, tags){

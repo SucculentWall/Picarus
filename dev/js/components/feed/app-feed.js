@@ -1,4 +1,5 @@
 var React = require("react");
+var AppActions = require("../../actions/app-actions");
 var Request = require("./feed-request");
 var MakeRequest = require("./feed-makeRequest");
 var FeedStore = require("../../stores/app-feedStore");
@@ -18,12 +19,19 @@ var Feed = React.createClass({
     return obj;
   },
 
+  statics: {
+    willTransitionTo: function(transition, params, element) {
+      console.log('will transition to app-feed');
+      AppActions.getAllRequests();
+    }
+  },
+
   _onLog: function () {
     this.setState({loggedIn: AuthStore.loggedIn()});
   },
 
   _onChange: function () {
-    console.log('change triggered');
+    console.log('change triggered on feedStore');
     this.setState(getPhotoRequests());
   },
 
@@ -31,12 +39,14 @@ var Feed = React.createClass({
     console.log('mounted feed');
     FeedStore.addChangeListener(this._onChange);
     AuthStore.addChangeListener(this._onLog);
+    AppActions.getAllRequests();
   },
   
   componentWillUnmount: function() {
     FeedStore.removeChangeListener(this._onChange);
     AuthStore.removeChangeListener(this._onLog);
   },
+
   render: function(){
     photoRequests = [];
     var reqs = this.state.photoRequests;
@@ -52,6 +62,7 @@ var Feed = React.createClass({
       </div>
     );
   }
+
 });
 
 module.exports = Feed;

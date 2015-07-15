@@ -6,6 +6,7 @@ var Request = require('./request/app-request');
 var Signin = require('./signin/app-signin');
 var Template = require('./app-template');
 var dbUtils = require('../utils/database-utils');
+require('../actions/socket-actions.js');
 
 var Router = require('react-router');
 var Route = Router.Route;
@@ -34,10 +35,8 @@ var routes = (
     <Route name="signin" path="/signin" handler={Signin} />
   </Route>
 );
+
 module.exports = function(){
-
-  dbUtils.getAllRequests();
-
   Router.run(routes, Router.HashLocation, function(App) {
     React.render(<App />, document.getElementById("main"));
   });

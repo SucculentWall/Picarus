@@ -32,7 +32,7 @@ var Request = React.createClass({
 
   statics: {
     willTransitionTo: function(transition, params, element) {
-      console.log('will transition to');
+      console.log('will transition to app-request');
       AppActions.pickRequest(params.requestId);
     }
   },
@@ -42,7 +42,7 @@ var Request = React.createClass({
   },
 
   _onChange: function () {
-    console.log('change triggered');
+    console.log('change triggered on requestStore');
     this.setState(getData());
   },
   // componentDidUpdate: function(){
@@ -55,10 +55,9 @@ var Request = React.createClass({
   // },
   componentDidMount: function() {
     console.log('mounted app-request');
-    console.log('requesting data: ', this.props.params.requestId);
-    AppActions.pickRequest(this.props.params.requestId);
     RequestStore.addChangeListener(this._onChange);
     AuthStore.addChangeListener(this._onLog);
+    AppActions.pickRequest(this.props.params.requestId);
   },
   componentWillUnmount: function() {
     RequestStore.removeChangeListener(this._onChange);
