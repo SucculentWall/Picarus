@@ -5,7 +5,7 @@ var RequestHeader = React.createClass({
     var tagsList = [];
     var tags = this.props.data.tags;
     for (var i=0; i<tags.length; i++) {
-      tagsList.push(<span>{tags[i].tagname}</span>);
+      tagsList.push(<span>{tags[i].tagname} </span>);
     }
     return (
       <div className = "req-header">

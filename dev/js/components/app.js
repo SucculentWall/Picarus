@@ -20,7 +20,6 @@ var App = React.createClass({
   render: function(){
     return (
       <Template>
-        <h1> Testing </h1>
         <RouteHandler />
         <Feed />
       </Template>
