@@ -39,7 +39,7 @@ var Photo = React.createClass({
 
   _onChange: function () {
     console.log('change triggered on photo');
-    this.setState(getPhotoComments(this.props.data.id));
+    if (this.isMounted()) { this.setState(getPhotoComments(this.props.data.id)); }
   },
 
   _onLog: function () {
