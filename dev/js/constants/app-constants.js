@@ -12,6 +12,7 @@ module.exports = {
   //socket actions
   UPDATE_FEED: "UPDATE_FEED",
   UPDATE_REQUEST: "UPDATE_REQUEST",
+  UPDATE_COMMENT: "UPDATE_COMMENT",
 
   //auth actions
   LOGGED_IN: "LOGGED_IN",

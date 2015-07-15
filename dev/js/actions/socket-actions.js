@@ -16,3 +16,10 @@ socket.on('updateRequest', function(data) {
     data: data
   });
 });
+
+socket.on('updateComment', function(data) {
+  AppDispatcher.dispatch({
+    type: AppConstants.UPDATE_COMMENT,
+    data: data
+  });
+})
