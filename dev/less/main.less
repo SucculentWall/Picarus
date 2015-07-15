@@ -1,8 +1,71 @@
+/* http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+  display: block;
+}
+body {
+  line-height: 1;
+}
+ol, ul {
+  list-style: none;
+}
+blockquote, q {
+  quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+  content: '';
+  content: none;
+}
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+/*   CSS RESET END    */
 @purple : #523A54;
+@black : #000;
 @blue : #4F7CAC;
 @grey : #DADAD9;
 @darkgrey : #36382E;
 @offwhite: #FFFBFE;
+@white: #FFF;
+
+body {
+  font-family: "Lato", sans-serif;
+}
+
+.bordered {
+  border: 1px solid @grey;
+  border-radius: 5px;
+}
+.darkbordered {
+  border: 1px solid #000;
+}
 
 #logo {
   font-size: 2em;
@@ -24,22 +87,100 @@
 }
 
 input {
-  height: 50px;
+  height: 2em;
+}
+form {
+  width: 100%;
+}
+.request-input {
+  float: left;
+  margin: 0 3%;
+  width: 70%;
 }
 
-.request-input {
-  width: 400px;
+.request-submit {
+  width: 20%;
 }
 
 .requestphoto {
   max-width: 100%;
 }
 
-.feed {
+/*Request Page styling*/
+.req-header {
+  background: @purple;
+  color: @white;
+  .bordered;
+  padding: 0.5em;
+  margin: 0.5em;
+  .req-title {
+    font-size: 2em;
+  }
+}
+
+.request {
+  li {
+    width: 100%;
+    .bordered;
+    padding: 1em;
+    margin-bottom: 1em;
+  }
+  .comment {
+    background: @grey;
+    padding: 0;
+    margin-bottom: 0.5em;
+    .bordered;
+    .photo-comment {
+      background: @white;
+      padding: 0.5em;
+      display: block;
+      .bordered;
+    }
+    .comment-username {
+      padding: 0.2em;
+      display: block;
+      text-align: right;
+    }
+  }
+  .comment-input {
+    width: 80%;
+    float: left;
+  }
+  .comment-submit {
+    width: 20%;
+  }
+  .bordered;
+}
+
+/* Feed styling */ 
+.photo-username {
+  color: @purple;
   float: right;
+}
+.req {
+  text-decoration: none;
+  color: @grey;
+  &:hover {
+    color: @darkgrey;
+  }
+}
+.feed {
   padding: 5px;
-  border: 1px solid @grey;
+  .bordered;
   height: 500px;
+  li {
+    &:hover {
+      background: @grey;
+      color: @darkgrey;
+    }
+    color: @offwhite;
+    background: @darkgrey;
+    padding: 1em;
+    list-style-type: none;
+    .bordered;
+    margin: 0.5em;
+  }
+
 }
 
 .modal-title {
@@ -61,6 +202,31 @@ input {
   // max-width: 100%;
   width: 70%;
   // min-width: 5%;
+  .comment {
+    background: @grey;
+    padding: 0;
+    margin-bottom: 0.5em;
+    .bordered;
+    .photo-comment {
+      background: @white;
+      padding: 0.5em;
+      display: block;
+      .bordered;
+    }
+    .comment-username {
+      padding: 0.2em;
+      display: block;
+      text-align: right;
+    }
+  }
+  .comment-input {
+    width: 80%;
+    float: left;
+  }
+  .comment-submit {
+    width: 20%;
+  }
+  .bordered;
 }
 
 img.galleryphoto {
