@@ -15,7 +15,7 @@ window.fbAsyncInit = function() {
     cookie     : true,  // enable cookies to allow the server to access 
                         // the session
     xfbml      : true,  // parse social plugins on this page
-    version    : 'v2.3' // use version 2.2
+    version    : 'v2.3' // use version 2.3
   });
 
   // Now that we've initialized the JavaScript SDK, we call 
@@ -32,17 +32,18 @@ window.fbAsyncInit = function() {
 
   FB.getLoginStatus(function(response) {
     FB.api('/me', function (resp) {
-      dbUtils.findOrCreateUser(response.authResponse.userID.toString(),resp.name, response);
+      dbUtils.findOrCreateUser(resp.id.toString(),resp.name, response);
     });
   });
 
 };
 
 // Load the SDK asynchronously
-(function(d, s, id) {
-  var js, fjs = d.getElementsByTagName(s)[0];
-  if (d.getElementById(id)) return;
-  js = d.createElement(s); js.id = id;
+(function(doc, scrip, facebookjssdk) {
+  var js, fjs = doc.getElementsByTagName(scrip)[0];
+  if (doc.getElementById(facebookjssdk)) return;
+  js = doc.createElement(scrip); 
+  js.facebookjssdk = facebookjssdk;
   js.src = "//connect.facebook.net/en_US/sdk.js";
   fjs.parentNode.insertBefore(js, fjs);
 }(document, 'script', 'facebook-jssdk'));
