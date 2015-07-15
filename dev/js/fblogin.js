@@ -3,9 +3,13 @@ var AppActions = require('./actions/app-actions.js');
 
 window.checkLoginState = function () {
   FB.getLoginStatus(function(response) {
-    FB.api('/me', function (resp) {
-      dbUtils.findOrCreateUser(response.authResponse.userID.toString(),resp.name, response);
-    });  
+    if (response.authResponse) {
+      FB.api('/me', function (resp) {
+        dbUtils.findOrCreateUser(response.authResponse.userID.toString(),resp.name, response);
+      }); 
+    } else {
+      AppActions.notLoggedIn();
+    }
   });
 };
 

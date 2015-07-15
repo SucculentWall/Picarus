@@ -62,7 +62,7 @@ AuthStore.dispatchToken = AppDispatcher.register(function(action) {
       break;
 
     case AppConstants.NOT_LOGGED_IN:
-      //_addToRequestList(action.data);
+      _logOut();
       AuthStore.emitChange();
       break;
 

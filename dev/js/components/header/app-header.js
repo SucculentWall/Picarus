@@ -9,6 +9,13 @@ var Header = React.createClass({
     return {loggedIn : AuthStore.loggedIn()};
   },
 
+  _handleLogout: function() {
+    FB.logout(function() {
+      checkLoginState();
+      location.hash = '/';
+    });
+  },
+
   _onLog: function () {
     this.setState({loggedIn: AuthStore.loggedIn()});
   },
@@ -25,7 +32,7 @@ var Header = React.createClass({
     return (
       <div className = "nav">
         <Link to="/"><span id="logo">Icarus</span></Link>
-        { this.state.loggedIn ? <span>Hello {AuthStore.getUsername()}</span> : <Auth/> }
+        { this.state.loggedIn ? <span><span>Hello {AuthStore.getUsername()} </span><span onClick={this._handleLogout}>Logout</span></span> : <Auth/> }
         <Link to="/request" className="sign">Request</Link>
         <Link to="/" className="sign">Gallery</Link>
       </div>

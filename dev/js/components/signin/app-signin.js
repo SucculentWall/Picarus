@@ -11,6 +11,7 @@ var Signin = React.createClass({
   _handleSignin: function() {
     FB.login(function(response) {
       if (response.authResponse) {
+        checkLoginState();
         location.hash = "/";
       }
     });
