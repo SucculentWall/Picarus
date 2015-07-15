@@ -2,6 +2,7 @@ var db = require('../config');
 require('./user');
 require('./request');
 require('./tag');
+require('./comment');
 
 var Photo = db.Model.extend({
   tableName: 'photos',
@@ -9,11 +10,14 @@ var Photo = db.Model.extend({
   user: function () {
     return this.belongsTo('User');
   },
-  requests: function() {
+  request: function() {
     return this.belongsTo('Request');
   },
   tags: function() {
     return this.belongsToMany('Tag');
+  },
+  comments: function() {
+    return this.hasMany('Comment');
   }
 });
 

@@ -1,22 +1,35 @@
 var AppDispatcher = require("../dispatchers/app-dispatcher");
 var AppConstants = require("../constants/app-constants");
+//var dbUtils = require("../utils/database-utils"); //can't have it here, causes circular reference
+
+var dbUtils;
 
 module.exports = {
 
   //User Actions
   addRequest: function(text, username, tags){
-    var dbUtils = require("../utils/database-utils");
+    dbUtils = require("../utils/database-utils");
     dbUtils.addRequest(text, username, tags);
   },
 
   pickRequest: function(id) {
-    var dbUtils = require("../utils/database-utils");
+    dbUtils = require("../utils/database-utils");
     dbUtils.getRequest(id);
   },
 
   addPhoto: function(photo, username, request_id, tags){
-    var dbUtils = require("../utils/database-utils");
+    dbUtils = require("../utils/database-utils");
     dbUtils.addPhoto(photo, username, request_id, tags);
+  },
+
+  addComment: function(text, username, photo_id){
+    dbUtils = require("../utils/database-utils");
+    dbUtils.addComment(text, username, photo_id);
+  },
+
+  loadComments: function(id) {
+    dbUtils = require("../utils/database-utils");
+    dbUtils.getComments(id);
   },
 
   // Server Actions
@@ -41,7 +54,14 @@ module.exports = {
     });
   },
 
-  loggedIn: function(data, token) {
+  receiveComments: function(data) {
+    AppDispatcher.dispatch({
+      type: AppConstants.RECEIVE_COMMENTS,
+      data: data
+    });
+  },
+
+  loggedIn: function(data) {
     AppDispatcher.dispatch({
       type: AppConstants.LOGGED_IN,
       data: data,

@@ -6,25 +6,33 @@ var EventEmitter = require('events').EventEmitter;
 
 //  all or most recent photo requests
 var _request = {};
+var _comments = {};
 
 var _receiveRequest = function(data) {
-  console.log('requestStore.js data: ', data);
+  console.log('requestStore received request data: ', data);
   _request = data;
 };
 
 var _receivePhoto = function(photoData) {
-  console.log('received photo data: ', photoData);
+  console.log('requestStore received photo data: ', photoData);
   _request.photos.push(photoData);
 };
 
-var RequestStore = assign({},EventEmitter.prototype, {
-  // getAllComments: function() {
-  //   return _commentList;
-  // },
+var _receiveComments = function(photoData) {
+  console.log('received photo data: ', photoData);
+  _comments[photoData.data.id] = photoData.data.comments;
+};
 
-  // getComment: function(id) {
-  //   return _commentList[id];
-  // },
+var RequestStore = assign({},EventEmitter.prototype, {
+  getAllComments: function() {
+    return _comments;
+  },
+
+  getComment: function(photoId) {
+    console.log('_comments object in requestStore: ', _comments);
+    console.log('Getting Comment for photo ID ' + photoId, _comments[photoId]);
+    return _comments[photoId];
+  },
 
   getPhotos: function() {
     return _request.photos;
@@ -69,11 +77,15 @@ RequestStore.dispatchToken = AppDispatcher.register(function(action) {
       break;
 
     case AppConstants.UPDATE_REQUEST:
-    console.log('checking if getId: ', RequestStore.getId(), action.data.request_id);
-      if (RequestStore.getId() === +action.data.request_id){
+      if (RequestStore.getId() === action.data.request_id){
         _receivePhoto(action.data);
         RequestStore.emitChange();        
       }
+      break;
+
+    case AppConstants.RECEIVE_COMMENTS:
+      _receiveComments(action.data);
+      RequestStore.emitChange();        
       break;
 
     default:

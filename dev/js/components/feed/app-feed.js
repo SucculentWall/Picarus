@@ -5,21 +5,7 @@ var FeedStore = require("../../stores/app-feedStore");
 var AuthStore = require("../../stores/app-authStore");
 var Auth = require("../app-auth");
 
-// dummy data, change when server hooked
-var photoRequests = [
-  {
-    description: "JP's bike",
-    tags: ["bicycle", "handsome asian"],
-    location: "san francisco",
-    id: 3
-  },
-  {
-    description: "Albert sleeping",
-    tags: ['whiteboarding', 'handsome asian'],
-    location: 'san francisco',
-    id:4
-  }
-];
+var photoRequests;
 
 var getPhotoRequests = function(){
   return {photoRequests: FeedStore.getAllRequests()};
