@@ -8,7 +8,7 @@ var MakeComment = React.createClass({
     var text = React.findDOMNode(this.refs.text).value;
     console.log('this.props.data: ', this.props.data);
 
-    // instead of BOB, grab the currently logged-in user
+    // grab the currently logged-in user
     var currUser = AuthStore.getUsername();
     AppActions.addComment(text, currUser, this.props.data.id); //Hardcoded 'BOB', change later
     React.findDOMNode(this.refs.text).value = '';
