@@ -7,6 +7,7 @@ var Auth = require("../app-auth");
 var PhotoUpload = require("./request-photoUpload");
 var AuthStore = require("../../stores/app-authStore");
 
+
 var getData = function(){
   return {
     id: RequestStore.getId(),
