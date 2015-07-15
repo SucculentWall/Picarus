@@ -5,7 +5,9 @@ var PhotoComment = require('./request-photoComment');
 var MakeComment = require('./request-makeComment');
 // require specific react-bootstrap component
 var Modal = require('react-bootstrap').Modal;
-var photoComments, comments;
+var AuthStore = require("../../stores/app-authStore");
+
+var photoComments;
 
 var getPhotoComments = function(id){
   return {photoComments: RequestStore.getComment(id)};
@@ -14,10 +16,11 @@ var getPhotoComments = function(id){
 var Photo = React.createClass({
   
   getInitialState: function(){
-    return {
-      photoComments: getPhotoComments(this.props.data.id).photoComments,
-      showModal: false
-    };
+    var stateObj = getPhotoComments(this.props.data.id);
+    stateObj.loggedIn = AuthStore.loggedIn();
+    stateObj.showCommentEntry = false;
+    stateObj.showModal: false
+    return stateObj;
   },
 
   close: function (){
@@ -31,6 +34,7 @@ var Photo = React.createClass({
   _onClick: function () {
     console.log('_onClick, what is this: ', this);
     AppActions.loadComments(this.props.data.id);
+    this.setState({showCommentEntry: !this.state.showCommentEntry});
   },
 
   _onChange: function () {
@@ -38,8 +42,18 @@ var Photo = React.createClass({
     this.setState(getPhotoComments(this.props.data.id));
   },
 
+  _onLog: function () {
+    this.setState({loggedIn: AuthStore.loggedIn()});
+  },
+
   componentDidMount: function() {
     RequestStore.addChangeListener(this._onChange);
+    AuthStore.addChangeListener(this._onLog);
+  },
+
+  componentWillUnmount: function() {
+    RequestStore.removeChangeListener(this._onChange);
+    AuthStore.removeChangeListener(this._onLog);
   },
 
   render: function(){
@@ -52,9 +66,9 @@ var Photo = React.createClass({
       <div>
         <p onClick={this._onClick}>Comments</p>
         <ul>
-          {photoComments}
+          { this.state.showCommentEntry ? {photoComments} : null}
+          { this.state.showCommentEntry && this.state.loggedIn ? <MakeComment data={this.props.data}/> : null }
         </ul>
-        <MakeComment data={this.props.data}/>
       </div>
     );
     return (

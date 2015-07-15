@@ -1,7 +1,6 @@
 var axios = require('axios');
 var AppActions = require('../actions/app-actions');
 
-
 module.exports = {
   
   getAllRequests: function() {
