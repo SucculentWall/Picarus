@@ -9,17 +9,17 @@ var _request = {};
 var _comments = {};
 
 var _receiveRequest = function(data) {
-  console.log('requestStore received request data: ', data);
+  // console.log('requestStore received request data: ', data);
   _request = data;
 };
 
 var _receivePhoto = function(photoData) {
-  console.log('requestStore received photo data: ', photoData);
+  // console.log('requestStore received photo data: ', photoData);
   _request.photos.push(photoData);
 };
 
 var _receiveComments = function(photoData) {
-  console.log('received photo data: ', photoData);
+  // console.log('received photo data: ', photoData);
   _comments[photoData.data.id] = photoData.data.comments;
 };
 
@@ -33,8 +33,6 @@ var RequestStore = assign({},EventEmitter.prototype, {
   },
 
   getComment: function(photoId) {
-    console.log('_comments object in requestStore: ', _comments);
-    console.log('Getting Comment for photo ID ' + photoId, _comments[photoId]);
     return _comments[photoId];
   },
 
