@@ -61,7 +61,7 @@ module.exports = {
     });
   },
 
-  loggedIn: function(data) {
+  loggedIn: function(data, token) {
     AppDispatcher.dispatch({
       type: AppConstants.LOGGED_IN,
       data: data,
