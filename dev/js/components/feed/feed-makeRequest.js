@@ -20,7 +20,6 @@ var MakeRequest = React.createClass({
 
     AppActions.addRequest(text, AuthStore.getUsername(), refinedTags); //Hardcoded 'BOB', change later
     React.findDOMNode(this.refs.text).value = '';
-    React.findDOMNode(this.refs.tags).value = '';
   },
   render: function(){
     return (

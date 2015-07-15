@@ -97,7 +97,7 @@ module.exports = {
         id: photo_id
       })
       .fetch({
-        withRelated: ['user', 'requests', 'tags']
+        withRelated: ['user', 'request', 'tags', 'comments']
       })
       .then(function (photo) {
         res.send(photo);

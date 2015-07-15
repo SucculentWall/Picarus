@@ -11,7 +11,7 @@ module.exports = {
 
   addComment: function (req, res, next) {
 
-    var data = {};
+    var data = req.body;
 
     new User({
         username: data.username
@@ -31,24 +31,14 @@ module.exports = {
             .then(function (createdComment) {
               io.emit('updateRequest', createdComment);
             });
-          // res.writeHead(303, {
-          //   Connection: 'close',
-          //   Location: '/'
-          // });
-          // res.end();
           res.send('comment added');
         }
       });
 
-  },
-
-  getCommentsForPhoto : function (req, res, next) {
-    Comments.reset()
-      .fetch({
-        withRelated: ['photo']
-      })
-      .then(function (comments) {
-        res.send(comments.models);
-      });
   }
+
+  // getCommentsForPhoto : function (req, res, next) {
+
+  // }
+
 };

@@ -41,6 +41,33 @@ module.exports = {
       });
   },
 
+  //get comments attached to particular photo, given the photo's id
+  getComments:function (id) {
+    axios.get('/api/comments/photo/'+id)
+      .then(function(response) {
+        AppActions.receiveComments(response);      
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
+  },
+
+  addComment: function(text, username, photo_id) {
+    var context = this;
+    axios.post('/api/comments', {
+        text: text,
+        username: username,
+        photo_id: photo_id
+      })
+      .then(function(response) {
+        context.getComments(photo_id);
+        console.log('new comment added');
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
+  },
+
   addPhoto: function(photo, username, request_id, tags) {
     var context = this;
     var data = new FormData();
