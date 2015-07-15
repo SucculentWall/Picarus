@@ -2,6 +2,8 @@ var React = require("react");
 var Request = require("./feed-request");
 var MakeRequest = require("./feed-makeRequest");
 var FeedStore = require("../../stores/app-feedStore");
+var AuthStore = require("../../stores/app-authStore");
+var Auth = require("../app-auth");
 
 // dummy data, change when server hooked
 var photoRequests = [
@@ -25,8 +27,15 @@ var getPhotoRequests = function(){
 
 var Feed = React.createClass({
   getInitialState: function(){
-    return getPhotoRequests();
+    var obj = getPhotoRequests();
+    obj.loggedIn = AuthStore.loggedIn();
+    return obj;
   },
+
+  _onLog: function () {
+    this.setState({loggedIn: AuthStore.loggedIn()});
+  },
+
   _onChange: function () {
     console.log('change triggered');
     this.setState(getPhotoRequests());
@@ -35,9 +44,11 @@ var Feed = React.createClass({
   componentDidMount: function() {
     console.log('mounted feed');
     FeedStore.addChangeListener(this._onChange);
+    AuthStore.addChangeListener(this._onLog);
   },
   componentWillUnmount: function() {
     FeedStore.removeChangeListener(this._onChange);
+    AuthStore.removeChangeListener(this._onLog);
   },
   render: function(){
     photoRequests = [];
@@ -47,7 +58,7 @@ var Feed = React.createClass({
     }
     return (
       <div className = "feed col-xs-6">
-        <MakeRequest />
+        { this.state.loggedIn ? <MakeRequest /> : <Auth /> }
         <ul>
           {photoRequests}
         </ul>

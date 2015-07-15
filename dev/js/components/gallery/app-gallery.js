@@ -2,6 +2,7 @@ var React = require("react");
 var GalleryStore = require("../../stores/app-galleryStore");
 var GalleryPhoto = require("./gallery-photo");
 var GalleryHeader = require("./gallery-header");
+var AuthStore = require("../../stores/app-authStore");
 
 var getPhotos = function(){
   // TODO: retrieve photo requests from server

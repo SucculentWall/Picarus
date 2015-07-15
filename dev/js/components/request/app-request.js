@@ -3,7 +3,9 @@ var AppActions = require("../../actions/app-actions");
 var RequestStore = require("../../stores/app-requestStore");
 var RequestHeader = require("./request-header");
 var Photo = require("./request-photo");
+var Auth = require("../app-auth");
 var PhotoUpload = require("./request-photoUpload");
+var AuthStore = require("../../stores/app-authStore");
 
 var getData = function(){
   return {
@@ -22,7 +24,8 @@ var Request = React.createClass({
       photos: [],
       username: '',
       tags: [],
-      text: ''
+      text: '',
+      loggedIn: AuthStore.loggedIn()
     };
   },
 
@@ -31,6 +34,10 @@ var Request = React.createClass({
       console.log('will transition to');
       AppActions.pickRequest(params.requestId);
     }
+  },
+
+  _onLog: function () {
+    this.setState({loggedIn: AuthStore.loggedIn()});
   },
 
   _onChange: function () {
@@ -50,9 +57,11 @@ var Request = React.createClass({
     console.log('requesting data: ', this.props.params.requestId);
     AppActions.pickRequest(this.props.params.requestId);
     RequestStore.addChangeListener(this._onChange);
+    AuthStore.addChangeListener(this._onLog);
   },
   componentWillUnmount: function() {
     RequestStore.removeChangeListener(this._onChange);
+    AuthStore.removeChangeListener(this._onLog);
   },
   render: function(){
     var photosList = [];
@@ -66,7 +75,7 @@ var Request = React.createClass({
         <ul>
           {photosList}
         </ul>
-        <PhotoUpload data={this.state} />
+        { this.state.loggedIn ? <PhotoUpload data={this.state} /> : <Auth/> }
       </div>
     );
   }

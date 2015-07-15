@@ -1,6 +1,5 @@
 var AppDispatcher = require("../dispatchers/app-dispatcher");
 var AppConstants = require("../constants/app-constants");
-//var dbUtils = require("../utils/database-utils");
 
 module.exports = {
 
@@ -42,10 +41,11 @@ module.exports = {
     });
   },
 
-  loggedIn: function(data) {
+  loggedIn: function(data, token) {
     AppDispatcher.dispatch({
       type: AppConstants.LOGGED_IN,
-      data: data
+      data: data,
+      token: token
     });
   },
 

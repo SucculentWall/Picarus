@@ -5,7 +5,7 @@ var Photo = React.createClass({
     return (
       <li className = "photo">
         <span className = "photo-username">Submitted by: {this.props.data.username}</span>
-        <img className = "requestphoto" src={'/photos/' + this.props.data.filename} />
+        <a href={'/photos/' + this.props.data.filename} target="_blank"><img className = "requestphoto" src={'/photos/' + this.props.data.filename} /></a>
       </li>
     );
   }

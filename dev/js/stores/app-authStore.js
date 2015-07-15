@@ -6,25 +6,38 @@ var EventEmitter = require('events').EventEmitter;
 
 
 //  all or most recent photo requests
-var user = {};
+var _user = {};
 
-// var _receiveRequests = function(requests) {
-//   for (var i = 0; i < requests.length; i++) {
-//     _requestList[requests[i].id] = requests[i];
-//   }
-// };
+var _logOut = function() {
+  _user = {};
+};
 
-// var _addToRequestList = function(request) {
-//   _requestList[request.id] = request;
-// };
+var _logIn = function(data, token) {
+  _user.FacebookId = data.FacebookId;
+  _user.id = data.id;
+  _user.username = data.username;
+  _user.token = token;
+};
 
 var AuthStore = assign({},EventEmitter.prototype, {
   loggedIn: function() {
-    return user.id !== undefined;
+    return _user.username !== undefined;
   },
 
   getId: function() {
-    return user.id;
+    return _user.id;
+  },
+
+  getFacebookId: function() {
+    return _user.FacebookId;
+  },
+
+  getUsername: function() {
+    return _user.username;
+  },
+
+  getToken: function() {
+    return _user.token;
   },
 
   emitChange: function() {
@@ -41,16 +54,15 @@ var AuthStore = assign({},EventEmitter.prototype, {
 });
 
 AuthStore.dispatchToken = AppDispatcher.register(function(action) {
-  
   switch(action.type) {
 
     case AppConstants.LOGGED_IN:
-      //_receiveRequests(action.data.data);
+      _logIn(action.data, action.token);
       AuthStore.emitChange();
       break;
 
     case AppConstants.NOT_LOGGED_IN:
-      //_addToRequestList(action.data);
+      _logOut();
       AuthStore.emitChange();
       break;
 

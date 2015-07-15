@@ -1,5 +1,6 @@
 var React = require('react');
 var AppActions = require('../../actions/app-actions');
+var AuthStore = require("../../stores/app-authStore");
 
 var PhotoUpload = React.createClass({
   getInitialState: function() {
@@ -7,8 +8,8 @@ var PhotoUpload = React.createClass({
   },
   _onSubmit: function(e){
     e.preventDefault();
-    // username from ref in form
-    var username = React.findDOMNode(this.refs.username).value;
+    //Username from AuthStore
+    var username = AuthStore.getUsername();
     // request_id from data passed down from app-request
     var request_id = this.props.data.id;
     // photo from state
@@ -34,7 +35,6 @@ var PhotoUpload = React.createClass({
     // BOB is the placeholder in the username for now, but any valid username can be submitted
     return (
       <form onSubmit={this._onSubmit} encType="multipart/form-data">
-        <input ref="username" type="text" placeholder="BOB" required />
         <input ref="file" type="file" onChange={this._handleFile} required />
         <input type="submit" value="Submit" />
       </form>

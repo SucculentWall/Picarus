@@ -3,13 +3,14 @@ var User = require('../db/models/user');
 module.exports = {
   addUser: function (req, res, next) {
     var data = req.body;  // {username: 'myname'}
-    new User({username: data.username})
+    console.log(data);
+    new User({FacebookId: data.FacebookId, username: data.username})
       .fetch()
       .then(function (found) {
         if (found) {
           res.send(found);
         } else {
-          var newUser = new User({username: data.username});
+          var newUser = new User({FacebookId: data.FacebookId, username: data.username});
           newUser.save()
             .then(function (created) {
               res.send(created);
@@ -19,25 +20,6 @@ module.exports = {
       .catch(function(error) {
         console.log(error);
       });
-  },
-
-  findOrCreate: function (profile_id) {
-    return new Promise(function(resolve, reject){
-      new User({username: profile_id})
-      .fetch()
-      .then(function (found) {
-        if (found) {
-          resolve(found);
-        } else {
-          var newUser = new User({username: profile_id});
-          newUser.save()
-            .then(function (created) {
-              resolve(created);
-            });
-        }
-      })
-      .catch(reject);
-    }); // close Promise   
   },
 
   getInfoForUser: function(req, res, next) {
@@ -56,4 +38,4 @@ module.exports = {
       });
   }
 
-}
+};

@@ -1,5 +1,6 @@
 var React = require("react");
 var AppActions = require("../../actions/app-actions");
+var AuthStore = require("../../stores/app-authStore");
 
 var MakeRequest = React.createClass({
   _onSubmit: function (e) {
@@ -17,7 +18,7 @@ var MakeRequest = React.createClass({
       });
     }
 
-    AppActions.addRequest(text, 'BOB', refinedTags); //Hardcoded 'BOB', change later
+    AppActions.addRequest(text, AuthStore.getUsername(), refinedTags); //Hardcoded 'BOB', change later
     React.findDOMNode(this.refs.text).value = '';
     React.findDOMNode(this.refs.tags).value = '';
   },

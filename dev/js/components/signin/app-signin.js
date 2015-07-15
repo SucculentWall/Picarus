@@ -1,27 +1,33 @@
 var fblogin = require('../../fblogin.js');
 var React = require("react");
 var dbUtils = require('../../utils/database-utils.js');
-
+var AuthStore = require("../../stores/app-authStore");
 
 
 var _FacebookLoginButton;
 
 // dummy data, change when server hooked
 var Signin = React.createClass({
-  // statics: {
-  //   willTransitionTo: function(transition, params, element) {
+  _handleSignin: function() {
+    FB.login(function(response) {
+      if (response.authResponse) {
+        checkLoginState();
+        location.hash = "/";
+      }
+    });
+  },
 
-  //   }
-  // },
-  
-  // componentDidMount: function () {
+  _onLog: function () {
+    this.setState({loggedIn: AuthStore.loggedIn()});
+  },
 
-  // },
-  
-  componentWillMount: function() {
-    console.log('what is window.fbAsyncInit: ', typeof window.fbAsyncInit);
-    _FacebookLoginButton = React.createElement('fb:login-button', { scope: "public_profile,email", onlogin:"checkLoginState()"});
-  }, 
+  componentDidMount: function() {
+    console.log('mounted feed');
+    AuthStore.addChangeListener(this._onLog);
+  },
+  componentWillUnmount: function() {
+    AuthStore.removeChangeListener(this._onLog);
+  },
 
   render: function(){
     // Below we include the Login Button social plugin. This button uses
@@ -30,8 +36,7 @@ var Signin = React.createClass({
 
     // <fb:login-button scope="public_profile,email" onlogin="checkLoginState();">
     // </fb:login-button>
-    console.log('rendering fblogin button');
-    return _FacebookLoginButton;
+    return <button className='facebook-button' onClick={this._handleSignin}>Sign In</button>;
   }
 });
 

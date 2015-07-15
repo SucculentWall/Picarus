@@ -14,8 +14,7 @@ module.exports = {
     var data = {};
 
     new User({
-        // username: data.username
-        username: 'BOB'
+        username: data.username
       })
       .fetch()
       .then(function (found) {
