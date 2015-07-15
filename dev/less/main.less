@@ -89,9 +89,17 @@ body {
 input {
   height: 2em;
 }
-
+form {
+  width: 100%;
+}
 .request-input {
-  width: 22em;
+  float: left;
+  margin: 0 3%;
+  width: 70%;
+}
+
+.request-submit {
+  width: 20%;
 }
 
 .requestphoto {
@@ -103,8 +111,8 @@ input {
   background: @purple;
   color: @white;
   .bordered;
-  padding: 1em;
-  margin: 1em;
+  padding: 0.5em;
+  margin: 0.5em;
   .req-title {
     font-size: 2em;
   }
@@ -112,9 +120,27 @@ input {
 
 .request {
   li {
+    width: 100%;
     .bordered;
     padding: 1em;
-    margin: 1em;
+    margin-bottom: 1em;
+  }
+  .comment {
+    background: @grey;
+    padding: 0;
+    margin-bottom: 0.5em;
+    .bordered;
+    .photo-comment {
+      background: @white;
+      padding: 0.5em;
+      display: block;
+      .bordered;
+    }
+    .comment-username {
+      padding: 0.2em;
+      display: block;
+      text-align: right;
+    }
   }
   .comment-input {
     width: 80%;
@@ -123,7 +149,6 @@ input {
   .comment-submit {
     width: 20%;
   }
-  // color: #fff;
   .bordered;
 }
 
