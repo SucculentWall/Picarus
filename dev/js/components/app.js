@@ -31,7 +31,6 @@ var routes = (
   <Route handler={App}>
     <Route name="requests" path="/requests/:requestId" handler={Request}/>
     <Route name="gallery" path="/" handler={Gallery} />
-    <Route name="signin" path="/signin" handler={Signin} />
   </Route>
 );
 

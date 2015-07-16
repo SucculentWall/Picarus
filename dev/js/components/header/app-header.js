@@ -12,7 +12,6 @@ var Header = React.createClass({
   _handleLogout: function() {
     FB.logout(function() {
       checkLoginState();
-      location.hash = '/';
     });
   },
 
