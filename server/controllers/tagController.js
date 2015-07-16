@@ -1,4 +1,5 @@
 var Tag = require('../db/models/tag');
+var Tags = require('../db/collections/tags');
 var Promise = require('bluebird');
 
 module.exports = {
@@ -19,6 +20,16 @@ module.exports = {
       })
       .catch(reject);
     }); // close Promise   
+  },
+
+  getAllTags: function (req, res, next) {
+    Tags.reset()
+      .fetch({
+        withRelated: ['requests', 'photos'] 
+      })
+      .then(function (tags) {
+        res.send(tags);
+      });
   },
 
   getInfoForTag: function(req, res, next){

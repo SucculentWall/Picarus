@@ -13,6 +13,17 @@ module.exports = {
       });
   },
 
+  getAllTags: function() {
+    console.log('dbUtils firing getAllTags()');
+    axios.get('/api/tags')
+      .then(function(response) {
+        AppActions.receiveTags(response);
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
+  },
+
   getRequest:function (id) {
     axios.get('/api/requests/'+id)
       .then(function(response) {
@@ -89,7 +100,17 @@ module.exports = {
   getAllPhotos: function() {
     axios.get('/api/photos')
       .then(function(response) {
-        AppActions.receiveAllPhotos(response);      
+        AppActions.receivePhotos(response.data);      
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
+  },
+
+  getPhotosForTag: function(tagName) {
+    axios.get('/api/tags/'+tagName)
+      .then(function(response) {
+        AppActions.receivePhotos(response.data.photos);      
       })
       .catch(function(error) {
         console.log(error);

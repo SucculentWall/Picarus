@@ -42,7 +42,7 @@ var Request = React.createClass({
   },
 
   _onChange: function () {
-    console.log('change triggered on requestStore');
+    console.log('change triggered: firing _onChange in app-request');
     this.setState(getData());
   },
   // componentDidUpdate: function(){
