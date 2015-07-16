@@ -12,6 +12,7 @@ var Router = require('react-router');
 var Route = Router.Route;
 var Link = Router.Link;
 
+require('events').EventEmitter.defaultMaxListeners = 0;
 
 
 var RouteHandler = Router.RouteHandler;
