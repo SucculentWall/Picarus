@@ -46,7 +46,10 @@ table {
   border-collapse: collapse;
   border-spacing: 0;
 }
-/*   CSS RESET END    */
+///////////////////////////////////////////
+//                COLORS                 //
+///////////////////////////////////////////
+
 @purple : #523A54;
 @black : #000;
 @blue : #4F7CAC;
@@ -54,6 +57,10 @@ table {
 @darkgrey : #36382E;
 @offwhite: #FFFBFE;
 @white: #FFF;
+
+///////////////////////////////////////////
+//             BODY STYLING              //
+///////////////////////////////////////////
 
 body {
   font-family: "Lato", sans-serif;
@@ -108,19 +115,30 @@ form {
   // max-height: 100%;
 }
 
-/*Request Page styling*/
+///////////////////////////////////////////
+//          REQUEST PAGE STYLING         //
+///////////////////////////////////////////
 .req-header {
   background: @purple;
   color: @white;
   .bordered;
-  padding: 0.5em;
-  margin: 0.5em;
+  // padding: 0.5em;
+  // margin: 0.5em;
   .req-title {
+    border: 1px solid @white;
+    border-radius: 5px;
     font-size: 2em;
+    padding: 0.5em;
+    margin: 0.5em;
+  }
+  .req-username {
+    float:right;
+    padding-right: 0.5em;
   }
 }
 
 .request {
+  padding: 1em;
   li {
     width: 100%;
     .bordered;
@@ -151,10 +169,17 @@ form {
   .comment-submit {
     width: 20%;
   }
+  .photo-description {
+    width: 80%;
+    margin-right: 2%; 
+    float: left;
+  }
   .bordered;
 }
 
-/* Feed styling */ 
+///////////////////////////////////////////
+//             FEED STYLING              //
+///////////////////////////////////////////
 .photo-username {
   color: @purple;
   float: right;
@@ -177,7 +202,7 @@ form {
     }
     color: @offwhite;
     background: @darkgrey;
-    padding: 1em;
+    padding: 5%;
     list-style-type: none;
     .bordered;
     margin: 0.5em;
@@ -230,8 +255,8 @@ form {
   }
 }
 
-////////////////////////////////////////////
-// GALLERY STYLING
+///////////////////////////////////////////
+//           GALLERY STYLING             //
 ///////////////////////////////////////////
 img.galleryphoto {
   height: 150px;
@@ -251,4 +276,30 @@ a.header-tag {
 .modal.fade .modal-dialog {
     -webkit-transform: translate3d(0, 0, 0);
     transform: translate3d(0, 0, 0);
+}
+
+///////////////////////////////////////////
+//            SUBMIT STYLING             //
+///////////////////////////////////////////
+
+.submission {
+  background-color: @blue;
+  border-radius: 5px;
+  color: @white;
+  text-align: center;
+  &:hover {
+    background-color: @grey;
+    color: @blue;
+  }
+}
+#preview {
+  width: 25%;
+}
+///////////////////////////////////////////
+//       COMMENTS SLIDER STYLING         //
+///////////////////////////////////////////
+
+.comment-slider {
+  color: @purple;
+  cursor: pointer;
 }

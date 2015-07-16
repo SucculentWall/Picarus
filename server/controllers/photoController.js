@@ -49,6 +49,7 @@ module.exports = {
                 filename: data.filename,
                 filetype: data.filetype,
                 username: data.username,
+                description: data.description,
                 user_id: found.id,
                 request_id: parseInt(data.request_id, 10) // assume this is how front-end passes it
               })

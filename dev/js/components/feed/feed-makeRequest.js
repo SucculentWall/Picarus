@@ -25,7 +25,7 @@ var MakeRequest = React.createClass({
     return (
       <form className="req-form" onSubmit={this._onSubmit}>
         <input className="request-input" ref="text" type="text" placeholder="Make a request" />
-        <input className="request-submit" type="submit" />
+        <input className="request-submit submission" type="submit" />
       </form>
     );
   }
