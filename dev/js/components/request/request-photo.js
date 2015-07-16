@@ -13,6 +13,7 @@ var currUserId = AuthStore.getId();
 
 var getPhotoComments = function(id){
   // also needs a property for likes
+  // console.log("likes: ", this.props.data, this.props.data.likes);
   return {photoComments: RequestStore.getComment(id)};
 };
 
@@ -23,6 +24,10 @@ var Photo = React.createClass({
     stateObj.loggedIn = AuthStore.loggedIn();
     stateObj.showCommentEntry = false;
     stateObj.showModal = false;
+    // hold likes as well
+    stateObj.likes = this.props.data.likes;
+    // hold 'unlicked' className to toggle on click
+    stateObj.unclicked = true;
     return stateObj;
   },
 
@@ -34,10 +39,14 @@ var Photo = React.createClass({
     this.setState({ showModal: true });
   },
 
-  _onClick: function () {
-    console.log('_onClick, what is this: ', this);
+  _openComments: function () {
+    console.log('_openComments, what is this: ', this);
     AppActions.loadComments(this.props.data.id);
     this.setState({showCommentEntry: !this.state.showCommentEntry});
+  },
+
+  _likeOrUnlike: function() {
+    this.setState({unclicked: !this.state.unclicked});
   },
 
   _onChange: function () {
@@ -69,7 +78,7 @@ var Photo = React.createClass({
     photoComments.push(loggedInSign);
     comments = (
       <div>
-        <span className="comment-slider" onClick={this._onClick}>Comments</span>
+        <span className="comment-slider" onClick={this._openComments}>Comments</span>
         <ul>
           { this.state.showCommentEntry ? {photoComments} : null}
         </ul>
@@ -91,6 +100,10 @@ var Photo = React.createClass({
           <Modal.Footer>
             <span className='modal-description'>{this.props.data.description}</span>
             <a href={'/photos/' + this.props.data.filename} target='_blank'>Full image</a>
+            <div className='likes'>
+              <span> {this.state.likes} likes </span>
+              <div className='glyphicon glyphicon-heart unclicked'></div>
+            </div>
             {comments}
           </Modal.Footer>
         </Modal>
@@ -100,6 +113,11 @@ var Photo = React.createClass({
         </div>
         <span className="description">{this.props.data.description}</span>
         <span className='photo-username'>Submitted by: {this.props.data.username}</span>
+        {/* can change color with CSS */}
+        <div className='likes'>
+          <span> {this.state.likes} likes </span>
+          <div className = {this.state.unclicked ? 'glyphicon glyphicon-heart unclicked' : 'glyphicon glyphicon-heart'} onClick={this._likeOrUnlike}></div>
+        </div>
         {comments}
       </li>
     );
