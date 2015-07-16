@@ -57,6 +57,7 @@ var Gallery = React.createClass({
     var photos = [];
     var list = this.state.photos;
     var count = 0;
+
     for (var key in list) {
       photos.push(<GalleryPhoto key={key} count={count} data={list[key]} />);
       count++;

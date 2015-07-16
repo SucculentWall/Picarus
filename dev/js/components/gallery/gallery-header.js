@@ -6,13 +6,9 @@ var GalleryHeader = React.createClass({
     var headerTags = [];
     var tags = this.props.data;
 
-    for (var i=0; i<tags.length; i++) {
+    //show max of 5 tags
+    for (var i=0; ((i<tags.length) && (i<4)); i++) {
       headerTags.push(<GalleryHeaderTag data={tags[i]} />);
-
-      //max 5 tags
-      if (i > 4) {
-        break;
-      }
     }
 
     return (
