@@ -5,32 +5,50 @@ var GalleryPhoto = require("./gallery-photo");
 var GalleryHeader = require("./gallery-header");
 var AuthStore = require("../../stores/app-authStore");
 
-var getPhotos = function(){
+var getPhotosAndTags = function(){
   // TODO: retrieve photo requests from server
-  return {photos: GalleryStore.getAllPhotos()};
+  return {photos: GalleryStore.getAllPhotos(),
+          tags: GalleryStore.getAllTags()
+          };
 };
 
 var Gallery = React.createClass({
   getInitialState: function(){
-    return getPhotos();
+    return getPhotosAndTags();
   },
 
   statics: {
     willTransitionTo: function(transition, params, element) {
       console.log('will transition to app-gallery');
-      AppActions.getAllPhotos();
+      if (params.tagName) {
+        console.log('get photos for tag: ', params.tagName);
+        AppActions.getPhotosForTag(params.tagName);
+        AppActions.getAllTags();
+      } else {
+        console.log('get all photos');
+        AppActions.getAllPhotos();
+        AppActions.getAllTags();
+      }
     }
   },
 
   _onChange: function () {
-    console.log('change triggered');
-    this.setState(getPhotos());
+    console.log('change triggered: firing _onChange in app-gallery');
+    this.setState(getPhotosAndTags());
   },
 
   componentDidMount: function() {
     console.log('mounted gallery');
     GalleryStore.addChangeListener(this._onChange);
-    AppActions.getAllPhotos();
+    if (this.props.params.tagName) {
+      console.log('get photos for tag: ', this.props.params.tagName);
+      AppActions.getPhotosForTag(this.props.params.tagName);
+      AppActions.getAllTags();
+    } else {
+      console.log('get all photos');
+      AppActions.getAllPhotos();
+      AppActions.getAllTags();
+    }
   },
   componentWillUnmount: function() {
     GalleryStore.removeChangeListener(this._onChange);
@@ -43,9 +61,12 @@ var Gallery = React.createClass({
       photos.push(<GalleryPhoto key={key} count={count} data={list[key]} />);
       count++;
     }
+
+    console.log('Tags in app-gallery state: ', this.state.tags);
+
     return (
       <div className = "gallery col-xs-8">
-        <GalleryHeader />
+        <GalleryHeader data={this.state.tags}/>
         <div>
           {photos}
         </div>

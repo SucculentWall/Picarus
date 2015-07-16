@@ -31,7 +31,7 @@ var Feed = React.createClass({
   },
 
   _onChange: function () {
-    console.log('change triggered on feedStore');
+    console.log('change triggered: firing _onChange in app-feed');
     this.setState(getPhotoRequests());
   },
 

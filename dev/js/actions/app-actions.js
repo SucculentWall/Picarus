@@ -12,6 +12,11 @@ module.exports = {
     dbUtils.getAllRequests();
   },
 
+  getAllTags: function () {
+    dbUtils = require("../utils/database-utils");
+    dbUtils.getAllTags();
+  },
+
   addRequest: function(text, username, tags){
     dbUtils = require("../utils/database-utils");
     dbUtils.addRequest(text, username, tags);
@@ -25,6 +30,11 @@ module.exports = {
   getAllPhotos: function(id) {
     dbUtils = require("../utils/database-utils");
     dbUtils.getAllPhotos();
+  },
+
+  getPhotosForTag: function(tagName) {
+    dbUtils = require("../utils/database-utils");
+    dbUtils.getPhotosForTag(tagName);
   },
 
   addPhoto: function(photo, username, request_id, tags){
@@ -57,9 +67,16 @@ module.exports = {
     });
   },
 
-  receiveAllPhotos: function(data) {
+  receivePhotos: function(data) {
     AppDispatcher.dispatch({
       type: AppConstants.RECEIVE_PHOTOS,
+      data: data
+    });
+  },
+
+  receiveTags: function(data) {
+    AppDispatcher.dispatch({
+      type: AppConstants.RECEIVE_TAGS,
       data: data
     });
   },
