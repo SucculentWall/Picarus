@@ -60,6 +60,10 @@ module.exports = {
                   for (var i = 0; i < parsedTags.length; i++) {
                     tagController.findOrCreate(parsedTags[i])
                       .then(function (tag) {
+                        //increment the photos count for the tag
+                        tag.save({photos_count: tag.get('photos_count') + 1}, {patch: true})
+                          .then(function (model) {});
+
                         // put tag id and request id in join table
                         new PhotoTag({
                             photo_id: createdPhoto.id,

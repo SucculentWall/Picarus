@@ -24,9 +24,10 @@ module.exports = {
 
   getAllTags: function (req, res, next) {
     Tags.reset()
-      .fetch({
-        withRelated: ['requests', 'photos'] 
+      .query(function(qb){
+        qb.orderBy('photos_count','DESC'); 
       })
+      .fetch()
       .then(function (tags) {
         res.send(tags);
       });

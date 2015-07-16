@@ -79,6 +79,7 @@ db.knex.schema.hasTable('tags').then(function(exists) {
     db.knex.schema.createTable('tags', function(tag) {
       tag.increments('id').primary();
       tag.string('tagname', 60).unique();
+      tag.integer('photos_count', 11).defaultTo(0);
     }).then(function(table) {
       console.log('Created tags table');
     });
