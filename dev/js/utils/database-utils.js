@@ -126,5 +126,26 @@ module.exports = {
       .catch(function(error) {
         AppActions.notLoggedIn(error);
       });
+  },
+
+  likePhoto: function(photoId) {
+    axios.post('/api/photos/likes/'+photoId, {params: {photo_id: photoId, like: true}}) // this api request goes to photoRouter
+      .then(function(response) {  // this reponse AppActions to fire an action type
+        AppActions.receivePhotoLike(response);
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
+  },
+
+  unlikePhoto: function(photoId) {
+    axios.post('/api/photos/likes/'+photoId, {params: {photo_id: photoId, like: false}}) // this api request goes to photoRouter
+      .then(function(response) {  // this reponse AppActions to fire an action type
+        AppActions.receivePhotoLike(response);
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
   }
+
 };

@@ -42,6 +42,16 @@ module.exports = {
     dbUtils.addPhoto(photo, username, request_id, tags, description);
   },
 
+  likePhoto: function(id) {
+    dbUtils = require("../utils/database-utils");
+    dbUtils.likePhoto(id);
+  },
+
+  unlikePhoto: function(id) {
+    dbUtils = require("../utils/database-utils");
+    dbUtils.unlikePhoto(id);
+  },
+
   addComment: function(text, username, photo_id){
     dbUtils = require("../utils/database-utils");
     dbUtils.addComment(text, username, photo_id);
@@ -87,6 +97,14 @@ module.exports = {
       data: data
     });
   },
+
+  receivePhotoLike: function(data) {
+    AppDispatcher.dispatch({
+      type: AppConstants.LIKE_PHOTO,
+      data: data
+    });
+  },
+  // - also still need to consider sockets
 
   loggedIn: function(data, token) {
     AppDispatcher.dispatch({

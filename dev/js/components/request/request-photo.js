@@ -12,9 +12,11 @@ var photoComments;
 var currUserId = AuthStore.getId();
 
 var getPhotoComments = function(id){
-  // also needs a property for likes
-  // console.log("likes: ", this.props.data, this.props.data.likes);
   return {photoComments: RequestStore.getComment(id)};
+};
+
+var getPhotoLikes = function(id){
+  return RequestStore.getLikes();
 };
 
 var Photo = React.createClass({
@@ -27,7 +29,7 @@ var Photo = React.createClass({
     // hold likes as well
     stateObj.likes = this.props.data.likes;
     // hold 'unlicked' className to toggle on click
-    stateObj.unclicked = true;
+    stateObj.unclicked = true; // NOTE: this needs to be based on db truth (has this user liked this photo) join table time 
     return stateObj;
   },
 
@@ -47,6 +49,17 @@ var Photo = React.createClass({
 
   _likeOrUnlike: function() {
     this.setState({unclicked: !this.state.unclicked});
+    if (this.state.unclicked === true) {
+      // increment
+      AppActions.likePhoto(this.props.data.id);
+    } else {
+      // decrement
+      AppActions.unlikePhoto(this.props.data.id);
+    }
+  },
+
+  _onLikeOrUnlike: function() {
+    this.setState({likes: getPhotoLikes()})
   },
 
   _onChange: function () {

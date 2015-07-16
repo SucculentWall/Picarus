@@ -29,6 +29,12 @@ var _receiveNewComment = function(commentData) {
   _comments[commentData.photo_id].push(commentData);
 };
 
+var _receiveNewLike = function(likeData) {
+  console.log('this is data from the liking: ', likeData);
+  // _request[likeData.photo_id].push(likeData);
+  console.log('this is _request.photos: ',_request.photos);
+};
+
 var RequestStore = assign({},EventEmitter.prototype, {
   getAllComments: function() {
     return _comments;
@@ -40,6 +46,11 @@ var RequestStore = assign({},EventEmitter.prototype, {
 
   getPhotos: function() {
     return _request.photos;
+  },
+
+  getLikes: function(id) {
+    console.log('from requestStore getLikes: ', _request.photos[id].likes);
+    return _request.photos[id].likes;
   },
 
   getId: function () {
@@ -96,6 +107,11 @@ RequestStore.dispatchToken = AppDispatcher.register(function(action) {
     case AppConstants.UPDATE_COMMENT:
       _receiveNewComment(action.data);
       RequestStore.emitChange();        
+      break;
+
+    case AppConstants.LIKE_PHOTO:
+      _receiveNewLike(action.data);
+      RequestStore.emitChange();
       break;
 
     default:
