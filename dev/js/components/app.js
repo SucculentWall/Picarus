@@ -30,7 +30,7 @@ var App = React.createClass({
 var routes = (
   <Route handler={App}>
     <Route name="home" path="/" handler={Gallery} />
-    <Route name="tags" path="tags/:tagName" handler={Gallery} />
+    <Route name="tags" path="tags/:tagname" handler={Gallery} />
     <Route name="requests" path="/requests/:requestId" handler={Request}/>
   </Route>
 );

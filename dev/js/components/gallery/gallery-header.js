@@ -1,13 +1,13 @@
 var React = require("react");
+var GalleryHeaderTag = require("./gallery-headerTag");
 
-// dummy data, change when server hooked
 var GalleryHeader = React.createClass({
   render: function(){
     var headerTags = [];
     var tags = this.props.data;
 
     for (var i=0; i<tags.length; i++) {
-      headerTags.push(tags[i].tagname);
+      headerTags.push(<GalleryHeaderTag data={tags[i]} />);
 
       //max 5 tags
       if (i > 4) {

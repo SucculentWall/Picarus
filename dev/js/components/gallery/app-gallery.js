@@ -20,9 +20,9 @@ var Gallery = React.createClass({
   statics: {
     willTransitionTo: function(transition, params, element) {
       console.log('will transition to app-gallery');
-      if (params.tagName) {
-        console.log('get photos for tag: ', params.tagName);
-        AppActions.getPhotosForTag(params.tagName);
+      if (params.tagname) {
+        console.log('get photos for tag: ', params.tagname);
+        AppActions.getPhotosForTag(params.tagname);
         AppActions.getAllTags();
       } else {
         console.log('get all photos');
@@ -40,9 +40,9 @@ var Gallery = React.createClass({
   componentDidMount: function() {
     console.log('mounted gallery');
     GalleryStore.addChangeListener(this._onChange);
-    if (this.props.params.tagName) {
-      console.log('get photos for tag: ', this.props.params.tagName);
-      AppActions.getPhotosForTag(this.props.params.tagName);
+    if (this.props.params.tagname) {
+      console.log('get photos for tag: ', this.props.params.tagname);
+      AppActions.getPhotosForTag(this.props.params.tagname);
       AppActions.getAllTags();
     } else {
       console.log('get all photos');
@@ -61,9 +61,7 @@ var Gallery = React.createClass({
       photos.push(<GalleryPhoto key={key} count={count} data={list[key]} />);
       count++;
     }
-
-    console.log('Tags in app-gallery state: ', this.state.tags);
-
+    
     return (
       <div className = "gallery col-xs-8">
         <GalleryHeader data={this.state.tags}/>
