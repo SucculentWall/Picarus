@@ -8,12 +8,12 @@ var Request = React.createClass({
   // },
   render: function(){
     return (
+      <Link className = "req" to="requests" params={{requestId: this.props.data.id}} >
       <li className = "req">
-        <Link className = "req" to="requests" params={{requestId: this.props.data.id}} >
           <span className = "req">{this.props.data.text}</span>
           <span className = "req">{this.props.data.username}</span>
-        </Link>
       </li>
+      </Link>
     );
   }
 });
