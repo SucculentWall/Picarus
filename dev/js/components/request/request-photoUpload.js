@@ -19,9 +19,22 @@ var PhotoUpload = React.createClass({
     var tags = this.props.data.tags.map(function(tagObj){
       return tagObj.tagname;
     });
+    var description = React.findDOMNode(this.refs.description).value;
     
-    var description = React.findDOMNode(this.refs.file).value;
+    var text = React.findDOMNode(this.refs.description).value;
 
+    // checks for #thisIsHashtag
+    var tagRegEx = /\S*#(?:\[[^\]]+\]|\S+)/ig;
+    var extraTags = text.match(tagRegEx); // ['#barcelona, #sunset']
+    if (extraTags) {
+      var refinedTags = extraTags.map(function(tag){
+        // remove # from tag
+        // should store tags uniformly (eg #dogs and #Dogs should be the same tag)
+        return tag.substr(1).toLowerCase();
+      });
+    }
+
+    var tags = tags.concat(refinedTags);
 
     // action
     AppActions.addPhoto(photo, username, request_id, tags, description);

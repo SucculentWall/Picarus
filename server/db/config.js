@@ -5,7 +5,7 @@ var knex = require('knex')({
     user     : '',
     port    : 5432,
     password : '',
-    database : 'Picarus',
+    database : 'picarus',
     charset  : 'utf8'
   }
 });
