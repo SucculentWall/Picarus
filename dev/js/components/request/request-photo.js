@@ -84,6 +84,12 @@ var Photo = React.createClass({
         </ul>
       </div>
     );
+    likes = (
+      <div className='likes'>
+        <span> {this.state.likes} likes </span>
+        <div className = {this.state.unclicked ? 'glyphicon glyphicon-heart unclicked' : 'glyphicon glyphicon-heart'} onClick={this._likeOrUnlike}></div>
+      </div>
+    );
     return (
       <li className='photo'>
 
@@ -100,10 +106,7 @@ var Photo = React.createClass({
           <Modal.Footer>
             <span className='modal-description'>{this.props.data.description}</span>
             <a href={'/photos/' + this.props.data.filename} target='_blank'>Full image</a>
-            <div className='likes'>
-              <span> {this.state.likes} likes </span>
-              <div className='glyphicon glyphicon-heart unclicked'></div>
-            </div>
+            {likes}
             {comments}
           </Modal.Footer>
         </Modal>
@@ -113,11 +116,7 @@ var Photo = React.createClass({
         </div>
         <span className="description">{this.props.data.description}</span>
         <span className='photo-username'>Submitted by: {this.props.data.username}</span>
-        {/* can change color with CSS */}
-        <div className='likes'>
-          <span> {this.state.likes} likes </span>
-          <div className = {this.state.unclicked ? 'glyphicon glyphicon-heart unclicked' : 'glyphicon glyphicon-heart'} onClick={this._likeOrUnlike}></div>
-        </div>
+        {likes}
         {comments}
       </li>
     );
