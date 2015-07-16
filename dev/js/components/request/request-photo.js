@@ -87,7 +87,7 @@ var Photo = React.createClass({
           </Modal.Body>
           {/* Modal.Footer includes the comments */}
           <Modal.Footer>
-            <span>{this.props.data.description}</span>
+            <span className='modal-description'>{this.props.data.description}</span>
             <a href={'/photos/' + this.props.data.filename} target='_blank'>Full image</a>
             {comments}
           </Modal.Footer>
@@ -97,7 +97,7 @@ var Photo = React.createClass({
         <div>
           <img onClick={this.open} className='requestphoto' src={'/photos/' + this.props.data.filename} />
         </div>
-        <div>{this.props.data.description}</div>
+        <div className="description">{this.props.data.description}</div>
         {comments}
       </li>
     );
