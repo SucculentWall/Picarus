@@ -35,7 +35,7 @@ module.exports = {
   },
 
   addRequest: function(text, username, tags) {
-    var context = this;
+    // var context = this;
     axios.post('/api/requests', {
         text: text,
         username: username,
@@ -63,15 +63,15 @@ module.exports = {
   },
 
   addComment: function(text, username, photo_id) {
-    var context = this;
+    // var context = this;
     axios.post('/api/comments', {
         text: text,
         username: username,
         photo_id: photo_id
       })
       .then(function(response) {
-        context.getComments(photo_id);
-        console.log('new comment added');
+        // context.getComments(photo_id);
+        // console.log('new comment added');
       })
       .catch(function(error) {
         console.log(error);

@@ -12,6 +12,7 @@ var photoComments;
 var currUserId = AuthStore.getId();
 
 var getPhotoComments = function(id){
+  // also needs a property for likes
   return {photoComments: RequestStore.getComment(id)};
 };
 
@@ -22,8 +23,6 @@ var Photo = React.createClass({
     stateObj.loggedIn = AuthStore.loggedIn();
     stateObj.showCommentEntry = false;
     stateObj.showModal = false;
-    // needs a property for likes
-    stateObj.likes = 0;
     return stateObj;
   },
 

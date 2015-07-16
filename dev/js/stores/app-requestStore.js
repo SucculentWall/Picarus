@@ -78,6 +78,7 @@ RequestStore.dispatchToken = AppDispatcher.register(function(action) {
       RequestStore.emitChange();
       break;
 
+    // when a new picture is added
     case AppConstants.UPDATE_REQUEST:
       if (RequestStore.getId() === action.data.request_id){
         _receivePhoto(action.data);
