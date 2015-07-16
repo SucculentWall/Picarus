@@ -100,6 +100,7 @@ var GalleryPhoto = React.createClass({
           </Modal.Body>
           {/* Modal.Footer includes the comments */}
           <Modal.Footer>
+          <span className='modal-description'>{this.props.data.description}</span>
             <a href={'/photos/' + this.props.data.filename} target='_blank'>Full image</a>
             {comments}
           </Modal.Footer>
