@@ -3,6 +3,7 @@ var AppActions = require('../../actions/app-actions');
 var RequestStore = require('../../stores/app-requestStore');
 var PhotoComment = require('./request-photoComment');
 var MakeComment = require('./request-makeComment');
+var Auth = require('../app-auth');
 var AuthStore = require('../../stores/app-authStore');
 // require specific react-bootstrap component
 var Modal = require('react-bootstrap').Modal;
@@ -62,12 +63,13 @@ var Photo = React.createClass({
     for (var key in this.state.photoComments) {
       photoComments.push(<PhotoComment key={key} data={this.state.photoComments[key]} />);
     }
+    var loggedInSign = this.state.loggedIn ? <MakeComment data={this.props.data}/> : <span><Auth/> to comment</span>;
+    photoComments.push(loggedInSign);
     comments = (
       <div>
         <p onClick={this._onClick}>Comments</p>
         <ul>
           { this.state.showCommentEntry ? {photoComments} : null}
-          { this.state.showCommentEntry && this.state.loggedIn ? <MakeComment data={this.props.data}/> : null }
         </ul>
       </div>
     );

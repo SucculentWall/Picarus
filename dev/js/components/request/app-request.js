@@ -75,7 +75,7 @@ var Request = React.createClass({
         <ul>
           {photosList}
         </ul>
-        { this.state.loggedIn ? <PhotoUpload data={this.state} /> : <Auth/> }
+        { this.state.loggedIn ? <PhotoUpload data={this.state} /> : <span><Auth/> to upload photos</span> }
       </div>
     );
   }
