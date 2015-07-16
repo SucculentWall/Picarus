@@ -7,8 +7,10 @@ var GalleryHeader = React.createClass({
     var tags = this.props.data;
 
     //show max of 5 tags
-    for (var i=0; ((i<tags.length) && (i<4)); i++) {
-      headerTags.push(<GalleryHeaderTag data={tags[i]} />);
+    for (var i=0; ((i<tags.length) && (i<5)); i++) {
+      if (tags[i].tagname) {
+        headerTags.push(<GalleryHeaderTag data={tags[i]} />);
+      }
     }
 
     return (

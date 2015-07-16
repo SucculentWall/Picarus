@@ -83,7 +83,7 @@ var Photo = React.createClass({
             <Modal.Title modalClassName='modal-title'>Submitted by: {this.props.data.username}</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <img className = 'requestphoto' src={'/photos/' + this.props.data.filename} />
+            <img className='request-photo' src={'/photos/' + this.props.data.filename} />
           </Modal.Body>
           {/* Modal.Footer includes the comments */}
           <Modal.Footer>
@@ -93,11 +93,11 @@ var Photo = React.createClass({
           </Modal.Footer>
         </Modal>
 
-        <span className = 'photo-username'>Submitted by: {this.props.data.username}</span>
-        <div>
-          <img onClick={this.open} className='requestphoto' src={'/photos/' + this.props.data.filename} />
+        <div className='request-photo'>
+          <img onClick={this.open} className='request-photo' src={'/photos/' + this.props.data.filename} />
         </div>
-        <div className="description">{this.props.data.description}</div>
+        <span className="description">{this.props.data.description}</span>
+        <span className='photo-username'>Submitted by: {this.props.data.username}</span>
         {comments}
       </li>
     );
