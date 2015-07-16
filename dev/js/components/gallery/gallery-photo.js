@@ -80,7 +80,7 @@ var GalleryPhoto = React.createClass({
     }
     comments = (
       <div>
-        <p onClick={this._onClick}>Comments</p>
+        <span className="comment-slider" onClick={this._onClick}>Comments</span>
         <ul>
           { this.state.showCommentEntry ? {photoComments} : null}
           { this.state.showCommentEntry && this.state.loggedIn ? <MakeComment data={this.props.data}/> : null }

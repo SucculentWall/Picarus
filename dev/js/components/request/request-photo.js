@@ -67,7 +67,7 @@ var Photo = React.createClass({
     photoComments.push(loggedInSign);
     comments = (
       <div>
-        <p onClick={this._onClick}>Comments</p>
+        <span className="comment-slider" onClick={this._onClick}>Comments</span>
         <ul>
           { this.state.showCommentEntry ? {photoComments} : null}
         </ul>
@@ -87,6 +87,7 @@ var Photo = React.createClass({
           </Modal.Body>
           {/* Modal.Footer includes the comments */}
           <Modal.Footer>
+            <span>{this.props.data.description}</span>
             <a href={'/photos/' + this.props.data.filename} target='_blank'>Full image</a>
             {comments}
           </Modal.Footer>
@@ -96,6 +97,7 @@ var Photo = React.createClass({
         <div>
           <img onClick={this.open} className='requestphoto' src={'/photos/' + this.props.data.filename} />
         </div>
+        <div>{this.props.data.description}</div>
         {comments}
       </li>
     );

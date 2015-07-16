@@ -37,9 +37,9 @@ module.exports = {
     dbUtils.getPhotosForTag(tagName);
   },
 
-  addPhoto: function(photo, username, request_id, tags){
+  addPhoto: function(photo, username, request_id, tags, description){
     dbUtils = require("../utils/database-utils");
-    dbUtils.addPhoto(photo, username, request_id, tags);
+    dbUtils.addPhoto(photo, username, request_id, tags, description);
   },
 
   addComment: function(text, username, photo_id){

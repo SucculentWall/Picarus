@@ -48,6 +48,7 @@ db.knex.schema.hasTable('photos').then(function(exists) {
       photo.string('filename', 100);
       photo.string('filetype', 100);
       photo.string('username', 100);
+      photo.string('description', 100);
       photo.integer('karma', 11).defaultTo(0);
       photo.integer('user_id').unsigned();
       photo.integer('request_id').unsigned();

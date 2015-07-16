@@ -18,7 +18,7 @@ var MakeComment = React.createClass({
     return (
       <form className="req-form" onSubmit={this._onSubmit}>
         <input className="comment-input" ref="text" type="text" placeholder="Add your comment" />
-        <input className="comment-submit" type="submit" />
+        <input className="comment-submit submission" type="submit" />
       </form>
     );
   }
