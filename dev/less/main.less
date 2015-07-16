@@ -3,86 +3,19 @@
    License: none (public domain)
 */
 
-html,
-body,
-div,
-span,
-applet,
-object,
-iframe,
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-p,
-blockquote,
-pre,
-a,
-abbr,
-acronym,
-address,
-big,
-cite,
-code,
-del,
-dfn,
-em,
-ins,
-kbd,
-q,
-s,
-samp,
-small,
-strike,
-strong,
-sub,
-sup,
-tt,
-var,
-b,
-u,
-i,
-center,
-dl,
-dt,
-dd,
-ol,
-ul,
-li,
-fieldset,
-form,
-label,
-legend,
-table,
-caption,
-tbody,
-tfoot,
-thead,
-tr,
-th,
-td,
-article,
-aside,
-canvas,
-details,
-embed,
-figure,
-figcaption,
-footer,
-header,
-hgroup,
-menu,
-nav,
-output,
-ruby,
-section,
-summary,
-time,
-mark,
-audio,
-video {
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
   margin: 0;
   padding: 0;
   border: 0;
@@ -91,56 +24,37 @@ video {
   vertical-align: baseline;
 }
 /* HTML5 display-role reset for older browsers */
-
-article,
-aside,
-details,
-figcaption,
-figure,
-footer,
-header,
-hgroup,
-menu,
-nav,
-section {
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
   display: block;
 }
-
 body {
   line-height: 1;
 }
-
-ol,
-ul {
+ol, ul {
   list-style: none;
 }
-
-blockquote,
-q {
+blockquote, q {
   quotes: none;
 }
-
-blockquote:before,
-blockquote:after,
-q:before,
-q:after {
+blockquote:before, blockquote:after,
+q:before, q:after {
   content: '';
   content: none;
 }
-
 table {
   border-collapse: collapse;
   border-spacing: 0;
 }
 /*   CSS RESET END    */
-
-@purple: #523A54;
-@black: #000;
-@blue: #4F7CAC;
-@grey: #DADAD9;
-@darkgrey: #36382E;
+@purple : #523A54;
+@black : #000;
+@blue : #4F7CAC;
+@grey : #DADAD9;
+@darkgrey : #36382E;
 @offwhite: #FFFBFE;
 @white: #FFF;
+
 body {
   font-family: "Lato", sans-serif;
 }
@@ -149,7 +63,6 @@ body {
   border: 1px solid @grey;
   border-radius: 5px;
 }
-
 .darkbordered {
   border: 1px solid #000;
 }
@@ -160,7 +73,6 @@ body {
   text-decoration: none;
   color: #fff;
 }
-
 .nav {
   padding: 10px;
   background: @darkgrey;
@@ -173,17 +85,14 @@ body {
   text-decoration: none;
   color: #fff;
   font-size: 1em;
-  cursor: pointer;
 }
 
 input {
   height: 2em;
 }
-
 form {
   width: 100%;
 }
-
 .request-input {
   float: left;
   margin: 0 3%;
@@ -198,8 +107,8 @@ form {
   max-width: 100%;
   // max-height: 100%;
 }
-/*Request Page styling*/
 
+/*Request Page styling*/
 .req-header {
   background: @purple;
   color: @white;
@@ -244,13 +153,12 @@ form {
   }
   .bordered;
 }
-/* Feed styling */
 
+/* Feed styling */ 
 .photo-username {
   color: @purple;
   float: right;
 }
-
 .req {
   text-decoration: none;
   color: @grey;
@@ -258,7 +166,6 @@ form {
     color: @darkgrey;
   }
 }
-
 .feed {
   padding: 5px;
   .bordered;
@@ -275,14 +182,14 @@ form {
     .bordered;
     margin: 0.5em;
   }
+
 }
 
 .modal-title {
-  font-size: 1em;
+  font-size: 1em;  
 }
 
-.modal-header,
-.modal-footer {
+.modal-header, .modal-footer {
   padding: 5px 10px;
   border: none;
 }
