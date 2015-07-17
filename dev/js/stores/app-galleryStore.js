@@ -5,7 +5,8 @@ var EventEmitter = require('events').EventEmitter;
 
 //  all or most recent photo requests
 var _photoList = {};
-var _tagsList = [];
+var _requestList = {};
+var _tagList = [];
 
 var _receivePhotos = function(photos) {
   _photoList = {};
@@ -14,9 +15,16 @@ var _receivePhotos = function(photos) {
   }
 };
 
+var _receiveSearchRequests = function(requests) {
+  _requestList = {};
+  for (var i = 0; i < requests.length; i++) {
+    _requestList[requests[i].id] = requests[i];
+  }
+};
+
 var _receiveTags = function(tagsArray) {
-  _tagsList = tagsArray;
-}
+  _tagList = tagsArray;
+};
 
 var GalleryStore = assign({},EventEmitter.prototype, {
 
@@ -25,7 +33,11 @@ var GalleryStore = assign({},EventEmitter.prototype, {
   },
 
   getAllTags: function() {
-    return _tagsList;
+    return _tagList;
+  },
+
+  getAllRequests: function() {
+    return _requestList;
   },
 
   getPhoto: function (id) {
@@ -51,6 +63,11 @@ GalleryStore.dispatchToken = AppDispatcher.register(function(action) {
 
     case AppConstants.RECEIVE_PHOTOS:
       _receivePhotos(action.data);
+      GalleryStore.emitChange();
+      break;
+
+    case AppConstants.RECEIVE_SEARCH_REQUESTS:
+      _receiveSearchRequests(action.data);
       GalleryStore.emitChange();
       break;
 

@@ -42,7 +42,7 @@ var Header = React.createClass({
         <Link to='/'><span id='logo'>Picarus</span></Link>
         <form className="search-form" onSubmit={this._onSubmit}>
           <input className="search-bar" ref="text" type="text" placeholder="Search for photos" />
-          <input className="search-submit submission" type="submit" />
+          <i className='glyphicon glyphicon-search search-submit' onClick={this._onSubmit}></i>
         </form>
         { AuthStore.getUsername() ? <Link to={'/user/' + AuthStore.getId()} paramstwo={{user_id: 3}} className='sign'>Hello, {AuthStore.getUsername()}! </Link> : null }
         <Link to='/' className='sign'>Gallery</Link>

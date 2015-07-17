@@ -116,8 +116,17 @@ module.exports = {
   getPhotosForSearch: function(query) {
     axios.get('api/search/'+query)
       .then(function(response) {
-        console.log(response.data);
-        AppActions.receivePhotos(response.data);
+        AppActions.receivePhotos(response.data.photos);
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
+  },
+
+  getRequestsForSearch: function(query) {
+    axios.get('api/search/'+query)
+      .then(function(response) {
+        AppActions.receiveSearchRequests(response.data.requests);
       })
       .catch(function(error) {
         console.log(error);

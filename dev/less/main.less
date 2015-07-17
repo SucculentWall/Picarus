@@ -256,7 +256,6 @@ div.request-photo {
     .bordered;
     margin: 0.5em;
   }
-
 }
 
 .modal-title {
@@ -317,6 +316,31 @@ img.galleryphoto {
 a.header-tag {
   margin: 0 5px;
 }
+.header-tag {
+  cursor: pointer;
+  padding: 5px;
+  text-align: center;
+  &.active {
+    background: @purple;
+    color: @white;
+  }
+}
+
+.gallery {
+  padding: 5px;
+  li {
+    &:hover {
+      background: @bg-light;
+      color: @hl-primary;
+    }
+    color: @fg-dark;
+    background: @bg-mid;
+    padding: 3% 3% 3% 3%;
+    list-style-type: none;
+    border-radius: 5px;
+    margin-top: 4%;
+  }
+}
 
 .filterbar {
   padding: 5px;
@@ -349,6 +373,14 @@ a.header-tag {
 }
 .search-bar {
   color: @black;
+}
+
+.search-submit {
+  border-left:1px solid @darkgrey;
+  padding: 8px;
+  background: white;
+  color: @darkgrey;
+  cursor: pointer;
 }
 #preview {
   width: 25%;
