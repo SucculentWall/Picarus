@@ -29,7 +29,7 @@ var GalleryStore = assign({},EventEmitter.prototype, {
   },
 
   getPhoto: function (id) {
-    return _photoList(id);
+    return _photoList[id];
   },
 
   emitChange: function() {
