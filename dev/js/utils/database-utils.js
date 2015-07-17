@@ -118,6 +118,17 @@ module.exports = {
       });
   },
 
+  getPhotosForSearch: function(query) {
+    axios.get('api/search/'+query)
+      .then(function(response) {
+        console.log(response.data);
+        AppActions.receivePhotos(response.data);
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
+  },
+
   findOrCreateUser: function(id, name, token) {
     axios.post('/api/users', {FacebookId: id, username: name })
       .then(function(response) {

@@ -17,6 +17,7 @@ var requestRouter = require('./routes/requestRouter');
 var photoRouter = require('./routes/photoRouter');
 var tagRouter = require('./routes/tagRouter');
 var commentRouter = require('./routes/commentRouter');
+var searchRouter = require('./routes/searchRouter');
 
 io.on('connection', function (socket) {
   console.log('connected');
@@ -40,6 +41,7 @@ app.use('/api/requests', requestRouter);
 app.use('/api/photos', photoRouter);
 app.use('/api/tags', tagRouter);
 app.use('/api/comments', commentRouter);
+app.use('/api/search', searchRouter);
 
 
 // listen on port
