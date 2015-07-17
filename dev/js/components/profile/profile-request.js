@@ -10,7 +10,7 @@ var ProfileRequest = React.createClass({
       var formattedDate = new Date(this.props.data.created_at).toLocaleString();
       return (
         <div>
-          {formattedDate}  <Link to="requests" params={{requestId: this.props.data.id}} >{this.props.data.text}</Link>
+          {formattedDate}  <Link to='requests' params={{requestId: this.props.data.id}} className='recent'>{this.props.data.text}</Link>
         </div>
       );
     }
