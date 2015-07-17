@@ -2,6 +2,7 @@ var User = require('../db/models/user');
 var Photo = require('../db/models/photo');
 var Photos = require('../db/collections/photos');
 var PhotoTag = require('../db/models/photoTag');
+var UserLikedPhoto = require('../db/models/userLikedPhoto');
 
 var tagController = require('./tagController');
 
@@ -121,9 +122,34 @@ module.exports = {
       })
       .fetch()
       .then(function (photo) {
+        console.log('all the data on photo: ', photo);
         photo.save({likes: photo.get('likes')+liked}, {patch: true})
         .then(function(updatedPhoto){
-          res.send(updatedPhoto);
+          // fetch 
+          new UserLikedPhoto({
+            user_id: updatedPhoto.get('user_id'),
+            photo_id: photo_id
+          })
+          .fetch()
+          .then(function(found){
+            // if found, means it was already liked
+            if (found){
+              // can only be unliked (deleted)
+              found.destroy()
+              .then(function(destroyed){
+                console.log('unliked! remove from join table');
+              })
+            } else {
+              new UserLikedPhoto({
+                user_id: updatedPhoto.get('user_id'),
+                photo_id: photo_id
+              })
+              .save()
+              .then(function(createdRelationship){
+                res.send(createdRelationship);
+              });
+            }
+          });
         });
       });
       // create entry in users_likes_photo join table
