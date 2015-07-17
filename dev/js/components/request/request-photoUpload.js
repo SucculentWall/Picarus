@@ -34,7 +34,7 @@ var PhotoUpload = React.createClass({
       });
       tags = tags.concat(refinedTags);
     }
-    
+
     // action
     AppActions.addPhoto(photo, username, request_id, tags, description);
     // clear file value
