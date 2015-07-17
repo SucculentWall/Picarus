@@ -35,7 +35,7 @@ var routes = (
     <Route name="search" path="search/:query" handler={Gallery} />
     <Route name='tags' path='tags/:tagname' handler={Gallery} />
     <Route name='user' path='/user/:user_id' handler={Profile} />
-    <Route name='requests' path='/requests/:requestId' handler={SelectedRequest}/>
+    <Route name='requests' path='/requests/:requestId' handler={SelectedRequest} />
   </Route>
 );
 
