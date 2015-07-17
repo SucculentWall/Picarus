@@ -20,6 +20,7 @@ var PhotoUpload = React.createClass({
       return tagObj.tagname;
     });
     var description = React.findDOMNode(this.refs.description).value;
+    console.log(description);
     
     var text = React.findDOMNode(this.refs.description).value;
 
