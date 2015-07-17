@@ -34,7 +34,7 @@ var PhotoUpload = React.createClass({
       });
       tags = tags.concat(refinedTags);
     }
-    console.log('profileUpload._onSubmit data', photo);
+    
     // action
     AppActions.addPhoto(photo, username, request_id, tags, description);
     // clear file value
