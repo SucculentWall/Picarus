@@ -32,10 +32,9 @@ var PhotoUpload = React.createClass({
         // should store tags uniformly (eg #dogs and #Dogs should be the same tag)
         return tag.substr(1).toLowerCase();
       });
+      tags = tags.concat(refinedTags);
     }
 
-    var tags = tags.concat(refinedTags);
-    
     // action
     AppActions.addPhoto(photo, username, request_id, tags, description);
     // clear file value
