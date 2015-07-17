@@ -41,7 +41,7 @@ var ProfileAvatar = React.createClass({
     var self = this;
     var reader = new FileReader();
     reader.onload = function(e) {
-      preview = <span class='preview'>Preview: <img id='preview' src={e.target.result}/></span>;
+      preview = <div class='preview'><p>Preview:</p><img id='preview' src={e.target.result}/></div>;
       self.setState({preview: true});
     };
 
@@ -67,15 +67,12 @@ var ProfileAvatar = React.createClass({
           <Modal.Header closeButton>
             <Modal.Title modalClassName='modal-title'>Change Avatar</Modal.Title>
           </Modal.Header>
-          <Modal.Body>
-            <form onSubmit={this._onSubmit} encType='multipart/form-data'>
+          <Modal.Footer>
+            <form className='avatar-form' onSubmit={this._onSubmit} encType='multipart/form-data'>
               {this.state.preview ? preview :null}
               <input ref='file' type='file' onChange={this._handleFile} required />
               <input type='submit' value='Change Avatar' />
             </form>
-          </Modal.Body>
-          <Modal.Footer>
-            <p>TODO: Upload avatar to database, image restrictions, cropping, etc</p>
           </Modal.Footer>
         </Modal>
         <img className='avatar' onClick={this.open} src={'../photos/avatars/'+avatarPath}/>

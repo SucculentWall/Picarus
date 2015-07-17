@@ -85,15 +85,15 @@ var Profile = React.createClass({
         <h2 className='prof-cat'>Karma: {this.state.karma}</h2>
         <div>
           <h2 className='prof-cat'>Recent Requests: </h2>
-          {profileRequests}
+            {profileRequests}
         </div>
         <div>
           <h2 className='prof-cat'>Recent Comments: </h2>
-          {profileComments}
+            {profileComments}
         </div>
         <div>
           <h2 className='prof-cat'>Uploaded Photos: </h2>
-          {profilePhotos}
+            {profilePhotos}
         </div>
       </div>
     );

@@ -1,54 +1,31 @@
 var React = require('react');
-var GalleryStore = require('../../stores/app-galleryStore');
-var RequestStore = require('../../stores/app-requestStore');
-var Modal = require('react-bootstrap').Modal;
+// var GalleryStore = require('../../stores/app-galleryStore');
 var Link = require('react-router').Link;
 
-var getPhotoComments = function(id){
-  return {photoComments: RequestStore.getComment(id)};
-};
+var ProfileComment = React.createClass({ 
+  // getInitialState: function(){
+  //   return {
+  //     request_id: null
+  //   };
+  // },
 
+  // _getPhoto: function(){
+  //     // console.log('GalleryStore request_id ',request_id);
+  //     // location.hash = '/requests/'+request_id;
+  // },
 
-var ProfileComment = React.createClass({
-  getInitialState: function () {
-    var photo_id = this.props.data.photo_id;
-    return {
-      photo: GalleryStore.getPhoto(photo_id),
-      showModal: false
-      // photoComments: RequestStore.getComment(photo_id),
-    };
-  },
-  
-  close: function (){
-    this.setState({ showModal: false });
-  },
-
-  open: function (){
-    this.setState({ showModal: true });
-  },
+  // componentDidMount: function() {
+  //   this.state.request_id = GalleryStore.getPhoto(this.props.data.photo_id).request_id;
+  // },
 
   render: function(){
+    // console.log('profile comment data ',this.props.data);
     if (!this.props.data) return (<div></div>);
     else  {
       var formattedDate = new Date(this.props.data.created_at).toLocaleString();
-      // {comments}
-
-      // using Modal gives context Mixin errors
-
-      // <Modal show={this.state.showModal} onHide={this.close} dialogClassName='modalcontent'>
-      //   <Modal.Header closeButton>
-      //     <Modal.Title modalClassName='modal-title'>See <Link to={'/requests/' + this.state.photo.request_id}>Request</Link></Modal.Title>
-      //   </Modal.Header>
-      //   <Modal.Body>
-      //     <img className = 'requestphoto' src={'/photos/' + this.state.photo.filename} />
-      //   </Modal.Body>
-      //   <Modal.Footer>
-      //     <a href={'/photos/' + this.state.photo.filename} target='_blank'>Full image</a>
-      //   </Modal.Footer>
-      // </Modal>
       return (
         <div>
-          {formattedDate}  <Link to={'/requests/' + this.state.photo.request_id} className="comment recent">{this.props.data.text}</Link>
+          {formattedDate} <span className='comment recent'>{this.props.data.text}</span>
         </div>
       );
     }
