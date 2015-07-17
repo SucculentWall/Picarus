@@ -10,56 +10,69 @@ var _user;
 var _receiveProfileInfo = function(data) {
   _user = data;
 };
-// var _receiveRequest = function(data) {
-//   // console.log('requestStore received request data: ', data);
-//   _request = data;
-// };
 
-// var _receivePhoto = function(photoData) {
-//   // console.log('requestStore received photo data: ', photoData);
-//   _request.photos.push(photoData);
-// };
+var _receiveRequest = function(requestData) {
+  _user.requests.push(requestData);
+};
 
-// var _receiveComments = function(photoData) {
-//   // console.log('received photo data: ', photoData);
-//   _comments[photoData.data.id] = photoData.data.comments;
-// };
+var _receivePhoto = function(photoData) {
+  _user.photos.push(photoData);
+};
 
-// var _receiveNewComment = function(commentData) {
-//   _comments[commentData.photo_id].push(commentData);
-// };
+var _receiveComment = function(commentData) {
+  _user.comments.push(commentData);
+};
 
 var UserStore = assign({},EventEmitter.prototype, {
-  getProfileInfo: function() {
-    return _user;
+  getUserId: function() {
+    return _user.id;
   },
-  // getAllComments: function() {
-  //   return _comments;
-  // },
 
-  // getComment: function(photoId) {
-  //   return _comments[photoId];
-  // },
+  getFacebookId: function() {
+    return _user.FacebookId;
+  },
 
-  // getPhotos: function() {
-  //   return _request.photos;
-  // },
+  getUsername: function() {
+    return _user.username;
+  },
 
-  // getId: function () {
-  //   return _request.id;
-  // },
+  getJoinDate: function() {
+    return _user.created_at;
+  },
 
-  // getUsername: function () {
-  //   return _request.user.username;
-  // },
+  getUserKarma: function() {
+    return _user.karma;
+  },
 
-  // getTags: function () {
-  //   return _request.tags; // [{tagname: 'dogs'}, {}, {} ]
-  // },
+  getRecentUserRequests: function(recent) {
+    var recentUserRequests = [];
+    if (!_user.requests) return [];
+    for (var i = _user.requests.length-1; i >= 0 && i >= _user.requests.length-recent; i--) {
+      recentUserRequests.push(_user.requests[i]);
+    }
+    return recentUserRequests;
+  },
 
-  // getText: function () {
-  //   return _request.text;
-  // },
+  getRecentUserComments: function(recent) {
+    var recentUserComments = [];
+    if (!_user.comments) return [];
+    for (var i = _user.comments.length-1; i >= 0 && i >= _user.comments.length-recent; i--) {
+      recentUserComments.push(_user.comments[i]);
+    }
+    return recentUserComments;
+  },
+
+  getUserPhotos: function() {
+    return _user.photos;
+  },
+
+  getAllUserRequests: function() {
+    return _user.requests;
+  },
+
+  getAllUserComments: function() {
+    return _user.comments;
+  },
 
   emitChange: function() {
     this.emit('change');
@@ -78,41 +91,36 @@ UserStore.dispatchToken = AppDispatcher.register(function(action) {
   
   switch(action.type) {
 
-    // case AppConstants.UPDATE_FEED:
-    //   UserStore.emitChange();
-    //   break;
-
     case AppConstants.RECEIVE_PROFILE_INFO:
       _receiveProfileInfo(action.data);
       UserStore.emitChange();
       break;
 
-    // case AppConstants.RECEIVE_COMMENTS:
-    //   _receiveProfileInfo(action.data);
-    //   UserStore.emitChange();
-    //   break;
+    // New requests
+    case AppConstants.UPDATE_FEED:
+      if(_user && UserStore.getUserId() === action.data.user_id) {
+        _receiveRequest(action.data);
+        UserStore.emitChange();
+      }
+      break;
 
+    // New comments
+    case AppConstants.UPDATE_COMMENT:
+      console.log('UPDATE_COMMENT action.data: ', action.data);
+      if (_user && UserStore.getUserId() === action.data.user_id){
+      _receiveComment(action.data);
+      UserStore.emitChange();
+      }
+      break;
 
-    // case AppConstants.UPDATE_REQUEST:
-    //   if (UserStore.getId() === action.data.request_id){
-    //     _receivePhoto(action.data);
-    //     UserStore.emitChange();        
-    //   }
-    //   break;
-
-    // case AppConstants.RECEIVE_COMMENTS:
-    //   _receiveComments(action.data);
-    //   UserStore.emitChange();        
-    //   break;
-
-    // case AppConstants.UPDATE_COMMENT:
-    //   console.log('detecting change');
-    //   console.log('here are comments: ', _comments);
-    //   // ^-- not updating for the other end of socket
-    //   console.log('this is action.data: ', action.data);
-    //   _receiveNewComment(action.data);
-    //   UserStore.emitChange();        
-    //   break;
+    // New photos
+    case AppConstants.UPDATE_REQUEST:
+      console.log(action.data);
+      if (_user && UserStore.getUserId() === action.data.user_id){
+        _receivePhoto(action.data);
+        UserStore.emitChange();        
+      }
+      break;
 
     default:
   }
