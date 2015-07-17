@@ -61,11 +61,6 @@ module.exports = {
     dbUtils = require("../utils/database-utils");
     dbUtils.unlikePhoto(id);
   },
-  
-  addPhoto: function(photo, username, request_id, tags){
-    dbUtils = require('../utils/database-utils');
-    dbUtils.addPhoto(photo, username, request_id, tags);
-  },
 
   addComment: function(text, username, photo_id){
     dbUtils = require('../utils/database-utils');
