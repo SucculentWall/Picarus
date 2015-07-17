@@ -141,19 +141,6 @@ db.knex.schema.hasTable('users_liked_photos').then(function(exists) {
   }
 });
 
-
-db.knex.schema.hasTable('users_liked_photos').then(function(exists) {
-  if (!exists) {
-    db.knex.schema.createTable('users_liked_photos', function(user_liked_photo) {
-      user_liked_photo.increments('id').primary();
-      user_liked_photo.integer('user_id');
-      user_liked_photo.integer('photo_id');
-    }).then(function(table) {
-      console.log('Created user_liked_photo table');
-    });
-  }
-});
-
 // create users_liked_requests join table
 
 
