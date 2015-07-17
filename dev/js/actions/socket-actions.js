@@ -4,6 +4,7 @@ var AppConstants = require('../constants/app-constants');
 var socket = io();
 
 socket.on('updateAvatar', function(data){
+  console.log('SOCKET DATA', data);
   AppDispatcher.dispatch({
     type: AppConstants.UPDATE_AVATAR,
     data: data

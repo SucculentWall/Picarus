@@ -104,6 +104,7 @@ UserStore.dispatchToken = AppDispatcher.register(function(action) {
       break;
 
     case AppConstants.UPDATE_AVATAR:
+      console.log('UPDATE AVATAR', action.data);
       _receiveAvatar(action.data);
       UserStore.emitChange();
       break;

@@ -6,15 +6,14 @@ var path = require('path');
 var bodyParser = require('body-parser');
 var morgan = require('morgan');
 var app = express();
-var User = require('./controllers/userController');
 // socket.io
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 module.exports = io;
 // routes
-var userRouter = require('./routes/userRouter');
 var requestRouter = require('./routes/requestRouter');
 var photoRouter = require('./routes/photoRouter');
+var userRouter = require('./routes/userRouter');
 var tagRouter = require('./routes/tagRouter');
 var commentRouter = require('./routes/commentRouter');
 var searchRouter = require('./routes/searchRouter');
@@ -39,7 +38,6 @@ app.use('/photos', express.static(path.join(__dirname, '../photos')));
 app.use('/api/users', userRouter);
 app.use('/api/requests', requestRouter);
 app.use('/api/photos', photoRouter);
-app.use('/api/photos/avatars', userRouter);
 app.use('/api/tags', tagRouter);
 app.use('/api/comments', commentRouter);
 app.use('/api/search', searchRouter);

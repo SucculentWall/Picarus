@@ -9,7 +9,6 @@ var ProfileAvatar = React.createClass({
       photo: null,
       showModal: false,
       preview: null,
-      defaultPath: 'defaultAvatar.png'
     };
   },
 
@@ -22,6 +21,10 @@ var ProfileAvatar = React.createClass({
     if (this.props.data.user_id === AuthStore.getId()) {
      this.setState({ showModal: true });
     }
+  },
+
+  componentDidMount: function (){
+    
   },
 
   _onSubmit: function(e){
@@ -57,10 +60,10 @@ var ProfileAvatar = React.createClass({
 
   render: function(){
     var avatarNote = (<div></div>);
+    console.log(this.props.data.user_id, AuthStore.getId());
     if (this.props.data && this.props.data.user_id === AuthStore.getId()) {
       var avatarNote = (<p>Click avatar to edit</p>);
     }
-    var avatarPath = this.props.data.avatar || this.state.defaultPath;
     return (
       <div>
         <Modal show={this.state.showModal} onHide={this.close}>
@@ -75,7 +78,7 @@ var ProfileAvatar = React.createClass({
             </form>
           </Modal.Footer>
         </Modal>
-        <img className='avatar' onClick={this.open} src={'../photos/avatars/'+avatarPath}/>
+        <img className='avatar' onClick={this.open} src={'img/'+this.props.data.avatar}/>
         {avatarNote}
       </div>
     );

@@ -128,50 +128,5 @@ module.exports = {
       });
       // create entry in users_likes_photo join table
 // increment the karma of the photo's OWNER <- handled by trigger
-  },
-
-  addAvatar: function(req, res, next) {
-
-    var data = {};
-
-    var busboy = new Busboy({
-      headers: req.headers
-    });
-
-    // fieldnames are the keys passed in with form data (eg with postman)
-    busboy.on('field', function (fieldname, val, fieldnameTruncated, valTruncated) {
-      data[fieldname] = val;
-    });
-
-    busboy.on('file', function (fieldname, filestream, filename, encoding, mimetype) {
-      data.filename = utils.makeid(10) + '_' + filename; // random alphanum string + icarus.jpg
-      data.filetype = filename.split('.').pop();
-      var output = fs.createWriteStream('photos/avatars/' + data.filename);
-      filestream.pipe(output);
-    });
-
-    busboy.on('finish', function () {
-      new User({
-          id: data.user_id
-        })
-        .fetch()
-        .then(function (found) {
-          if (!found) {
-            res.send('User not found');
-          } else {
-            found
-              .set('avatar', data.filename)
-              .save()
-              .then(function (created) {
-                console.log(created);
-                io.emit('updateAvatar', data.filename);
-              });
-            res.send('avatar added');
-          }
-        });
-    });
-
-    req.pipe(busboy);
-
   }
 }

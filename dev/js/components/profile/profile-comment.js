@@ -1,5 +1,5 @@
 var React = require('react');
-// var GalleryStore = require('../../stores/app-galleryStore');
+var GalleryStore = require('../../stores/app-galleryStore');
 var Link = require('react-router').Link;
 
 var ProfileComment = React.createClass({ 
@@ -15,20 +15,18 @@ var ProfileComment = React.createClass({
   // },
 
   // componentDidMount: function() {
-  //   this.state.request_id = GalleryStore.getPhoto(this.props.data.photo_id).request_id;
   // },
 
   render: function(){
-    // console.log('profile comment data ',this.props.data);
     if (!this.props.data) return (<div></div>);
-    else  {
-      var formattedDate = new Date(this.props.data.created_at).toLocaleString();
-      return (
-        <div>
-          {formattedDate} <span className='comment recent'>{this.props.data.text}</span>
-        </div>
-      );
-    }
+    var photo_data = GalleryStore.getPhoto(this.props.data.photo_id);
+    console.log('Photo Data', photo_data);
+    var formattedDate = new Date(this.props.data.created_at).toLocaleString();
+    return (
+      <div>
+        {formattedDate} <span className='comment recent'>{this.props.data.text}</span>
+      </div>
+    );
   }
 });
 

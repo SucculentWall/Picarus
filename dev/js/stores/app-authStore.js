@@ -25,6 +25,7 @@ var AuthStore = assign({},EventEmitter.prototype, {
   },
 
   getId: function() {
+    console.log('AUTHSTORE USER',_user);
     return _user.id;
   },
 

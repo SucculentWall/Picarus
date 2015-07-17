@@ -177,7 +177,7 @@ module.exports = {
     var data = new FormData();
     data.append('photo', photo);
     data.append('user_id', user_id);
-    axios.post('/api/photos/avatars', data)
+    axios.post('/api/users/avatars', data)
       .then(function(response) {
       })
       .catch(function(error) {
