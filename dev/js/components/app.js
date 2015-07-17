@@ -3,6 +3,7 @@ var Feed = require('./feed/app-feed');
 var Gallery = require('./gallery/app-gallery');
 var Header = require('./header/app-header');
 var SelectedRequest = require('./request/app-request');
+var Profile = require('./profile/app-profile');
 var Signin = require('./signin/app-signin');
 var Template = require('./app-template');
 var dbUtils = require('../utils/database-utils');
@@ -32,13 +33,14 @@ var routes = (
   <Route handler={App}>
     <Route name="home" path="/" handler={Gallery} />
     <Route name="search" path="search/:query" handler={Gallery} />
-    <Route name="tags" path="tags/:tagname" handler={Gallery} />
-    <Route name="requests" path="/requests/:requestId" handler={SelectedRequest}/>
-  </Route>
+    <Route name='tags' path='tags/:tagname' handler={Gallery} />
+    <Route name='user' path='/user/:user_id' handler={Profile} />
+    <Route name='requests' path='/requests/:requestId' handler={SelectedRequest}/>
+
 );
 
 module.exports = function(){
   Router.run(routes, Router.HashLocation, function(App) {
-    React.render(<App />, document.getElementById("main"));
+    React.render(<App />, document.getElementById('main'));
   });
 };

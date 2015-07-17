@@ -21,7 +21,6 @@ var Feed = React.createClass({
 
   statics: {
     willTransitionTo: function(transition, params, element) {
-      console.log('will transition to app-feed');
       AppActions.getAllRequests();
     }
   },
@@ -31,12 +30,10 @@ var Feed = React.createClass({
   },
 
   _onChange: function () {
-    console.log('change triggered: firing _onChange in app-feed');
     this.setState(getPhotoRequests());
   },
 
   componentDidMount: function() {
-    console.log('mounted feed');
     FeedStore.addChangeListener(this._onChange);
     AuthStore.addChangeListener(this._onLog);
     AppActions.getAllRequests();

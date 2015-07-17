@@ -17,7 +17,6 @@ var Auth = React.createClass({
   },
 
   componentDidMount: function() {
-    console.log('mounted');
     AuthStore.addChangeListener(this._onLog);
   },
 

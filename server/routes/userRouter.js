@@ -2,7 +2,7 @@ var express = require('express');
 var userController = require('../controllers/userController');
 var router = express.Router();
 
-router.get('/:username', function(req, res, next){
+router.get('/:id', function(req, res, next){
   userController.getInfoForUser(req, res, next);
 });
 
