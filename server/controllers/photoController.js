@@ -57,12 +57,14 @@ module.exports = {
               .then(function (createdPhoto) {
                 // assume that tags are also passed in
                 var parsedTags = JSON.parse(data.tags);
+                console.log('Parsed tags for photo: ', parsedTags);
                 if (parsedTags) {
                   for (var i = 0; i < parsedTags.length; i++) {
                     tagController.findOrCreate(parsedTags[i])
                       .then(function (tag) {
                         //increment the photos count for the tag
-                        tag.save({photos_count: tag.get('photos_count') + 1}, {patch: true})
+                        // console.log('getting photo count for ', tag.get('tagname'), ': ', tag.get('photos_count'));
+                        tag.save({photos_count: (tag.get('photos_count') || 0) + 1}, {patch: true})
                           .then(function (model) {});
 
                         // put tag id and request id in join table
@@ -72,11 +74,11 @@ module.exports = {
                           })
                           .save()
                           .then(function (PhotoTag) {});
-                      })
-                  }
-                }
+                      }) // tagController.findOrCreate.then
+                  } // for i < parsedTags.length
+                } // if parsedTags
                 io.emit('updateRequest', createdPhoto);
-              });
+              }); // new Photo.save.then
             res.send('photo added');
           }
         });
