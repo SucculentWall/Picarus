@@ -32,7 +32,6 @@ app.use(bodyParser.urlencoded({
 app.use(morgan('dev'));
 // for serving /dist files at URL/
 app.use(express.static(path.join(__dirname, '../dist')));
-
 app.use('/photos', express.static(path.join(__dirname, '../photos')));
 
 // routing

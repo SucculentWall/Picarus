@@ -3,8 +3,8 @@ var React = require("react");
 var ProfileHeader = React.createClass({
   render: function(){
     return (
-      <div>
-        <h1>{this.props.data.username}</h1>
+      <div className='prof-header'>
+        <h1 className='prof-name'>{this.props.data.username}</h1>
       </div>
     );
   }

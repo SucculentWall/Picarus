@@ -10,30 +10,29 @@ var ProfilePhoto = require('./profile-photo');
 var Auth = require('../app-auth');
 
 var getData = function(){
-  var ProfileInfo = UserStore.getProfileInfo();
   return {
-    FacebookId: ProfileInfo.FacebookId,
-    joinDate: ProfileInfo.created_at,
-    user_id: ProfileInfo.id,
-    karma: ProfileInfo.karma,
-    photos: ProfileInfo.photos,
-    comments: ProfileInfo.comments,
-    requests: ProfileInfo.requests,
-    username: ProfileInfo.username
+    user_id: UserStore.getUserId(),
+    FacebookId: UserStore.getFacebookId(),
+    username: UserStore.getUsername(),
+    joinDate: UserStore.getJoinDate(),
+    karma: UserStore.getUserKarma(),
+    requests: UserStore.getRecentUserRequests(5),
+    comments: UserStore.getRecentUserComments(5),
+    photos: UserStore.getUserPhotos()
   };
 };
 
 var Profile = React.createClass({
   getInitialState: function(){
     return {
-      FacebookId: '',
-      joinDate: '',
       user_id: '',
+      FacebookId: '',
+      username: '',
+      joinDate: '',
       karma: 0,
-      photos:[],
-      comments:[],
       requests: [],
-      username: ''
+      photos:[],
+      comments:[]
     };
   },
 
@@ -50,77 +49,48 @@ var Profile = React.createClass({
   _onChange: function () {
     this.setState(getData());
   },
-  // componentDidUpdate: function(){
-  //   console.log('did componentDidUpdate');
-  // },
-  // componentWillUpdate: function(){
-  //   console.log('will componentWillUpdate');
-  //   AppActions.pickRequest(this.props.params.requestId);
-  //   RequestStore.removeChangeListener(this._onChange);
-  // },
+
   componentDidMount: function() {
     var user_id = this.props.params.user_id;
     AppActions.getProfileInfo(user_id);
     UserStore.addChangeListener(this._onChange);
-    // AppActions.pickRequest(this.props.params.requestId);
   },
   componentWillUnmount: function() {
     UserStore.removeChangeListener(this._onChange);
   //   AuthStore.removeChangeListener(this._onLog);
   },
   render: function () {
-      // FB.api('/me', 
-      // {
-        // fields: 'id,name,picture'
-      // } 
-      // ,function (response) {
-      //   console.log(response);
-        // FB.api({
-        //     method: 'fql.query',
-        //     query: 'SELECT pid, src_big, src_big_height, src_big_width FROM photo WHERE aid IN ( SELECT aid FROM album WHERE owner="' + response.id + '" AND name = "Profile Pictures")'
-        //   },
-        //   function (data) {
-        //     console.log(data);
-        //   }
-        // );
-
-      // });
     var i;
-    var profilePhotos = [];
-    for (i = 0; i < this.state.photos.length; i++) {
-      profilePhotos.push(<ProfilePhoto count={i} data={this.state.photos[i]} />);
-    }
     var profileRequests = [];
-    for (i = this.state.requests.length; i >= this.state.requests.length-5; i--) {
-      profileRequests.push(<ProfileRequest data={this.state.requests[i]} />);
-    }
-
     var profileComments = [];
-    for (i = this.state.comments.length; i >= this.state.comments.length-5; i--) {
-      profileComments.push(<ProfileComment data={this.state.comments[i]} />);
+    var profilePhotos = [];
+    if (this.state.requests && this.state.comments && this.state.photos) {
+      for (i = 0; i < this.state.requests.length; i++) {
+        profileRequests.push(<ProfileRequest key={i} data={this.state.requests[i]} />);
+      }
+      for (i = 0; i < this.state.comments.length; i++) {
+        profileComments.push(<ProfileComment key={i} data={this.state.comments[i]} />);
+      }
+      for (i = this.state.photos.length-1; i >= 0; i--) {
+        profilePhotos.push(<ProfilePhoto key={i} count={i} data={this.state.photos[i]} />);
+      }
     }
 
-
-    // var photosList = [];
-    // var photos = this.state.photos;
-    // for (var i=0; i<photos.length; i++) {
-    //   photosList.push(<Photo key={i} data={photos[i]} />);
-    // }
     return (
       <div className = 'request col-xs-8 container'>
         <ProfileHeader data={this.state} />
-        <ProfileAvatar />
-        <p>Karma: {this.state.karma}</p>
+        <ProfileAvatar data={this.state} />
+        <h2 className='prof-cat'>Karma: {this.state.karma}</h2>
         <div>
-          <h2>Recent Requests</h2>
+          <h2 className='prof-cat'>Recent Requests: </h2>
           {profileRequests}
         </div>
         <div>
-          <h2>Recent Comments</h2>
+          <h2 className='prof-cat'>Recent Comments: </h2>
           {profileComments}
         </div>
         <div>
-          <h2>Uploaded Photos</h2>
+          <h2 className='prof-cat'>Uploaded Photos: </h2>
           {profilePhotos}
         </div>
       </div>

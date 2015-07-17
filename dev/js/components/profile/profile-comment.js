@@ -8,9 +8,15 @@ var ProfileComment = React.createClass({
   },
   render: function(){
     if (!this.props.data) return (<div></div>);
-    else return (
-      <p className = 'comment'>{this.props.data.photo_id}  {this.props.data.created_at}  {this.props.data.text}</p>
-    );
+    else  {
+      var photo_id = this.props.data.photo_id;
+      var formattedDate = new Date(this.props.data.created_at).toLocaleString();
+      return (
+        <div>
+          {formattedDate}  <span className="comment">{this.props.data.text}</span>
+        </div>
+      );
+    }
   }
 });
 
