@@ -23,11 +23,11 @@ module.exports = {
   },
 
   getInfoForUser: function(req, res, next) {
-    var username = req.params.username;
+    var id = req.params.id;
 
-    new User({username: username})
+    new User({id: id})
       .fetch({
-        withRelated: ['requests', 'photos']
+        withRelated: ['requests', 'photos', 'comments']
       })
       .then(function (found) {
         if (found) {

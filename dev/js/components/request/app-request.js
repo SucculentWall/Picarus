@@ -32,7 +32,6 @@ var SelectedRequest = React.createClass({
 
   statics: {
     willTransitionTo: function(transition, params, element) {
-      console.log('will transition to app-request');
       AppActions.pickRequest(params.requestId);
     }
   },
@@ -42,7 +41,6 @@ var SelectedRequest = React.createClass({
   },
 
   _onChange: function () {
-    console.log('change triggered: firing _onChange in app-request');
     this.setState(getData());
   },
   // componentDidUpdate: function(){
@@ -54,7 +52,6 @@ var SelectedRequest = React.createClass({
   //   RequestStore.removeChangeListener(this._onChange);
   // },
   componentDidMount: function() {
-    console.log('mounted app-request');
     RequestStore.addChangeListener(this._onChange);
     AuthStore.addChangeListener(this._onLog);
     AppActions.pickRequest(this.props.params.requestId);

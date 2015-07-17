@@ -14,7 +14,6 @@ module.exports = {
   },
 
   getAllTags: function() {
-    console.log('dbUtils firing getAllTags()');
     axios.get('/api/tags')
       .then(function(response) {
         AppActions.receiveTags(response);
@@ -41,11 +40,7 @@ module.exports = {
         username: username,
         tags: tags
       })
-      .then(function(response) {
-        // NOTE: no longer need to getAllRequests() since socket emitting
-        // context.getAllRequests();
-        console.log('new request added');
-      })
+      .then()
       .catch(function(error) {
         console.log(error);
       });
@@ -153,6 +148,15 @@ module.exports = {
     axios.post('/api/photos/likes/'+photoId, {params: {photo_id: photoId, like: false}}) // this api request goes to photoRouter
       .then(function(response) {  // this reponse AppActions to fire an action type
         AppActions.receivePhotoLike(response);
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
+  }, 
+  getProfileInfo: function(user_id) {
+    axios.get('/api/users/' + user_id)
+      .then(function(response){
+        AppActions.receiveProfileInfo(response.data);
       })
       .catch(function(error) {
         console.log(error);

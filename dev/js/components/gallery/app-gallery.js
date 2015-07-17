@@ -19,9 +19,7 @@ var Gallery = React.createClass({
 
   statics: {
     willTransitionTo: function(transition, params, element) {
-      console.log('will transition to app-gallery');
       if (params.tagname) {
-        console.log('get photos for tag: ', params.tagname);
         AppActions.getPhotosForTag(params.tagname);
         AppActions.getAllTags();
       } else if (params.query) {
@@ -29,7 +27,6 @@ var Gallery = React.createClass({
         AppActions.getPhotosForSearch(params.query);
         AppActions.getAllTags();
       } else {
-        console.log('get all photos');
         AppActions.getAllPhotos();
         AppActions.getAllTags();
       }
@@ -37,15 +34,12 @@ var Gallery = React.createClass({
   },
 
   _onChange: function () {
-    console.log('change triggered: firing _onChange in app-gallery');
     this.setState(getPhotosAndTags());
   },
 
   componentDidMount: function() {
-    console.log('mounted gallery');
     GalleryStore.addChangeListener(this._onChange);
     if (this.props.params.tagname) {
-      console.log('get photos for tag: ', this.props.params.tagname);
       AppActions.getPhotosForTag(this.props.params.tagname);
       AppActions.getAllTags();
     } else if (this.props.params.query) {
@@ -53,7 +47,6 @@ var Gallery = React.createClass({
       AppActions.getPhotosForSearch(this.props.params.query);
       AppActions.getAllTags();
     } else {
-      console.log('get all photos');
       AppActions.getAllPhotos();
       AppActions.getAllTags();
     }

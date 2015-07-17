@@ -44,7 +44,7 @@ var Header = React.createClass({
           <input className="search-bar" ref="text" type="text" placeholder="Search for photos" />
           <input className="search-submit submission" type="submit" />
         </form>
-        { AuthStore.getUsername() ? <span className='sign'>Hello, {AuthStore.getUsername()}! </span> : null }
+        { AuthStore.getUsername() ? <Link to={'/user/' + AuthStore.getId()} paramstwo={{user_id: 3}} className='sign'>Hello, {AuthStore.getUsername()}! </Link> : null }
         <Link to='/' className='sign'>Gallery</Link>
         { this.state.loggedIn ? <span className='sign' onClick={this._handleLogout}>Logout</span> : <Auth/> }
       </div>
