@@ -39,6 +39,7 @@ app.use('/photos', express.static(path.join(__dirname, '../photos')));
 app.use('/api/users', userRouter);
 app.use('/api/requests', requestRouter);
 app.use('/api/photos', photoRouter);
+app.use('/api/photos/avatars', userRouter);
 app.use('/api/tags', tagRouter);
 app.use('/api/comments', commentRouter);
 app.use('/api/search', searchRouter);

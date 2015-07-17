@@ -1,14 +1,15 @@
 var React = require('react');
 var AuthStore = require('../../stores/app-authStore');
 var Modal = require('react-bootstrap').Modal;
-var preview = null;
-
+var AppActions = require('../../actions/app-actions');
 
 var ProfileAvatar = React.createClass({
   getInitialState: function(){
     return { 
       photo: null,
-      showModal: false
+      showModal: false,
+      preview: null,
+      defaultPath: 'defaultAvatar.png'
     };
   },
 
@@ -27,13 +28,20 @@ var ProfileAvatar = React.createClass({
     e.preventDefault();
     // photo from state
     var photo = this.state.photo;
+    // user_id from data passed down
+    var user_id = this.props.data.user_id;
+    // action
+    AppActions.addAvatar(photo, user_id);
+    // clear file value
+    React.findDOMNode(this.refs.file).value = null;
+    this.setState({preview : null, showModal: false});
   },
 
   _handleFile: function(e){
     var self = this;
     var reader = new FileReader();
     reader.onload = function(e) {
-      preview = <span class="preview">Preview: <img id='preview' src={e.target.result}/></span>;
+      preview = <span class='preview'>Preview: <img id='preview' src={e.target.result}/></span>;
       self.setState({preview: true});
     };
 
@@ -52,6 +60,7 @@ var ProfileAvatar = React.createClass({
     if (this.props.data && this.props.data.user_id === AuthStore.getId()) {
       var avatarNote = (<p>Click avatar to edit</p>);
     }
+    var avatarPath = this.props.data.avatar || this.state.defaultPath;
     return (
       <div>
         <Modal show={this.state.showModal} onHide={this.close}>
@@ -59,17 +68,17 @@ var ProfileAvatar = React.createClass({
             <Modal.Title modalClassName='modal-title'>Change Avatar</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <form onSubmit={this._onSubmit} encType="multipart/form-data">
+            <form onSubmit={this._onSubmit} encType='multipart/form-data'>
               {this.state.preview ? preview :null}
-              <input ref="file" type="file" onChange={this._handleFile} required />
-              <input type="submit" value="Change Avatar" />
+              <input ref='file' type='file' onChange={this._handleFile} required />
+              <input type='submit' value='Change Avatar' />
             </form>
           </Modal.Body>
           <Modal.Footer>
             <p>TODO: Upload avatar to database, image restrictions, cropping, etc</p>
           </Modal.Footer>
         </Modal>
-        <img onClick={this.open} src='img/defaultAvatar.png'/>
+        <img className='avatar' onClick={this.open} src={'../photos/avatars/'+avatarPath}/>
         {avatarNote}
       </div>
     );

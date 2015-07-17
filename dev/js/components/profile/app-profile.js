@@ -18,7 +18,8 @@ var getData = function(){
     karma: UserStore.getUserKarma(),
     requests: UserStore.getRecentUserRequests(5),
     comments: UserStore.getRecentUserComments(5),
-    photos: UserStore.getUserPhotos()
+    photos: UserStore.getUserPhotos(),
+    avatar: UserStore.getAvatar()
   };
 };
 
@@ -31,8 +32,9 @@ var Profile = React.createClass({
       joinDate: '',
       karma: 0,
       requests: [],
+      comments:[],
       photos:[],
-      comments:[]
+      avatar: null
     };
   },
 

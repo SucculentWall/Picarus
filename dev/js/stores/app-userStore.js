@@ -3,7 +3,6 @@ var AppConstants = require('../constants/app-constants');
 var assign = require('react/lib/Object.assign');
 var EventEmitter = require('events').EventEmitter;
 
-
 //  user data
 var _user;
 
@@ -15,12 +14,16 @@ var _receiveRequest = function(requestData) {
   _user.requests.push(requestData);
 };
 
+var _receiveComment = function(commentData) {
+  _user.comments.push(commentData);
+};
+
 var _receivePhoto = function(photoData) {
   _user.photos.push(photoData);
 };
 
-var _receiveComment = function(commentData) {
-  _user.comments.push(commentData);
+var _receiveAvatar = function(avatarPath) {
+  _user.avatar = avatarPath;
 };
 
 var UserStore = assign({},EventEmitter.prototype, {
@@ -66,6 +69,10 @@ var UserStore = assign({},EventEmitter.prototype, {
     return _user.photos;
   },
 
+  getAvatar: function() {
+    return _user.avatar;
+  },
+
   getAllUserRequests: function() {
     return _user.requests;
   },
@@ -93,6 +100,11 @@ UserStore.dispatchToken = AppDispatcher.register(function(action) {
 
     case AppConstants.RECEIVE_PROFILE_INFO:
       _receiveProfileInfo(action.data);
+      UserStore.emitChange();
+      break;
+
+    case AppConstants.UPDATE_AVATAR:
+      _receiveAvatar(action.data);
       UserStore.emitChange();
       break;
 

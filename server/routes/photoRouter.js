@@ -18,4 +18,8 @@ router.post('/likes/:photo_id', function(req, res, next){
   photoController.handlePhotoLike(req, res, next);
 });
 
+router.post('/avatars/', function(req,res,next){
+  photoController.addAvatar(req, res, next);
+});
+
 module.exports = router;

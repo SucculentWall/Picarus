@@ -20,6 +20,7 @@ db.knex.schema.hasTable('users').then(function(exists) {
       user.string('FacebookId', 100).unique();
       user.string('username', 100);
       user.integer('karma', 11).defaultTo(0);
+      user.string('avatar', 100).defaultTo(null);
       user.timestamps();
     }).then(function(table) {
       console.log('Created users table');
