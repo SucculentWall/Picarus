@@ -1,4 +1,5 @@
 var React = require('react');
+
 var AppActions = require('../../actions/app-actions');
 var RequestStore = require('../../stores/app-requestStore');
 var PhotoComment = require('./request-photoComment');
@@ -98,10 +99,13 @@ var Photo = React.createClass({
         </ul>
       </div>
     );
+    heart = (
+      <div className = {this.state.unclicked ? 'glyphicon glyphicon-heart unclicked' : 'glyphicon glyphicon-heart'} onClick={this._likeOrUnlike}></div>
+    );
     likes = (
       <div className='likes'>
         <span> {this.state.likes} likes </span>
-        <div className = {this.state.unclicked ? 'glyphicon glyphicon-heart unclicked' : 'glyphicon glyphicon-heart'} onClick={this._likeOrUnlike}></div>
+        {this.state.loggedIn ? {heart} : null}
       </div>
     );
     return (
