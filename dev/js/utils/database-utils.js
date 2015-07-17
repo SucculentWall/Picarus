@@ -35,7 +35,7 @@ module.exports = {
   },
 
   addRequest: function(text, username, tags) {
-    var context = this;
+    // var context = this;
     axios.post('/api/requests', {
         text: text,
         username: username,
@@ -63,15 +63,15 @@ module.exports = {
   },
 
   addComment: function(text, username, photo_id) {
-    var context = this;
+    // var context = this;
     axios.post('/api/comments', {
         text: text,
         username: username,
         photo_id: photo_id
       })
       .then(function(response) {
-        context.getComments(photo_id);
-        console.log('new comment added');
+        // context.getComments(photo_id);
+        // console.log('new comment added');
       })
       .catch(function(error) {
         console.log(error);
@@ -126,5 +126,26 @@ module.exports = {
       .catch(function(error) {
         AppActions.notLoggedIn(error);
       });
+  },
+
+  likePhoto: function(photoId) {
+    axios.post('/api/photos/likes/'+photoId, {params: {photo_id: photoId, like: true}}) // this api request goes to photoRouter
+      .then(function(response) {  // this reponse AppActions to fire an action type
+        AppActions.receivePhotoLike(response);
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
+  },
+
+  unlikePhoto: function(photoId) {
+    axios.post('/api/photos/likes/'+photoId, {params: {photo_id: photoId, like: false}}) // this api request goes to photoRouter
+      .then(function(response) {  // this reponse AppActions to fire an action type
+        AppActions.receivePhotoLike(response);
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
   }
+
 };

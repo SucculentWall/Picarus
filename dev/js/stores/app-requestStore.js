@@ -3,18 +3,20 @@ var AppConstants = require("../constants/app-constants");
 var assign = require("react/lib/Object.assign");
 var EventEmitter = require('events').EventEmitter;
 
-
-//  all or most recent photo requests
+// the single request being shown on the page
 var _request = {};
+// the comments on the above single request
 var _comments = {};
 
 var _receiveRequest = function(data) {
-  // console.log('requestStore received request data: ', data);
+  console.log('requestStore received request data: ', data);
+  // each time you click a req from the feed, overwrite the previously focused req
   _request = data;
 };
 
 var _receivePhoto = function(photoData) {
-  // console.log('requestStore received photo data: ', photoData);
+  console.log('requestStore received photo data: ', photoData);
+  // _request.photos is an array of the photo objects on THIS request
   _request.photos.push(photoData);
 };
 
@@ -25,6 +27,12 @@ var _receiveComments = function(photoData) {
 
 var _receiveNewComment = function(commentData) {
   _comments[commentData.photo_id].push(commentData);
+};
+
+var _receiveNewLike = function(likeData) {
+  console.log('this is data from the liking: ', likeData);
+  // _request[likeData.photo_id].push(likeData);
+  console.log('this is _request.photos: ',_request.photos);
 };
 
 var RequestStore = assign({},EventEmitter.prototype, {
@@ -38,6 +46,11 @@ var RequestStore = assign({},EventEmitter.prototype, {
 
   getPhotos: function() {
     return _request.photos;
+  },
+
+  getLikes: function(id) {
+    console.log('from requestStore getLikes: ', _request.photos[id].likes);
+    return _request.photos[id].likes;
   },
 
   getId: function () {
@@ -72,12 +85,13 @@ var RequestStore = assign({},EventEmitter.prototype, {
 RequestStore.dispatchToken = AppDispatcher.register(function(action) {
   
   switch(action.type) {
-
+    // pickRequest in SelectedRequest View (on mount) -> getRequest ajax fn -> receiveRequest action type dispatch
     case AppConstants.RECEIVE_REQUEST:
       _receiveRequest(action.data.data);
       RequestStore.emitChange();
       break;
 
+    // when a new picture is added (photos are what update the single request page)
     case AppConstants.UPDATE_REQUEST:
       if (RequestStore.getId() === action.data.request_id){
         _receivePhoto(action.data);
@@ -91,12 +105,13 @@ RequestStore.dispatchToken = AppDispatcher.register(function(action) {
       break;
 
     case AppConstants.UPDATE_COMMENT:
-      console.log('detecting change');
-      console.log('here are comments: ', _comments);
-      // ^-- not updating for the other end of socket
-      console.log('this is action.data: ', action.data);
       _receiveNewComment(action.data);
       RequestStore.emitChange();        
+      break;
+
+    case AppConstants.LIKE_PHOTO:
+      _receiveNewLike(action.data);
+      RequestStore.emitChange();
       break;
 
     default:

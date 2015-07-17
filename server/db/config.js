@@ -32,7 +32,7 @@ db.knex.schema.hasTable('requests').then(function(exists) {
     db.knex.schema.createTable('requests', function (request) {
       request.increments('id').primary();
       request.string('text', 255);
-      request.integer('popularity', 100).defaultTo(0);
+      request.integer('likes', 11).defaultTo(0);
       request.integer('user_id').unsigned();
       request.timestamps();
     }).then(function(table) {
@@ -49,7 +49,7 @@ db.knex.schema.hasTable('photos').then(function(exists) {
       photo.string('filetype', 100);
       photo.string('username', 100);
       photo.string('description', 100);
-      photo.integer('karma', 11).defaultTo(0);
+      photo.integer('likes', 11).defaultTo(0);
       photo.integer('user_id').unsigned();
       photo.integer('request_id').unsigned();
       photo.timestamps();
@@ -65,7 +65,7 @@ db.knex.schema.hasTable('comments').then(function(exists) {
       comment.increments('id').primary();
       comment.string('text', 255);
       comment.string('username', 100);
-      comment.integer('karma', 11).defaultTo(0);
+      comment.integer('likes', 11).defaultTo(0);
       comment.integer('user_id').unsigned();
       comment.integer('photo_id').unsigned();
       comment.timestamps();
@@ -95,6 +95,23 @@ db.knex.schema.hasTable('photos_tags').then(function(exists) {
       photo_tag.integer('tag_id');
     }).then(function(table) {
       console.log('Created photos_tags table');
+
+      // db triggers on photo like
+      var trigFunc = "CREATE FUNCTION incer() RETURNS trigger AS $$ \nBEGIN \n UPDATE users SET karma = karma+1 WHERE id = NEW.user_id; \nRETURN NULL; \n END; \n $$ LANGUAGE plpgsql;";
+
+      db.knex.raw(trigFunc)
+      .then(function(response){
+        console.log('defined incer()');
+
+        // create trigger itself AFTER creating its function
+        var trigger = "CREATE TRIGGER bumpKarma AFTER UPDATE OF likes ON photos FOR EACH ROW EXECUTE PROCEDURE incer();";
+
+        db.knex.raw("CREATE TRIGGER bumpKarma AFTER UPDATE OF likes ON photos FOR EACH ROW EXECUTE PROCEDURE incer();")
+        .then(function(response){
+          console.log('defined bumpKarma trigger');
+        });
+      });
+
     });
   }
 });
@@ -106,10 +123,25 @@ db.knex.schema.hasTable('requests_tags').then(function(exists) {
       request_tag.integer('request_id');
       request_tag.integer('tag_id');
     }).then(function(table) {
-      console.log('Created requests table');
+      console.log('Created requests_tags table');
     });
   }
 });
+
+
+db.knex.schema.hasTable('users_liked_photos').then(function(exists) {
+  if (!exists) {
+    db.knex.schema.createTable('users_liked_photos', function(user_liked_photo) {
+      user_liked_photo.increments('id').primary();
+      user_liked_photo.integer('user_id');
+      user_liked_photo.integer('photo_id');
+    }).then(function(table) {
+      console.log('Created user_liked_photo table');
+    });
+  }
+});
+
+// create users_liked_requests join table
 
 
 

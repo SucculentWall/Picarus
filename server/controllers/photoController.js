@@ -107,6 +107,24 @@ module.exports = {
       .then(function (photo) {
         res.send(photo);
       });
-  }
+  },
 
+  handlePhotoLike: function(req, res, next) {
+    console.log('thes eare like params!: ',req.body.params);
+    var photo_id = req.params.photo_id;
+    var liked = req.body.params.like ? 1 : -1;
+    // increment likes in Photo table
+    new Photo({
+        id: photo_id
+      })
+      .fetch()
+      .then(function (photo) {
+        photo.save({likes: photo.get('likes')+liked}, {patch: true})
+        .then(function(updatedPhoto){
+          res.send(updatedPhoto);
+        })
+      });
+      // create entry in users_likes_photo join table
+// increment the karma of the photo's OWNER <- handled by trigger
+  }
 }

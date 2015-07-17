@@ -18,7 +18,7 @@ var getData = function(){
   };
 };
 
-var Request = React.createClass({
+var SelectedRequest = React.createClass({
   getInitialState: function(){
     return {
       id: '',
@@ -69,6 +69,7 @@ var Request = React.createClass({
     for (var i=0; i<photos.length; i++) {
       photosList.push(<Photo key={i} data={photos[i]} />);
     }
+    console.log('photos received from Request Store: ', photos);
     return (
       <div className = "request col-xs-8 container">
         <RequestHeader data={this.state} />
@@ -81,4 +82,4 @@ var Request = React.createClass({
   }
 });
 
-module.exports = Request;
+module.exports = SelectedRequest;

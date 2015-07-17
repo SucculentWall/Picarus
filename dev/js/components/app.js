@@ -2,7 +2,7 @@ var React = require('react');
 var Feed = require('./feed/app-feed');
 var Gallery = require('./gallery/app-gallery');
 var Header = require('./header/app-header');
-var Request = require('./request/app-request');
+var SelectedRequest = require('./request/app-request');
 var Signin = require('./signin/app-signin');
 var Template = require('./app-template');
 var dbUtils = require('../utils/database-utils');
@@ -32,7 +32,7 @@ var routes = (
   <Route handler={App}>
     <Route name="home" path="/" handler={Gallery} />
     <Route name="tags" path="tags/:tagname" handler={Gallery} />
-    <Route name="requests" path="/requests/:requestId" handler={Request}/>
+    <Route name="requests" path="/requests/:requestId" handler={SelectedRequest}/>
   </Route>
 );
 
