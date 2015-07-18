@@ -68,7 +68,7 @@ var ProfileAvatar = React.createClass({
             </form>
           </Modal.Footer>
         </Modal>
-        <img className='avatar' onClick={this.open} src={'img/'+this.props.data.avatar}/>
+        { this.props.data.avatar === null ? null : <img className='avatar' onClick={this.open} src={'img/'+this.props.data.avatar}/>}
         { this.props.data.authId === this.props.data.user_id ? <p>Click avatar to change</p> : null }
       </div>
     );
