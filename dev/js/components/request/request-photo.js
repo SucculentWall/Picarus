@@ -87,9 +87,10 @@ var Photo = React.createClass({
   // change callbacks
   _onLikeOrUnlike: function() {
     // AppActions.getPhotoLikes(currUserId, RequestStore.getPhotos());
-
-    this.setState({unclicked: checkLiked(this.props.data.id)});
-    this.setState({likes: getPhotoLikes(this.props.data.id)});
+    if (this.isMounted()){
+      this.setState({unclicked: checkLiked(this.props.data.id)});
+      this.setState({likes: getPhotoLikes(this.props.data.id)});
+    }
   },
 
   _onChange: function () {

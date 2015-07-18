@@ -51,7 +51,6 @@ var _receiveSearchRequests = function(requests) {
 };
 
 var _updatePhotoLikes = function(data) {
-  console.log('this is data passed to Gall: ', data);
   var likeOrUnlike = data.config.data.like; // true or false
   var photoId = data.data.id;
   // if was a like

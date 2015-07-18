@@ -10,6 +10,55 @@ var _user = {
   photos: []
 };
 
+// likes
+var _commentDisplay = {}; // photo_ids are keys
+var _modalDisplay = {}; // eg photo_id: true
+
+// whether or not the current user has already liked (photo_id : true)
+var _likeLog = {};
+
+var _toggleCommentDisplay = function(id) {
+  var display = _commentDisplay[id] || false; 
+  _commentDisplay[id] = !display;
+};
+
+var _toggleModal = function(id) {
+  var modal = _modalDisplay[id] || false;
+  _modalDisplay[id] = !modal;
+  // console.log('modal toggle display toggled FROM ', modal, ' TO ', _modalDisplay[id]);
+};
+
+var _receiveAllPhotoLikes = function(joinData) {
+  console.log('coming in join data: ', joinData);
+  // joinData is an array of objects
+  _likeLog = {};
+  for (var i = 0; i < joinData.length; i++) {
+    var obj = joinData[i];
+    _likeLog[obj.photo_id] = true; 
+  }
+  console.log('this is like_log: ', _likeLog);
+};
+
+var _updatePhotoLikes = function(data) {
+  var likeOrUnlike = data.config.data.like; // true or false
+  var photoId = data.data.id;
+  // if was a like
+  if (likeOrUnlike) {
+    // put in log
+    _likeLog[photoId] = true;
+  } else {
+    // remove from log
+    delete _likeLog[photoId];
+  }
+
+  // replace the photo stats
+  for (var i = 0; i < _user.photos.length; i++) {
+    var aPhoto = _user.photos[i];
+    console.log('user.photos: ', _.user.photos);
+  }
+};
+////////////
+
 var _receiveProfileInfo = function(data) {
   _user = data;
 };
@@ -122,6 +171,7 @@ UserStore.dispatchToken = AppDispatcher.register(function(action) {
 
     // New comments
     case AppConstants.UPDATE_COMMENT:
+      console.log('user.photos: ', _.user.photos);
       _receiveComment(action.data);
       UserStore.emitChange();
       break;
