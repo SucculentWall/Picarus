@@ -144,6 +144,7 @@ module.exports = {
   likePhoto: function(photoId) {
     axios.post('/api/photos/likes/'+photoId, {params: {photo_id: photoId, like: true}}) // this api request goes to photoRouter
       .then(function(response) {  // this reponse AppActions to fire an action type
+        console.log('response from sending a like to DB: ', response);
         AppActions.receivePhotoLike(response);
       })
       .catch(function(error) {
@@ -163,7 +164,7 @@ module.exports = {
 
   getProfileInfo: function(user_id) {
     axios.get('/api/users/' + user_id)
-      .then(function(response){
+      .then(function(response) {
         AppActions.receiveProfileInfo(response.data);
       })
       .catch(function(error) {
@@ -184,4 +185,14 @@ module.exports = {
       });
   },
 
+  getPhotoLikes: function(user_id, photo_id) {
+    axios.get('/api/photos/check')
+      .then(function(response) {
+        AppActions.receivePhotoLikesCheck(response);
+      })
+      .catch(function(error) {
+        // not found
+        console.log('not found?: ',error);
+      });
+  }
 };

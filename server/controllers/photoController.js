@@ -3,6 +3,7 @@ var Photo = require('../db/models/photo');
 var Photos = require('../db/collections/photos');
 var PhotoTag = require('../db/models/photoTag');
 var UserLikedPhoto = require('../db/models/userLikedPhoto');
+var UserLikedPhotos = require('../db/collections/userLikedPhotos');
 
 var tagController = require('./tagController');
 
@@ -51,6 +52,7 @@ module.exports = {
                 filetype: data.filetype,
                 username: data.username,
                 description: data.description,
+                likes: 0,
                 user_id: found.id,
                 request_id: parseInt(data.request_id, 10) // assume this is how front-end passes it
               })
@@ -137,7 +139,8 @@ module.exports = {
               // can only be unliked (deleted)
               found.destroy()
               .then(function(destroyed){
-                console.log('unliked! remove from join table');
+                console.log('unliked! remove from join table: ', destroyed);
+                res.send(destroyed);
               })
             } else {
               new UserLikedPhoto({
@@ -146,13 +149,24 @@ module.exports = {
               })
               .save()
               .then(function(createdRelationship){
+                console.log(createdRelationship);
                 res.send(createdRelationship);
               });
             }
           });
         });
+        //res.send(photo);
       });
       // create entry in users_likes_photo join table
 // increment the karma of the photo's OWNER <- handled by trigger
+  },
+
+  getPhotoLikes: function(req, res, next) {
+    UserLikedPhotos.reset()
+      .fetch()
+      .then(function(photoLikes) {
+        console.log('photo likes from photo controller: ',photoLikes);
+        res.send(photoLikes.models);
+      });
   }
 }

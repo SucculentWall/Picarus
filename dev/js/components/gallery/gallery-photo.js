@@ -2,6 +2,7 @@ var React = require('react');
 
 var AppActions = require('../../actions/app-actions');
 var RequestStore = require('../../stores/app-requestStore');
+var GalleryStore = require('../../stores/app-galleryStore');
 var PhotoComment = require('../request/request-photoComment');
 var MakeComment = require('../request/request-makeComment');
 var AuthStore = require('../../stores/app-authStore');
@@ -30,6 +31,12 @@ var getPhotoComments = function(id){
   return {photoComments: RequestStore.getComment(id)};
 };
 
+var getPhotoLikes = function(id){
+  var galleryPhotoLikes = GalleryStore.getLikes(id);
+  console.log('photo likes from this photo on gallery: ', galleryPhotoLikes);
+  return galleryPhotoLikes;
+};
+
 var GalleryPhoto = React.createClass({
   
   getInitialState: function(){
@@ -37,6 +44,8 @@ var GalleryPhoto = React.createClass({
     stateObj.loggedIn = AuthStore.loggedIn();
     stateObj.showCommentEntry = false;
     stateObj.showModal = false;
+    stateObj.likes = getPhotoLikes(this.props.data.id);
+    stateObj.unclicked = true; // NOTE: this needs to be based on db truth (has this user liked this photo) join table time 
     return stateObj;
   },
 
@@ -54,9 +63,33 @@ var GalleryPhoto = React.createClass({
     this.setState({showCommentEntry: !this.state.showCommentEntry});
   },
 
+  _likeOrUnlike: function() {
+    this.setState({unclicked: !this.state.unclicked});
+    if (this.state.unclicked === false) {
+      // increment
+      AppActions.likePhoto(this.props.data.id);
+    } else {
+      // decrement
+      AppActions.unlikePhoto(this.props.data.id);
+    }
+  },
+
+  // doesn't have to be on like, it simply sets states like
+  _onLikeOrUnlike: function() {
+    // NOTE: this is firing twice for some reason (one for each gallery photo it looks like)
+    // REASON: other component is still mounted (it also hears a change in the store)
+    // this should not be a problem since components are independent
+    console.log('liked/unliked!');
+    if (this.isMounted()){
+      this.setState({likes: getPhotoLikes(this.props.data.id)});
+    }
+  },
+
   _onChange: function () {
     console.log('change triggered on photo');
-    this.setState(getPhotoComments(this.props.data.id));
+    if (this.isMounted()){
+      this.setState(getPhotoComments(this.props.data.id));
+    }
   },
 
   _onLog: function () {
@@ -65,11 +98,13 @@ var GalleryPhoto = React.createClass({
 
   componentDidMount: function() {
     RequestStore.addChangeListener(this._onChange);
+    GalleryStore.addChangeListener(this._onLikeOrUnlike);
     AuthStore.addChangeListener(this._onLog);
   },
 
   componentWillUnmount: function() {
     RequestStore.removeChangeListener(this._onChange);
+    GalleryStore.removeChangeListener(this._onLikeOrUnlike);
     AuthStore.removeChangeListener(this._onLog);
   },
 
@@ -88,6 +123,16 @@ var GalleryPhoto = React.createClass({
         </ul>
       </div>
     );
+    heart = (
+      <div className = {this.state.unclicked ? 'glyphicon glyphicon-heart unclicked' : 'glyphicon glyphicon-heart'} onClick={this._likeOrUnlike}></div>
+    );
+    likes = (
+      <div className='likes'>
+        <span> {this.state.likes} likes </span>
+        {this.state.loggedIn ? {heart} : null}
+      </div>
+    );
+
     return (
       <div className='photo'>
         {/* Modal, only shows when showModal is true, dialogClassName is the CSS class */}
@@ -103,6 +148,7 @@ var GalleryPhoto = React.createClass({
           <Modal.Footer>
           <span className='modal-description'>{this.props.data.description}</span>
             <a href={'/photos/' + this.props.data.filename} target='_blank'>Full image</a>
+            {likes}
             {comments}
           </Modal.Footer>
         </Modal>

@@ -22,6 +22,10 @@ var _receiveSearchRequests = function(requests) {
   }
 };
 
+var _updatePhotoLikes = function(photo) {
+  _photoList[photo.id] = photo;
+}
+
 var _receiveTags = function(tagsArray) {
   _tagList = tagsArray;
 };
@@ -29,6 +33,7 @@ var _receiveTags = function(tagsArray) {
 var GalleryStore = assign({},EventEmitter.prototype, {
 
   getAllPhotos: function() {
+    console.log('this is photoList from galleryStore: ', _photoList);
     return _photoList;
   },
 
@@ -42,6 +47,16 @@ var GalleryStore = assign({},EventEmitter.prototype, {
 
   getPhoto: function (id) {
     return _photoList[id];
+  },
+
+  getLikes: function(id) {
+    console.log('this is photoList from galleryStore: ', _photoList);
+    // if (_photoList[id]){
+    //   return _photoList[id].likes;
+    // } else {
+    //   return 0;
+    // }
+    return _photoList[id].likes;
   },
 
   emitChange: function() {
@@ -75,6 +90,12 @@ GalleryStore.dispatchToken = AppDispatcher.register(function(action) {
       _receiveTags(action.data.data);
       GalleryStore.emitChange();
       break;
+
+    case AppConstants.LIKE_PHOTO:
+      _updatePhotoLikes(action.data.data);
+      GalleryStore.emitChange();
+      break;
+
 
     default:
   }
