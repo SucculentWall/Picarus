@@ -72,7 +72,7 @@ module.exports = {
     dbUtils.getPhotoLikes(user_id, photos);
   },
 
-  addComment: function(text, username, photo_id){
+  addComment: function(text, username, photo_id, request_id){
     dbUtils = require('../utils/database-utils');
     dbUtils.addComment(text, username, photo_id, request_id);
   },
