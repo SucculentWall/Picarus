@@ -13,6 +13,14 @@ var Busboy = require('busboy');
 var fs = require('fs');
 var inspect = require('util').inspect;
 
+// must install the following during deployment for resize to work:
+// brew install imagemagick
+// brew install graphicsmagick
+
+var gulp = require('gulp');
+var imagemin = require('gulp-imagemin');
+var imageResize = require('gulp-image-resize');
+
 module.exports = {
 
   addPhoto: function (req, res, next) {
@@ -37,6 +45,15 @@ module.exports = {
 
 
     busboy.on('finish', function () {
+      gulp.src('photos/' + data.filename)
+        .pipe(imagemin())
+        .pipe(gulp.dest('photos/small'))
+        .pipe(imageResize({
+          width: 400,
+          height: 400
+        }))
+        .pipe(gulp.dest('photos/small'));
+
       new User({
           username: data.username
         })
@@ -45,7 +62,6 @@ module.exports = {
           if (!found) {
             res.send('User not found');
           } else {
-            console.log('JSON.strung data from photoController: ', JSON.stringify(data));
             new Photo({
                 filename: data.filename,
                 filetype: data.filetype,
