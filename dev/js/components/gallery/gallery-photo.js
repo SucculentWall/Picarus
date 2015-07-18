@@ -2,6 +2,7 @@ var React = require('react');
 
 var AppActions = require('../../actions/app-actions');
 var RequestStore = require('../../stores/app-requestStore');
+var GalleryStore = require('../../stores/app-galleryStore');
 var PhotoComment = require('../request/request-photoComment');
 var MakeComment = require('../request/request-makeComment');
 var AuthStore = require('../../stores/app-authStore');
@@ -9,6 +10,8 @@ var Modal = require('react-bootstrap').Modal;
 var Link = require('react-router').Link;
 
 var photoComments, comments, numTemplates;
+
+var currUserId = AuthStore.getId();
 
 var photoTemplateClasses = [
   //column layout for 1st row of photos (adds up to 12)
@@ -27,7 +30,25 @@ var photoTemplateClasses = [
 ];
 
 var getPhotoComments = function(id){
-  return {photoComments: RequestStore.getComment(id)};
+  return {photoComments: RequestStore.getComment(id) || []};
+};
+
+var getPhotoLikes = function(id){
+  var galleryPhotoLikes = GalleryStore.getLikes(id);
+  console.log('photo likes from this photo on gallery: ', galleryPhotoLikes);
+  return galleryPhotoLikes;
+};
+
+var getToggleState = function(id){
+  // console.log('getToggleState getting from request store: ', RequestStore.getDisplayToggle(id) );
+  return { // {showCommentEntry: , showModal: }
+    showCommentEntry : GalleryStore.getDisplayToggle(id).showCommentEntry || false,
+    showModal : GalleryStore.getDisplayToggle(id).showModal || false
+  };
+};
+
+var checkLiked = function(id){
+  return GalleryStore.getPhotoLikeStatus(id);
 };
 
 var GalleryPhoto = React.createClass({
@@ -35,8 +56,10 @@ var GalleryPhoto = React.createClass({
   getInitialState: function(){
     var stateObj = getPhotoComments(this.props.data.id);
     stateObj.loggedIn = AuthStore.loggedIn();
-    stateObj.showCommentEntry = false;
-    stateObj.showModal = false;
+    stateObj.showCommentEntry = getToggleState(this.props.data.id).showCommentEntry;
+    stateObj.showModal = getToggleState(this.props.data.id).showModal;
+    stateObj.likes = getPhotoLikes(this.props.data.id);
+    stateObj.unclicked = checkLiked(this.props.data.id);
     return stateObj;
   },
 
@@ -49,27 +72,63 @@ var GalleryPhoto = React.createClass({
   },
 
   _onClick: function () {
-    console.log('_onClick, what is this: ', this);
+    console.log('_onClick, what is this: ', this.props);
+
     AppActions.loadComments(this.props.data.id);
     this.setState({showCommentEntry: !this.state.showCommentEntry});
   },
 
+  _likeOrUnlike: function() {
+    this.setState({unclicked: !this.state.unclicked});
+    if (this.state.unclicked === true) {
+      // increment
+      AppActions.likePhoto(this.props.data.id);
+    } else {
+      // decrement
+      AppActions.unlikePhoto(this.props.data.id);
+    }
+  },
+
+  _onLikeOrUnlike: function() {
+    console.log('I fIRED');
+    //AppActions.pickRequest(+this.props.data.requestId);
+    console.log('liked/unliked!');
+    if (this.isMounted()){
+      this.setState({likes: getPhotoLikes(this.props.data.id)});
+      this.setState({unclicked: checkLiked(this.props.data.id)});
+    }
+  },
+
   _onChange: function () {
     console.log('change triggered on photo');
-    this.setState(getPhotoComments(this.props.data.id));
+    if (this.isMounted()){
+      this.setState(getPhotoComments(this.props.data.id));
+      this.setState({unclicked: checkLiked(this.props.data.id)});
+    }
   },
 
   _onLog: function () {
     this.setState({loggedIn: AuthStore.loggedIn()});
   },
 
+  statics: {
+    willTransitionTo: function(transition, params, element) {
+      // pass in current user and all the photos on this current request page
+      AppActions.getPhotoLikes(currUserId);
+    }
+  },
+
   componentDidMount: function() {
     RequestStore.addChangeListener(this._onChange);
+    GalleryStore.addChangeListener(this._onLikeOrUnlike);
     AuthStore.addChangeListener(this._onLog);
+
+    AppActions.getPhotoLikes(currUserId);
   },
 
   componentWillUnmount: function() {
     RequestStore.removeChangeListener(this._onChange);
+    GalleryStore.removeChangeListener(this._onLikeOrUnlike);
     AuthStore.removeChangeListener(this._onLog);
   },
 
@@ -88,6 +147,16 @@ var GalleryPhoto = React.createClass({
         </ul>
       </div>
     );
+    heart = (
+      <div className = {this.state.unclicked ? 'glyphicon glyphicon-heart unclicked' : 'glyphicon glyphicon-heart'} onClick={this._likeOrUnlike}></div>
+    );
+    likes = (
+      <div className='likes'>
+        <span> {this.state.likes} likes </span>
+        {this.state.loggedIn ? {heart} : null}
+      </div>
+    );
+
     return (
       <div className='photo'>
         {/* Modal, only shows when showModal is true, dialogClassName is the CSS class */}
@@ -103,6 +172,7 @@ var GalleryPhoto = React.createClass({
           <Modal.Footer>
           <span className='modal-description'>{this.props.data.description}</span>
             <a href={'/photos/' + this.props.data.filename} target='_blank'>Full image</a>
+            {likes}
             {comments}
           </Modal.Footer>
         </Modal>

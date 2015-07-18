@@ -2,6 +2,7 @@ var User = require('../db/models/user');
 var Photo = require('../db/models/photo');
 var Photos = require('../db/collections/photos');
 var PhotoTag = require('../db/models/photoTag');
+var PhotoUser = require('../db/models/photoUser');
 
 var tagController = require('./tagController');
 
@@ -50,6 +51,7 @@ module.exports = {
                 filetype: data.filetype,
                 username: data.username,
                 description: data.description,
+                likes: 0,
                 user_id: found.id,
                 request_id: parseInt(data.request_id, 10) // assume this is how front-end passes it
               })
@@ -112,21 +114,64 @@ module.exports = {
   },
 
   handlePhotoLike: function(req, res, next) {
-    console.log('thes eare like params!: ',req.body.params);
-    var photo_id = req.params.photo_id;
-    var liked = req.body.params.like ? 1 : -1;
+    console.log('thes eare like params!: ',req.body);
+    var photo_id = req.body.photo_id;
+    var liked = req.body.like ? 1 : -1;
     // increment likes in Photo table
     new Photo({
         id: photo_id
       })
       .fetch()
       .then(function (photo) {
+        console.log('all the data on photo: ', photo);
         photo.save({likes: photo.get('likes')+liked}, {patch: true})
         .then(function(updatedPhoto){
+          // fetch 
+          new PhotoUser({
+            user_id: updatedPhoto.get('user_id'),
+            photo_id: photo_id
+          })
+          .fetch()
+          .then(function(found){
+            // if found, means it was already liked
+            if (found){
+              // can only be unliked (deleted)
+              found.destroy()
+              .then(function(destroyed){
+                console.log('unliked! remove from join table: ', destroyed);
+                // res.send(destroyed);
+              })
+            } else {
+              new PhotoUser({
+                user_id: updatedPhoto.get('user_id'),
+                photo_id: photo_id
+              })
+              .save()
+              .then(function(createdRelationship){
+                console.log('created a like join entry: ', createdRelationship);
+                // res.send(createdRelationship);
+              });
+            }
+          });
           res.send(updatedPhoto);
         });
+        // res.send(photo);
       });
       // create entry in users_likes_photo join table
 // increment the karma of the photo's OWNER <- handled by trigger
+  },
+
+  getPhotoLikes: function(req, res, next) {
+    var user_id = req.body.user_id;
+    var photos = req.body.photos; // []
+    new PhotoUser({
+      user_id: user_id
+    })
+    .fetchAll()
+    .then(function(collection) {
+      console.log('photo likes from photo controller: ',collection);
+      console.log('the models of the collection: ', collection.models);
+      res.send(collection.models); // [{attributes: {user_id: 1, photo_id: 3}}]
+    });
   }
 }

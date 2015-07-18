@@ -131,21 +131,31 @@ db.knex.schema.hasTable('requests_tags').then(function(exists) {
 });
 
 
-db.knex.schema.hasTable('users_liked_photos').then(function(exists) {
+db.knex.schema.hasTable('photos_users').then(function(exists) {
   if (!exists) {
-    db.knex.schema.createTable('users_liked_photos', function(user_liked_photo) {
-      user_liked_photo.increments('id').primary();
-      user_liked_photo.integer('user_id');
-      user_liked_photo.integer('photo_id');
+    db.knex.schema.createTable('photos_users', function(photo_user) {
+      photo_user.increments('id').primary();
+      photo_user.integer('user_id');
+      photo_user.integer('photo_id');
     }).then(function(table) {
-      console.log('Created user_liked_photo table');
+      console.log('Created photos_users');
     });
   }
 });
 
 // create users_liked_requests join table
 
-
+db.knex.schema.hasTable('users_liked_requests').then(function(exists) {
+  if (!exists) {
+    db.knex.schema.createTable('users_liked_requests', function(user_liked_request) {
+      user_liked_request.increments('id').primary();
+      user_liked_request.integer('user_id');
+      user_liked_request.integer('request_id');
+    }).then(function(table) {
+      console.log('Created users_liked_request table');
+    });
+  }
+});
 
 
 module.exports = db;

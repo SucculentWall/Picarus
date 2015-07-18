@@ -21,5 +21,9 @@ module.exports = {
 
   //auth actions
   LOGGED_IN: 'LOGGED_IN',
-  NOT_LOGGED_IN: 'NOT_LOGGED_IN'
+  NOT_LOGGED_IN: 'NOT_LOGGED_IN',
+
+  // user actions
+  TOGGLE_REQUEST_PHOTO: 'TOGGLE_REQUEST_PHOTO',
+  TOGGLE_COMMENT: 'TOGGLE_COMMENT'
 };

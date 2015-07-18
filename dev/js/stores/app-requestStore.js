@@ -6,23 +6,37 @@ var EventEmitter = require('events').EventEmitter;
 // the single request being shown on the page
 var _request = {};
 // the comments on the above single request
+  // each item within is an object tied to photoId key
 var _comments = {};
+var _commentDisplay = {}; // photo_ids are keys
+var _modalDisplay = {}; // eg photo_id: true
+
+// whether or not a photo is liked (photo_id : true)
+var _likeLog = {};
 
 var _receiveRequest = function(data) {
-  console.log('requestStore received request data: ', data);
   // each time you click a req from the feed, overwrite the previously focused req
   _request = data;
 };
 
 var _receivePhoto = function(photoData) {
-  console.log('requestStore received photo data: ', photoData);
   // _request.photos is an array of the photo objects on THIS request
   _request.photos.push(photoData);
 };
 
 var _receiveComments = function(photoData) {
-  // console.log('received photo data: ', photoData);
   _comments[photoData.data.id] = photoData.data.comments;
+};
+
+var _toggleCommentDisplay = function(id) {
+  var display = _commentDisplay[id] || false; 
+  _commentDisplay[id] = !display;
+};
+
+var _toggleModal = function(id) {
+  var modal = _modalDisplay[id] || false;
+  _modalDisplay[id] = !modal;
+  console.log('modal toggle display toggled FROM ', modal, ' TO ', _modalDisplay[id]);
 };
 
 var _receiveNewComment = function(commentData) {
@@ -30,9 +44,34 @@ var _receiveNewComment = function(commentData) {
 };
 
 var _receiveNewLike = function(likeData) {
-  console.log('this is data from the liking: ', likeData);
-  // _request[likeData.photo_id].push(likeData);
-  console.log('this is _request.photos: ',_request.photos);
+  var likeOrUnlike = likeData.config.data.like; // true or false
+  var photoId = likeData.data.id;
+  // if was a like
+  if (likeOrUnlike) {
+    // put in log
+    _likeLog[photoId] = true;
+  } else {
+    // remove from log
+    delete _likeLog[photoId];
+  }
+  if (_request.photos){
+    for (var i = 0; i < _request.photos.length; i++) {
+      var aPhoto = _request.photos[i];
+      if (aPhoto.id === likeData.data.id){
+        _request.photos[i] = likeData.data;
+      }
+    }
+  }
+};
+
+var _receiveAllPhotoLikes = function(joinData) {
+  // joinData is an array of objects
+  _likeLog = {};
+  for (var i = 0; i < joinData.length; i++) {
+    var obj = joinData[i];
+    _likeLog[obj.photo_id] = true; 
+  }
+  console.log('this is like_log: ', _likeLog);
 };
 
 var RequestStore = assign({},EventEmitter.prototype, {
@@ -41,16 +80,31 @@ var RequestStore = assign({},EventEmitter.prototype, {
   },
 
   getComment: function(photoId) {
-    return _comments[photoId];
+    return _comments[photoId]; 
+  },
+
+  getDisplayToggle: function(id){
+    return {
+      showCommentEntry: _commentDisplay[id],
+      showModal: _modalDisplay[id]
+    }
   },
 
   getPhotos: function() {
-    return _request.photos;
+    return _request.photos; // an ARRAY of photos
   },
 
   getLikes: function(id) {
-    console.log('from requestStore getLikes: ', _request.photos[id].likes);
-    return _request.photos[id].likes;
+    // console.log('this is the id that was passed in--- ', id);
+    var searched = _request.photos.filter(function(eachPhoto){
+      return eachPhoto.id === id;
+    });
+
+    if (searched.length){
+      return searched[0].likes;
+    } else {
+      return 0;
+    }
   },
 
   getId: function () {
@@ -71,6 +125,19 @@ var RequestStore = assign({},EventEmitter.prototype, {
 
   getText: function () {
     return _request.text;
+  },
+
+  getPhotoLikeStatus: function (photo_id) {
+    // if the picture has 0 likes
+    if (Object.keys(_likeLog).length === 0) {
+      return true;
+    }
+    if (_likeLog[photo_id] === undefined) {
+      // this is how we try to init unliked
+      return true;
+    } else {
+      return false;
+    }
   },
 
   emitChange: function() {
@@ -113,8 +180,24 @@ RequestStore.dispatchToken = AppDispatcher.register(function(action) {
       RequestStore.emitChange();        
       break;
 
+    case AppConstants.TOGGLE_COMMENT:
+      _toggleCommentDisplay(action.data);
+      RequestStore.emitChange();
+      break;
+
+    case AppConstants.TOGGLE_REQUEST_PHOTO:
+      _toggleModal(action.data);
+      RequestStore.emitChange();
+      break;
+
+
     case AppConstants.LIKE_PHOTO:
       _receiveNewLike(action.data);
+      RequestStore.emitChange();
+      break;
+
+    case AppConstants.RECEIVE_PHOTO_LIKES:
+      _receiveAllPhotoLikes(action.data.data);
       RequestStore.emitChange();
       break;
 

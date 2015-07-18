@@ -67,7 +67,12 @@ module.exports = {
     dbUtils.unlikePhoto(id);
   },
 
-  addComment: function(text, username, photo_id, request_id){
+  getPhotoLikes: function(user_id, photos) {
+    dbUtils = require("../utils/database-utils");
+    dbUtils.getPhotoLikes(user_id, photos);
+  },
+
+  addComment: function(text, username, photo_id){
     dbUtils = require('../utils/database-utils');
     dbUtils.addComment(text, username, photo_id, request_id);
   },
@@ -82,6 +87,19 @@ module.exports = {
     dbUtils.addAvatar(photo, user_id);
   },
 
+  toggleCommentDisplay: function(id){
+    AppDispatcher.dispatch({
+      type: AppConstants.TOGGLE_COMMENT,
+      data: id
+    });
+  },
+
+  toggleRequestPhotoModal: function(id){
+    AppDispatcher.dispatch({
+      type: AppConstants.TOGGLE_REQUEST_PHOTO,
+      data: id
+    });
+  },
 
   // Server Actions
 
@@ -135,12 +153,20 @@ module.exports = {
   },
 
   receivePhotoLike: function(data) {
+    console.log('after db processed like action: ', data);
     AppDispatcher.dispatch({
       type: AppConstants.LIKE_PHOTO,
       data: data
     });
   },
   // - also still need to consider sockets
+
+  receivePhotoLikesCheck: function(data) {
+    AppDispatcher.dispatch({
+      type: AppConstants.RECEIVE_PHOTO_LIKES,
+      data: data
+    });
+  },
 
   loggedIn: function(data, token) {
     AppDispatcher.dispatch({
