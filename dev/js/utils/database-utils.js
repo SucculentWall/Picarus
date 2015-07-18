@@ -142,7 +142,7 @@ module.exports = {
   },
 
   likePhoto: function(photoId) {
-    axios.post('/api/photos/likes/'+photoId, {params: {photo_id: photoId, like: true}}) // this api request goes to photoRouter
+    axios.post('/api/photos/likes', {photo_id: photoId, like: true}) // this api request goes to photoRouter
       .then(function(response) {  // this reponse AppActions to fire an action type
         console.log('response from sending a like to DB: ', response);
         AppActions.receivePhotoLike(response);
@@ -153,8 +153,13 @@ module.exports = {
   },
 
   unlikePhoto: function(photoId) {
-    axios.post('/api/photos/likes/'+photoId, {params: {photo_id: photoId, like: false}}) // this api request goes to photoRouter
+    axios.post('/api/photos/likes', {photo_id: photoId, like: false}) // this api request goes to photoRouter
       .then(function(response) {  // this reponse AppActions to fire an action type
+
+
+
+        
+        console.log('response from sending an UNlike to DB: ', response);
         AppActions.receivePhotoLike(response);
       })
       .catch(function(error) {
@@ -185,8 +190,8 @@ module.exports = {
       });
   },
 
-  getPhotoLikes: function(user_id, photo_id) {
-    axios.get('/api/photos/check')
+  getPhotoLikes: function(user_id, photos) {
+    axios.get('/api/photos/check', {user_id: user_id, photos: photos})
       .then(function(response) {
         AppActions.receivePhotoLikesCheck(response);
       })

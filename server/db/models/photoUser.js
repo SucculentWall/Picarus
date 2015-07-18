@@ -2,8 +2,8 @@ var db = require('../config');
 require('./user');
 require('./photo');
 
-var UserLikedPhoto = db.Model.extend({
-  tableName: 'users_liked_photos',
+var PhotoUser = db.Model.extend({
+  tableName: 'photos_users',
   photo: function () {
     return this.belongsTo('Photo');
   },
@@ -12,4 +12,4 @@ var UserLikedPhoto = db.Model.extend({
   }
 });
 
-module.exports = db.model('UserLikedPhoto', UserLikedPhoto);
+module.exports = db.model('PhotoUser', PhotoUser);

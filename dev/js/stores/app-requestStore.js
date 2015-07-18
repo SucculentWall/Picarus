@@ -47,21 +47,38 @@ var _receiveNewComment = function(commentData) {
 };
 
 var _receiveNewLike = function(likeData) {
-  // console.log('this is data from the liking: ', likeData);
-  // _request[likeData.photo_id].push(likeData);
-  // console.log('this is _request.photos: ',_request.photos);
-  // update _request.photos array (iterate to find photo first)
+  var likeOrUnlike = likeData.config.data.like; // true or false
+  var photoId = likeData.data.id;
+  // if was a like
+  if (likeOrUnlike) {
+    // put in log
+    _likeLog[photoId] = true;
+  } else {
+    // remove from log
+    delete _likeLog[photoId];
+  }
+  // for some reason, not updating onClick
+  console.log('all photos for this req', _request.photos.slice());
   for (var i = 0; i < _request.photos.length; i++) {
     var aPhoto = _request.photos[i];
     if (aPhoto.id === likeData.data.id){
       _request.photos[i] = likeData.data;
     }
   }
+  console.log('_request updated? :', _request.photos);
+  // needs to update _likeLog
 };
 
 var _receiveAllPhotoLikes = function(joinData) {
-  _likeLog = joinData;
-}
+  // console.log('received all photo likes in like_log',joinData);
+  // joinData is an array of objects
+  _likeLog = {};
+  for (var i = 0; i < joinData.length; i++) {
+    var obj = joinData[i];
+    _likeLog[obj.photo_id] = true; 
+  }
+  console.log('this is like_log: ', _likeLog);
+};
 
 var RequestStore = assign({},EventEmitter.prototype, {
   getAllComments: function() {
@@ -69,11 +86,6 @@ var RequestStore = assign({},EventEmitter.prototype, {
   },
 
   getComment: function(photoId) {
-    // if (_comments[photoId]) { 
-    //   return _comments[photoId]; // {showCommentEntry: false, comments: [...] }
-    // } else {
-    //   _comments[photoId] = {comments:[], showCommentEntry: false, showModal: false};
-    // }
     return _comments[photoId]; 
   },
 
@@ -122,8 +134,13 @@ var RequestStore = assign({},EventEmitter.prototype, {
     return _request.text;
   },
 
-  getPhotoLikeStatus: function (user_id, photo_id) {
-    if (_likeLog[user_id] === photo_id) {
+  getPhotoLikeStatus: function (photo_id) {
+    // if the picture has 0 likes
+    if (Object.keys(_likeLog).length === 0) {
+      return true;
+    }
+    if (_likeLog[photo_id] === undefined) {
+      // this is how we try to init unliked
       return true;
     } else {
       return false;
@@ -187,7 +204,7 @@ RequestStore.dispatchToken = AppDispatcher.register(function(action) {
       break;
 
     case AppConstants.RECEIVE_PHOTO_LIKES:
-      _receiveAllPhotoLikes(action.data);
+      _receiveAllPhotoLikes(action.data.data);
       RequestStore.emitChange();
       break;
 

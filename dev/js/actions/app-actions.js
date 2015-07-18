@@ -67,9 +67,9 @@ module.exports = {
     dbUtils.unlikePhoto(id);
   },
 
-  getPhotoLikes: function() {
+  getPhotoLikes: function(user_id, photos) {
     dbUtils = require("../utils/database-utils");
-    dbUtils.getPhotoLikes();
+    dbUtils.getPhotoLikes(user_id, photos);
   },
 
   addComment: function(text, username, photo_id){

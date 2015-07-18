@@ -1,8 +1,0 @@
-var db = require('../config');
-var UserLikedPhoto = require('../models/userLikedPhoto');
-
-var UserLikedPhotos = new db.Collection();
-
-UserLikedPhotos.model = UserLikedPhoto;
-
-module.exports = UserLikedPhotos;

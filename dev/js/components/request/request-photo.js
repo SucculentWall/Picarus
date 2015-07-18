@@ -26,13 +26,13 @@ var getToggleState = function(id){
 
 var getPhotoLikes = function(id){
   // console.log('currently has this many likes: ', RequestStore.getLikes(id));
-  return RequestStore.getLikes(id);
+  return RequestStore.getLikes(id) || 0;
 };
 
 var checkLiked = function(id){
   // return bool based on whether there is entry in join table
   // console.log('click status: ',RequestStore.getPhotoLikeStatus(currUserId, id));
-  return RequestStore.getPhotoLikeStatus(currUserId, id);
+  return RequestStore.getPhotoLikeStatus(id);
 };
 
 var Photo = React.createClass({
@@ -40,21 +40,24 @@ var Photo = React.createClass({
   getInitialState: function(){
     //AppActions.getPhotoLikes();
     var stateObj = getPhotoComments(this.props.data.id);
-
     stateObj.loggedIn = AuthStore.loggedIn();
     stateObj.showCommentEntry = getToggleState(this.props.data.id).showCommentEntry;
     stateObj.showModal = getToggleState(this.props.data.id).showModal;
+
+    // likes
     stateObj.likes = getPhotoLikes(this.props.data.id);
     // hold 'unlicked' className to toggle on click
     // console.log('checking....: ',checkLiked(this.props.data.id));
     stateObj.unclicked = checkLiked(this.props.data.id); // NOTE: this needs to be based on db truth (has this user liked this photo) join table time 
+    console.log('initialing unlicked: ', stateObj.unclicked);
     return stateObj;
   },
 
   statics: {
     willTransitionTo: function(transition, params, element) {
-      AppActions.getPhotoLikes();
-      // console.log('firing');
+      // pass in current user and all the photos on this current request page
+      AppActions.getPhotoLikes(currUserId, RequestStore.getPhotos());
+      console.log('firing');
     }
   },
 
@@ -74,12 +77,14 @@ var Photo = React.createClass({
     AppActions.toggleCommentDisplay(this.props.data.id);
   },
 
-  // click
+  // click, this needs to change the store so a re-render happens (unclicked is not being reset for some reason)
   _likeOrUnlike: function() {
     // console.log('current state! : ', this.state.unclicked)
+    console.log('liked photo_id: ', this.props.data.id);
     if (this.state.unclicked === true) {
       // increment
       AppActions.likePhoto(this.props.data.id);
+      // needs to affect likelog
     } else {
       // decrement
       AppActions.unlikePhoto(this.props.data.id);
@@ -88,6 +93,8 @@ var Photo = React.createClass({
 
   // change callbacks
   _onLikeOrUnlike: function() {
+    // AppActions.getPhotoLikes(currUserId, RequestStore.getPhotos());
+
     this.setState({unclicked: checkLiked(this.props.data.id)});
     this.setState({likes: getPhotoLikes(this.props.data.id)});
   },
@@ -109,6 +116,8 @@ var Photo = React.createClass({
     RequestStore.addChangeListener(this._onChange);
     RequestStore.addChangeListener(this._onLikeOrUnlike);
     AuthStore.addChangeListener(this._onLog);
+
+    AppActions.getPhotoLikes(currUserId, RequestStore.getPhotos());
   },
 
   componentWillUnmount: function() {
@@ -136,7 +145,7 @@ var Photo = React.createClass({
       </div>
     );
     heart = (
-      <div className = {this.state.unclicked ? 'glyphicon glyphicon-heart' : 'glyphicon glyphicon-heart unclicked'} onClick={this._likeOrUnlike}></div>
+      <div className = {this.state.unclicked ? 'glyphicon glyphicon-heart unclicked' : 'glyphicon glyphicon-heart'} onClick={this._likeOrUnlike}></div>
     );
     likes = (
       <div className='likes'>
@@ -144,7 +153,8 @@ var Photo = React.createClass({
         {this.state.loggedIn ? {heart} : null}
       </div>
     );
-    console.log(this.props.data.id, ' current state stuff: ', this.state);
+    // console.log(this.props.data.id, ' current state stuff: ', this.state);
+    console.log('unclicked status : ', this.state.unclicked);
     return (
       <li className='photo'>
 

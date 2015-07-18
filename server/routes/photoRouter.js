@@ -14,7 +14,7 @@ router.get('/', function(req,res,next){
 //   photoController.getInfoForPhoto(req, res, next);
 // });
 
-router.post('/likes/:photo_id', function(req, res, next){
+router.post('/likes', function(req, res, next){
   photoController.handlePhotoLike(req, res, next);
 });
 
