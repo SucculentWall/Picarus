@@ -95,6 +95,7 @@ var ProfilePhoto = React.createClass({
             <img className = 'requestphoto' src={'/photos/' + this.props.data.filename} />
           </Modal.Body>
           <Modal.Footer>
+            <span className='modal-description'>{this.props.data.description}</span>
             <a href={'/photos/' + this.props.data.filename} target='_blank'>Full image</a>
             {comments}
           </Modal.Footer>
