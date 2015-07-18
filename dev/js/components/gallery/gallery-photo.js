@@ -11,6 +11,8 @@ var Link = require('react-router').Link;
 
 var photoComments, comments, numTemplates;
 
+var currUserId = AuthStore.getId();
+
 var photoTemplateClasses = [
   //column layout for 1st row of photos (adds up to 12)
   'col-xs-4',
@@ -28,7 +30,7 @@ var photoTemplateClasses = [
 ];
 
 var getPhotoComments = function(id){
-  return {photoComments: RequestStore.getComment(id)};
+  return {photoComments: RequestStore.getComment(id) || []};
 };
 
 var getPhotoLikes = function(id){
@@ -37,15 +39,30 @@ var getPhotoLikes = function(id){
   return galleryPhotoLikes;
 };
 
+var getToggleState = function(id){
+  // console.log('getToggleState getting from request store: ', RequestStore.getDisplayToggle(id) );
+  return { // {showCommentEntry: , showModal: }
+    showCommentEntry : GalleryStore.getDisplayToggle(id).showCommentEntry || false,
+    showModal : GalleryStore.getDisplayToggle(id).showModal || false
+  };
+};
+
+var checkLiked = function(id){
+  return GalleryStore.getPhotoLikeStatus(id); // write gallery store getter for likes
+};
+
 var GalleryPhoto = React.createClass({
   
   getInitialState: function(){
     var stateObj = getPhotoComments(this.props.data.id);
     stateObj.loggedIn = AuthStore.loggedIn();
-    stateObj.showCommentEntry = false;
-    stateObj.showModal = false;
+    stateObj.showCommentEntry = getToggleState(this.props.data.id).showCommentEntry;
+    stateObj.showModal = getToggleState(this.props.data.id).showModal;
     stateObj.likes = getPhotoLikes(this.props.data.id);
-    stateObj.unclicked = true; // NOTE: this needs to be based on db truth (has this user liked this photo) join table time 
+
+    // WRITE checkLiked for Gallery Photo
+
+    stateObj.unclicked = checkLiked(this.props.data.id) || true; // NOTE: this needs to be based on db truth (has this user liked this photo) join table time 
     return stateObj;
   },
 
@@ -65,7 +82,7 @@ var GalleryPhoto = React.createClass({
 
   _likeOrUnlike: function() {
     this.setState({unclicked: !this.state.unclicked});
-    if (this.state.unclicked === false) {
+    if (this.state.unclicked === true) {
       // increment
       AppActions.likePhoto(this.props.data.id);
     } else {
@@ -100,6 +117,8 @@ var GalleryPhoto = React.createClass({
     RequestStore.addChangeListener(this._onChange);
     GalleryStore.addChangeListener(this._onLikeOrUnlike);
     AuthStore.addChangeListener(this._onLog);
+
+    AppActions.getPhotoLikes(currUserId);
   },
 
   componentWillUnmount: function() {
