@@ -48,13 +48,11 @@ var ProfilePhoto = React.createClass({
   },
 
   _onClick: function () {
-    console.log('_onClick, what is this: ', this);
     AppActions.loadComments(this.props.data.id);
     this.setState({showCommentEntry: !this.state.showCommentEntry});
   },
 
   _onChange: function () {
-    console.log('change triggered on photo');
     this.setState(getPhotoComments(this.props.data.id));
   },
 
@@ -89,16 +87,13 @@ var ProfilePhoto = React.createClass({
     );
     return (
       <div className='photo'>
-        {/* Modal, only shows when showModal is true, dialogClassName is the CSS class */}
         <Modal show={this.state.showModal} onHide={this.close} dialogClassName='modalcontent'>
-          {/* Modal.Header has a closeButton prop (x in the top right) */}
           <Modal.Header closeButton>
             <Modal.Title modalClassName='modal-title'>Submitted by: {this.props.data.username}</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <img className = 'requestphoto' src={'/photos/' + this.props.data.filename} />
           </Modal.Body>
-          {/* Modal.Footer includes the comments */}
           <Modal.Footer>
             <a href={'/photos/' + this.props.data.filename} target='_blank'>Full image</a>
             {comments}

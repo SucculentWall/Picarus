@@ -24,11 +24,12 @@ module.exports = {
               text : data.text,
               username: data.username,
               user_id: found.id,
-              photo_id: data.photo_id, // assume this is how front-end passes it
+              photo_id: data.photo_id,
+              request_id: data.request_id
             })
             .save()
             .then(function (createdComment) {
-              // io.emit('updateRequest', createdComment);
+              console.log('BAANANANANANA', createdComment);
               io.emit('updateComment', createdComment);
             });
           res.send('comment added');

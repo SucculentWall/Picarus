@@ -20,6 +20,7 @@ db.knex.schema.hasTable('users').then(function(exists) {
       user.string('FacebookId', 100).unique();
       user.string('username', 100);
       user.integer('karma', 11).defaultTo(0);
+      user.string('avatar', 100).defaultTo('defaultAvatar.png');
       user.timestamps();
     }).then(function(table) {
       console.log('Created users table');
@@ -68,6 +69,7 @@ db.knex.schema.hasTable('comments').then(function(exists) {
       comment.integer('likes', 11).defaultTo(0);
       comment.integer('user_id').unsigned();
       comment.integer('photo_id').unsigned();
+      comment.integer('request_id').unsigned();
       comment.timestamps();
     }).then(function(table) {
       console.log('Created comments table');

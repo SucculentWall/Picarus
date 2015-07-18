@@ -1,17 +1,18 @@
-var React = require("react");
-var AppActions = require("../../actions/app-actions");
-var RequestStore = require("../../stores/app-requestStore");
-var RequestHeader = require("./request-header");
-var Photo = require("./request-photo");
-var Auth = require("../app-auth");
-var PhotoUpload = require("./request-photoUpload");
-var AuthStore = require("../../stores/app-authStore");
+var React = require('react');
+var AppActions = require('../../actions/app-actions');
+var RequestStore = require('../../stores/app-requestStore');
+var RequestHeader = require('./request-header');
+var Photo = require('./request-photo');
+var Auth = require('../app-auth');
+var PhotoUpload = require('./request-photoUpload');
+var AuthStore = require('../../stores/app-authStore');
 
 
 var getData = function(){
   return {
     id: RequestStore.getId(),
     photos: RequestStore.getPhotos(),
+    user_id: RequestStore.getUserId(),
     username: RequestStore.getUsername(),
     tags: RequestStore.getTags(), // [{tagname: 'dogs'}, {}, {} ]
     text: RequestStore.getText()
@@ -23,6 +24,7 @@ var SelectedRequest = React.createClass({
     return {
       id: '',
       photos: [],
+      user_id: '',
       username: '',
       tags: [],
       text: '',
@@ -68,7 +70,7 @@ var SelectedRequest = React.createClass({
     }
     console.log('photos received from Request Store: ', photos);
     return (
-      <div className = "request col-xs-8 container">
+      <div className = 'request col-xs-8 container'>
         <RequestHeader data={this.state} />
         <ul>
           {photosList}

@@ -1,6 +1,6 @@
-var AppDispatcher = require("../dispatchers/app-dispatcher");
-var AppConstants = require("../constants/app-constants");
-var assign = require("react/lib/Object.assign");
+var AppDispatcher = require('../dispatchers/app-dispatcher');
+var AppConstants = require('../constants/app-constants');
+var assign = require('react/lib/Object.assign');
 var EventEmitter = require('events').EventEmitter;
 
 // the single request being shown on the page
@@ -59,6 +59,10 @@ var RequestStore = assign({},EventEmitter.prototype, {
 
   getUsername: function () {
     return _request.user.username;
+  },
+
+  getUserId: function () {
+    return _request.user.id;
   },
 
   getTags: function () {

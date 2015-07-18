@@ -43,7 +43,7 @@ module.exports = {
   },
 
   getPhotosForSearch: function(query) {
-    dbUtils = require("../utils/database-utils");
+    dbUtils = require('../utils/database-utils');
     dbUtils.getPhotosForSearch(query);
   },
 
@@ -53,29 +53,35 @@ module.exports = {
   },
 
   addPhoto: function(photo, username, request_id, tags, description){
-    dbUtils = require("../utils/database-utils");
+    dbUtils = require('../utils/database-utils');
     dbUtils.addPhoto(photo, username, request_id, tags, description);
   },
 
   likePhoto: function(id) {
-    dbUtils = require("../utils/database-utils");
+    dbUtils = require('../utils/database-utils');
     dbUtils.likePhoto(id);
   },
 
   unlikePhoto: function(id) {
-    dbUtils = require("../utils/database-utils");
+    dbUtils = require('../utils/database-utils');
     dbUtils.unlikePhoto(id);
   },
 
-  addComment: function(text, username, photo_id){
+  addComment: function(text, username, photo_id, request_id){
     dbUtils = require('../utils/database-utils');
-    dbUtils.addComment(text, username, photo_id);
+    dbUtils.addComment(text, username, photo_id, request_id);
   },
 
   loadComments: function(id) {
     dbUtils = require('../utils/database-utils');
     dbUtils.getComments(id);
   },
+
+  addAvatar: function(photo, user_id){
+    dbUtils = require('../utils/database-utils');
+    dbUtils.addAvatar(photo, user_id);
+  },
+
 
   // Server Actions
 

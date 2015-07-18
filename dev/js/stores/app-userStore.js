@@ -3,9 +3,12 @@ var AppConstants = require('../constants/app-constants');
 var assign = require('react/lib/Object.assign');
 var EventEmitter = require('events').EventEmitter;
 
-
 //  user data
-var _user;
+var _user = {
+  requests: [],
+  comments: [],
+  photos: []
+};
 
 var _receiveProfileInfo = function(data) {
   _user = data;
@@ -15,12 +18,16 @@ var _receiveRequest = function(requestData) {
   _user.requests.push(requestData);
 };
 
+var _receiveComment = function(commentData) {
+  _user.comments.push(commentData);
+};
+
 var _receivePhoto = function(photoData) {
   _user.photos.push(photoData);
 };
 
-var _receiveComment = function(commentData) {
-  _user.comments.push(commentData);
+var _receiveAvatar = function(avatarPath) {
+  _user.avatar = avatarPath;
 };
 
 var UserStore = assign({},EventEmitter.prototype, {
@@ -66,6 +73,10 @@ var UserStore = assign({},EventEmitter.prototype, {
     return _user.photos;
   },
 
+  getAvatar: function() {
+    return _user.avatar;
+  },
+
   getAllUserRequests: function() {
     return _user.requests;
   },
@@ -96,6 +107,11 @@ UserStore.dispatchToken = AppDispatcher.register(function(action) {
       UserStore.emitChange();
       break;
 
+    case AppConstants.UPDATE_AVATAR:
+      _receiveAvatar(action.data);
+      UserStore.emitChange();
+      break;
+
     // New requests
     case AppConstants.UPDATE_FEED:
       if(_user && UserStore.getUserId() === action.data.user_id) {
@@ -106,11 +122,8 @@ UserStore.dispatchToken = AppDispatcher.register(function(action) {
 
     // New comments
     case AppConstants.UPDATE_COMMENT:
-      console.log('UPDATE_COMMENT action.data: ', action.data);
-      if (_user && UserStore.getUserId() === action.data.user_id){
       _receiveComment(action.data);
       UserStore.emitChange();
-      }
       break;
 
     // New photos

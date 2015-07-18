@@ -6,6 +6,7 @@ var PhotoComment = require('../request/request-photoComment');
 var MakeComment = require('../request/request-makeComment');
 var AuthStore = require('../../stores/app-authStore');
 var Modal = require('react-bootstrap').Modal;
+var Link = require('react-router').Link;
 
 var photoComments, comments, numTemplates;
 
@@ -93,7 +94,7 @@ var GalleryPhoto = React.createClass({
         <Modal show={this.state.showModal} onHide={this.close} dialogClassName='modalcontent'>
           {/* Modal.Header has a closeButton prop (x in the top right) */}
           <Modal.Header closeButton>
-            <Modal.Title modalClassName='modal-title'>Submitted by: {this.props.data.username}</Modal.Title>
+            <Modal.Title modalClassName='modal-title'>Submitted by: <Link to='user' params={{user_id: this.props.data.user_id}} >{this.props.data.username}</Link></Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <img className = 'requestphoto' src={'/photos/' + this.props.data.filename} />

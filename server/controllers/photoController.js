@@ -124,7 +124,7 @@ module.exports = {
         photo.save({likes: photo.get('likes')+liked}, {patch: true})
         .then(function(updatedPhoto){
           res.send(updatedPhoto);
-        })
+        });
       });
       // create entry in users_likes_photo join table
 // increment the karma of the photo's OWNER <- handled by trigger

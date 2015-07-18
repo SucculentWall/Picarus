@@ -11,6 +11,7 @@ var Auth = require('../app-auth');
 
 var getData = function(){
   return {
+    authId: AuthStore.getId(),
     user_id: UserStore.getUserId(),
     FacebookId: UserStore.getFacebookId(),
     username: UserStore.getUsername(),
@@ -18,21 +19,24 @@ var getData = function(){
     karma: UserStore.getUserKarma(),
     requests: UserStore.getRecentUserRequests(5),
     comments: UserStore.getRecentUserComments(5),
-    photos: UserStore.getUserPhotos()
+    photos: UserStore.getUserPhotos(),
+    avatar: UserStore.getAvatar()
   };
 };
 
 var Profile = React.createClass({
   getInitialState: function(){
     return {
+      authId: '',
       user_id: '',
       FacebookId: '',
       username: '',
       joinDate: '',
       karma: 0,
       requests: [],
+      comments:[],
       photos:[],
-      comments:[]
+      avatar: null
     };
   },
 
@@ -42,9 +46,9 @@ var Profile = React.createClass({
     }
   },
 
-  // _onLog: function () {
-  //   this.setState({loggedIn: AuthStore.loggedIn()});
-  // },
+  _onLog: function () {
+    this.setState({authId: AuthStore.getId()});
+  },
 
   _onChange: function () {
     this.setState(getData());
@@ -53,11 +57,12 @@ var Profile = React.createClass({
   componentDidMount: function() {
     var user_id = this.props.params.user_id;
     AppActions.getProfileInfo(user_id);
+    AuthStore.addChangeListener(this._onLog);
     UserStore.addChangeListener(this._onChange);
   },
   componentWillUnmount: function() {
     UserStore.removeChangeListener(this._onChange);
-  //   AuthStore.removeChangeListener(this._onLog);
+    AuthStore.removeChangeListener(this._onLog);
   },
   render: function () {
     var i;
@@ -83,15 +88,15 @@ var Profile = React.createClass({
         <h2 className='prof-cat'>Karma: {this.state.karma}</h2>
         <div>
           <h2 className='prof-cat'>Recent Requests: </h2>
-          {profileRequests}
+            {profileRequests}
         </div>
         <div>
           <h2 className='prof-cat'>Recent Comments: </h2>
-          {profileComments}
+            {profileComments}
         </div>
         <div>
           <h2 className='prof-cat'>Uploaded Photos: </h2>
-          {profilePhotos}
+            {profilePhotos}
         </div>
       </div>
     );

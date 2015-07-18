@@ -57,16 +57,15 @@ module.exports = {
       });
   },
 
-  addComment: function(text, username, photo_id) {
+  addComment: function(text, username, photo_id, request_id) {
     // var context = this;
     axios.post('/api/comments', {
         text: text,
         username: username,
-        photo_id: photo_id
+        photo_id: photo_id,
+        request_id: request_id
       })
       .then(function(response) {
-        // context.getComments(photo_id);
-        // console.log('new comment added');
       })
       .catch(function(error) {
         console.log(error);
@@ -81,7 +80,6 @@ module.exports = {
     data.append('photo', photo);
     data.append('tags', JSON.stringify(tags));
     data.append('description', description);
-    console.log('these are strung tags: ', JSON.stringify(tags));
     axios.post('/api/photos', data)
       .then(function(response) {
         // no longer need to requery (socket emit will trigger it)
@@ -162,6 +160,7 @@ module.exports = {
         console.log(error);
       });
   }, 
+
   getProfileInfo: function(user_id) {
     axios.get('/api/users/' + user_id)
       .then(function(response){
@@ -170,6 +169,19 @@ module.exports = {
       .catch(function(error) {
         console.log(error);
       });
-  }
+  },
+
+  addAvatar: function(photo, user_id) {
+    var context = this;
+    var data = new FormData();
+    data.append('photo', photo);
+    data.append('user_id', user_id);
+    axios.post('/api/users/avatars', data)
+      .then(function(response) {
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
+  },
 
 };
