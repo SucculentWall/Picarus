@@ -18,7 +18,7 @@ module.exports = {
         new Request()
         .query(function(qb) {
           qb.fullOuterJoin('requests_tags', 'requests_tags.request_id', '=', 'requests.id')
-            .fullOuterJoin('tags', 'requests_tags.tag_id', '=', 'tags.id')
+            .leftOuterJoin('tags', 'requests_tags.tag_id', '=', 'tags.id')
             .whereRaw("to_tsvector('english', coalesce(text,'') || ' ' || coalesce(tagname,'')) @@ to_tsquery('english', '"+ query+ "')");
         })
         .fetchAll()
