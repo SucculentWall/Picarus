@@ -11,6 +11,7 @@ require('../actions/socket-actions.js');
 
 var Router = require('react-router');
 var Route = Router.Route;
+var DefaultRoute = Router.DefaultRoute;
 var Link = Router.Link;
 
 require('events').EventEmitter.defaultMaxListeners = 0;
@@ -31,8 +32,8 @@ var App = React.createClass({
 
 var routes = (
   <Route handler={App}>
-    <Route name="home" path="/" handler={Gallery} />
-    <Route name="search" path="search/:query" handler={Gallery} />
+    <DefaultRoute name="home" path="/" handler={Gallery} />
+    <Route name="search" path="search/:query" handler={Gallery}/>
     <Route name='tags' path='tags/:tagname' handler={Gallery} />
     <Route name='user' path='/user/:user_id' handler={Profile} />
     <Route name='requests' path='/requests/:requestId' handler={SelectedRequest}/>

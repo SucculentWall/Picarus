@@ -1,20 +1,27 @@
 var React = require("react");
+var classNames = require("classnames");
 var AppActions = require("../../actions/app-actions");
 var GalleryStore = require("../../stores/app-galleryStore");
 var GalleryPhoto = require("./gallery-photo");
 var GalleryHeader = require("./gallery-header");
+var Request = require("./gallery-request");
 var AuthStore = require("../../stores/app-authStore");
 
-var getPhotosAndTags = function(){
+var getData = function(){
   // TODO: retrieve photo requests from server
-  return {photos: GalleryStore.getAllPhotos(),
-          tags: GalleryStore.getAllTags()
-          };
+  return {
+    photos: GalleryStore.getAllPhotos(),
+    tags: GalleryStore.getAllTags(),
+    requests: GalleryStore.getAllRequests(),
+  };
 };
 
 var Gallery = React.createClass({
   getInitialState: function(){
-    return getPhotosAndTags();
+    var obj = getData();
+    obj.searchPhotos = true;
+    obj.searchRequests = false;
+    return obj;
   },
 
   statics: {
@@ -25,6 +32,7 @@ var Gallery = React.createClass({
       } else if (params.query) {
         console.log('get photos for query: ', params.query);
         AppActions.getPhotosForSearch(params.query);
+        AppActions.getRequestsForSearch(params.query);
         AppActions.getAllTags();
       } else {
         AppActions.getAllPhotos();
@@ -34,7 +42,15 @@ var Gallery = React.createClass({
   },
 
   _onChange: function () {
-    this.setState(getPhotosAndTags());
+    this.setState(getData());
+  },
+
+  _searchRequests: function() {
+    this.setState({searchRequests: true, searchPhotos: false });
+  },
+
+  _searchPhotos: function() {
+    this.setState({searchPhotos: true, searchRequests: false});
   },
 
   componentDidMount: function() {
@@ -45,6 +61,7 @@ var Gallery = React.createClass({
     } else if (this.props.params.query) {
       console.log('get photos for query: ', this.props.params.query);
       AppActions.getPhotosForSearch(this.props.params.query);
+      AppActions.getRequestsForSearch(this.props.params.query);
       AppActions.getAllTags();
     } else {
       AppActions.getAllPhotos();
@@ -56,19 +73,38 @@ var Gallery = React.createClass({
   },
   render: function(){
     var photos = [];
-    var list = this.state.photos;
-    var count = 0;
+    var photosList = this.state.photos;
+    var photoCount = 0;
 
-    for (var key in list) {
-      photos.push(<GalleryPhoto key={key} count={count} data={list[key]} />);
-      count++;
+    for (var key in photosList) {
+      photos.push(<GalleryPhoto key={key} count={photoCount} data={photosList[key]} />);
+      photoCount++;
     }
-    
+
+    var requests = [];
+    var requestsList = this.state.requests;
+    requestCount = 0;
+
+    for (key in requestsList) {
+      requests.push(<Request key={key} count={requestCount} data={requestsList[key]} />);
+      requestCount++;
+    }
+
+    var photoClasses = classNames('header-tag','col-xs-6',{'active': this.state.searchPhotos});
+    var requestClasses = classNames('header-tag','col-xs-6',{'active': this.state.searchRequests});
+
+
+    var searchHeader = (
+      <div className = "filterbar">
+        <span className={photoClasses} onClick={this._searchPhotos}>PHOTO RESULTS ({photoCount})</span><span className={requestClasses} onClick={this._searchRequests}>REQUEST RESULTS ({requestCount})</span>
+      </div>
+    );
+
     return (
       <div className = "gallery col-xs-8">
-        <GalleryHeader data={this.state.tags}/>
+        { !this.props.params.query ? <GalleryHeader data={this.state.tags} /> : searchHeader }
         <div>
-          {photos}
+          { this.state.searchPhotos ? photos : requests }
         </div>
       </div>
     );

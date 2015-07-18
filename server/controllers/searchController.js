@@ -1,4 +1,5 @@
 var Photo = require('../db/models/photo');
+var Request = require('../db/models/request');
 var Photos = require('../db/collections/photos');
 var Promise = require('bluebird');
 
@@ -13,12 +14,25 @@ module.exports = {
           .whereRaw("to_tsvector('english', coalesce(description,'') || ' ' || coalesce(tagname,'')) @@ to_tsquery('english', '"+ query+ "')");
       })
       .fetchAll()
-      .then(function(found){
-        if (found) {
-          res.send(found);
-        } else {
-          res.send('no results found');
-        }
+      .then(function(photos){
+        new Request()
+        .query(function(qb) {
+          qb.fullOuterJoin('requests_tags', 'requests_tags.request_id', '=', 'requests.id')
+            .fullOuterJoin('tags', 'requests_tags.tag_id', '=', 'tags.id')
+            .whereRaw("to_tsvector('english', coalesce(text,'') || ' ' || coalesce(tagname,'')) @@ to_tsquery('english', '"+ query+ "')");
+        })
+        .fetchAll()
+        .then(function(requests) {  
+          if (photos && requests) {
+            res.send({photos:photos, requests: requests});
+          } else if (photos){
+            res.send({photos:photos, requests: 'no results found'});
+          } else if (requests){
+            res.send({photos:'no results found', requests: requests});
+          } else {
+            res.send('no results found');
+          }
+        });
       }); 
     // requests
     // photos

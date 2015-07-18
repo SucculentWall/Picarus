@@ -47,6 +47,11 @@ module.exports = {
     dbUtils.getPhotosForSearch(query);
   },
 
+  getRequestsForSearch: function(query) {
+    dbUtils = require("../utils/database-utils");
+    dbUtils.getRequestsForSearch(query);
+  },
+
   addPhoto: function(photo, username, request_id, tags, description){
     dbUtils = require("../utils/database-utils");
     dbUtils.addPhoto(photo, username, request_id, tags, description);
@@ -91,6 +96,13 @@ module.exports = {
   receiveRequest: function (data) {
     AppDispatcher.dispatch({
       type: AppConstants.RECEIVE_REQUEST,
+      data: data
+    });
+  },
+
+  receiveSearchRequests: function(data) {
+    AppDispatcher.dispatch({
+      type: AppConstants.RECEIVE_SEARCH_REQUESTS,
       data: data
     });
   },
