@@ -64,9 +64,13 @@ module.exports = {
         id: request_id
       })
       .fetch({
-        withRelated: ['photos', 'user', 'tags']
+        withRelated: [{'photos': function(qb) {
+          // sort photos by creation order or else they will shuffle when liked
+          qb.orderBy('created_at'); 
+        }}, 'user', 'tags']
       })
       .then(function (request) {
+        console.log('this is how request is spat out: ',request.relations.photos.models)
         res.send(request);
       });
   }
