@@ -10,26 +10,31 @@ module.exports = function(config) {
 
     // frameworks to use
     // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
-    frameworks: ['browserify','requirejs', 'mocha' ,'chai', 'sinon'],
-
+    frameworks: ['browserify','mocha','chai', 'sinon'],
 
     // list of files / patterns to load in the browser
     files: [
-      'test-main.js',
-      {pattern: '*.js', included: false},
-      {pattern: 'dev/**/*.js', included: false},
-      {pattern: 'test/**/*.js', included: false}
+      '*.js',
+      'test/**/*.js'
     ],
 
 
     // list of files to exclude
     exclude: [
+      'gulpfile.js',
+      'index.js',
+      'karma.conf.js'
     ],
 
+    browserify: {
+        debug: true,
+        transform: ['reactify']
+    },
 
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
+        'test/**/*.js': ['browserify']
     },
 
 
@@ -67,7 +72,6 @@ module.exports = function(config) {
 
     plugins: [
         'karma-mocha',
-        'karma-requirejs',
         'karma-browserify',
         'karma-chai',
         'karma-sinon',
