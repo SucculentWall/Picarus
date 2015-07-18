@@ -11,17 +11,15 @@ var _comments = {};
 var _commentDisplay = {}; // photo_ids are keys
 var _modalDisplay = {}; // eg photo_id: true
 
-// whether or not a photo is liked (user : photo)
+// whether or not a photo is liked (photo_id : true)
 var _likeLog = {};
 
 var _receiveRequest = function(data) {
-  // console.log('requestStore received request data: ', data);
   // each time you click a req from the feed, overwrite the previously focused req
   _request = data;
 };
 
 var _receivePhoto = function(photoData) {
-  // console.log('requestStore received photo data: ', photoData);
   // _request.photos is an array of the photo objects on THIS request
   _request.photos.push(photoData);
 };
@@ -33,7 +31,6 @@ var _receiveComments = function(photoData) {
 var _toggleCommentDisplay = function(id) {
   var display = _commentDisplay[id] || false; 
   _commentDisplay[id] = !display;
-  // console.log('comment display toggled FROM ', display, ' TO ', _commentDisplay[id]);
 };
 
 var _toggleModal = function(id) {
@@ -57,20 +54,17 @@ var _receiveNewLike = function(likeData) {
     // remove from log
     delete _likeLog[photoId];
   }
-  // for some reason, not updating onClick
-  console.log('all photos for this req', _request.photos.slice());
-  for (var i = 0; i < _request.photos.length; i++) {
-    var aPhoto = _request.photos[i];
-    if (aPhoto.id === likeData.data.id){
-      _request.photos[i] = likeData.data;
+  if (_request.photos){
+    for (var i = 0; i < _request.photos.length; i++) {
+      var aPhoto = _request.photos[i];
+      if (aPhoto.id === likeData.data.id){
+        _request.photos[i] = likeData.data;
+      }
     }
   }
-  console.log('_request updated? :', _request.photos);
-  // needs to update _likeLog
 };
 
 var _receiveAllPhotoLikes = function(joinData) {
-  // console.log('received all photo likes in like_log',joinData);
   // joinData is an array of objects
   _likeLog = {};
   for (var i = 0; i < joinData.length; i++) {
@@ -102,7 +96,6 @@ var RequestStore = assign({},EventEmitter.prototype, {
 
   getLikes: function(id) {
     // console.log('this is the id that was passed in--- ', id);
-    // console.log('this is request? :', _request);
     var searched = _request.photos.filter(function(eachPhoto){
       return eachPhoto.id === id;
     });

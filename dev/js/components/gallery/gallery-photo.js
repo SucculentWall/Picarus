@@ -48,7 +48,7 @@ var getToggleState = function(id){
 };
 
 var checkLiked = function(id){
-  return GalleryStore.getPhotoLikeStatus(id); // write gallery store getter for likes
+  return GalleryStore.getPhotoLikeStatus(id);
 };
 
 var GalleryPhoto = React.createClass({
@@ -59,10 +59,7 @@ var GalleryPhoto = React.createClass({
     stateObj.showCommentEntry = getToggleState(this.props.data.id).showCommentEntry;
     stateObj.showModal = getToggleState(this.props.data.id).showModal;
     stateObj.likes = getPhotoLikes(this.props.data.id);
-
-    // WRITE checkLiked for Gallery Photo
-
-    stateObj.unclicked = checkLiked(this.props.data.id) || true; // NOTE: this needs to be based on db truth (has this user liked this photo) join table time 
+    stateObj.unclicked = checkLiked(this.props.data.id);
     return stateObj;
   },
 
@@ -75,7 +72,8 @@ var GalleryPhoto = React.createClass({
   },
 
   _onClick: function () {
-    console.log('_onClick, what is this: ', this);
+    console.log('_onClick, what is this: ', this.props);
+
     AppActions.loadComments(this.props.data.id);
     this.setState({showCommentEntry: !this.state.showCommentEntry});
   },
@@ -91,14 +89,13 @@ var GalleryPhoto = React.createClass({
     }
   },
 
-  // doesn't have to be on like, it simply sets states like
   _onLikeOrUnlike: function() {
-    // NOTE: this is firing twice for some reason (one for each gallery photo it looks like)
-    // REASON: other component is still mounted (it also hears a change in the store)
-    // this should not be a problem since components are independent
+    console.log('I fIRED');
+    //AppActions.pickRequest(+this.props.data.requestId);
     console.log('liked/unliked!');
     if (this.isMounted()){
       this.setState({likes: getPhotoLikes(this.props.data.id)});
+      this.setState({unclicked: checkLiked(this.props.data.id)});
     }
   },
 
@@ -106,11 +103,19 @@ var GalleryPhoto = React.createClass({
     console.log('change triggered on photo');
     if (this.isMounted()){
       this.setState(getPhotoComments(this.props.data.id));
+      this.setState({unclicked: checkLiked(this.props.data.id)});
     }
   },
 
   _onLog: function () {
     this.setState({loggedIn: AuthStore.loggedIn()});
+  },
+
+  statics: {
+    willTransitionTo: function(transition, params, element) {
+      // pass in current user and all the photos on this current request page
+      AppActions.getPhotoLikes(currUserId);
+    }
   },
 
   componentDidMount: function() {

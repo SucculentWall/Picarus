@@ -53,13 +53,6 @@ var Photo = React.createClass({
     return stateObj;
   },
 
-  statics: {
-    willTransitionTo: function(transition, params, element) {
-      // pass in current user and all the photos on this current request page
-      AppActions.getPhotoLikes(currUserId, RequestStore.getPhotos());
-      console.log('firing');
-    }
-  },
 
   close: function (){
     AppActions.toggleRequestPhotoModal(this.props.data.id);
@@ -112,6 +105,13 @@ var Photo = React.createClass({
     this.setState({loggedIn: AuthStore.loggedIn()});
   },
 
+  statics: {
+    willTransitionTo: function(transition, params, element) {
+      // pass in current user and all the photos on this current request page
+      AppActions.getPhotoLikes(currUserId, RequestStore.getPhotos());
+    }
+  },
+  
   componentDidMount: function() {
     RequestStore.addChangeListener(this._onChange);
     RequestStore.addChangeListener(this._onLikeOrUnlike);
@@ -154,7 +154,7 @@ var Photo = React.createClass({
       </div>
     );
     // console.log(this.props.data.id, ' current state stuff: ', this.state);
-    console.log('unclicked status : ', this.state.unclicked);
+    // console.log('unclicked status : ', this.state.unclicked);
     return (
       <li className='photo'>
 

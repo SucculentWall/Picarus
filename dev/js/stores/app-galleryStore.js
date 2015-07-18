@@ -8,27 +8,25 @@ var _photoList = {};
 var _requestList = {};
 var _tagList = [];
 
-//////
 var _commentDisplay = {}; // photo_ids are keys
 var _modalDisplay = {}; // eg photo_id: true
 
-// whether or not a photo is liked (user : photo)
+// whether or not the current user has already liked (photo_id : true)
 var _likeLog = {};
 
 var _toggleCommentDisplay = function(id) {
   var display = _commentDisplay[id] || false; 
   _commentDisplay[id] = !display;
-  // console.log('comment display toggled FROM ', display, ' TO ', _commentDisplay[id]);
 };
 
 var _toggleModal = function(id) {
   var modal = _modalDisplay[id] || false;
   _modalDisplay[id] = !modal;
-  console.log('modal toggle display toggled FROM ', modal, ' TO ', _modalDisplay[id]);
+  // console.log('modal toggle display toggled FROM ', modal, ' TO ', _modalDisplay[id]);
 };
 
 var _receiveAllPhotoLikes = function(joinData) {
-  // console.log('received all photo likes in like_log',joinData);
+  console.log('coming in join data: ', joinData);
   // joinData is an array of objects
   _likeLog = {};
   for (var i = 0; i < joinData.length; i++) {
@@ -37,7 +35,6 @@ var _receiveAllPhotoLikes = function(joinData) {
   }
   console.log('this is like_log: ', _likeLog);
 };
-//////
 
 var _receivePhotos = function(photos) {
   _photoList = {};
@@ -107,14 +104,17 @@ var GalleryStore = assign({},EventEmitter.prototype, {
   },
 
   getPhotoLikeStatus: function(photo_id) {
+    console.log('da like log: ', _likeLog);
     // check photos_users
     if (Object.keys(_likeLog).length === 0) {
+      console.log('zero likes!'); 
       return true;
     }
     if (_likeLog[photo_id] === undefined) {
       // this is how we try to init unliked
       return true;
     } else {
+      console.log('this doesn\'t run?');
       return false;
     }
   },
