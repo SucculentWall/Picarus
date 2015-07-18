@@ -57,16 +57,15 @@ module.exports = {
       });
   },
 
-  addComment: function(text, username, photo_id) {
+  addComment: function(text, username, photo_id, request_id) {
     // var context = this;
     axios.post('/api/comments', {
         text: text,
         username: username,
-        photo_id: photo_id
+        photo_id: photo_id,
+        request_id: request_id
       })
       .then(function(response) {
-        // context.getComments(photo_id);
-        // console.log('new comment added');
       })
       .catch(function(error) {
         console.log(error);

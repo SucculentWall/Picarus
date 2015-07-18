@@ -11,6 +11,7 @@ var Auth = require('../app-auth');
 
 var getData = function(){
   return {
+    authId: AuthStore.getId(),
     user_id: UserStore.getUserId(),
     FacebookId: UserStore.getFacebookId(),
     username: UserStore.getUsername(),
@@ -26,6 +27,7 @@ var getData = function(){
 var Profile = React.createClass({
   getInitialState: function(){
     return {
+      authId: '',
       user_id: '',
       FacebookId: '',
       username: '',
@@ -44,9 +46,9 @@ var Profile = React.createClass({
     }
   },
 
-  // _onLog: function () {
-  //   this.setState({loggedIn: AuthStore.loggedIn()});
-  // },
+  _onLog: function () {
+    this.setState({authId: AuthStore.getId()});
+  },
 
   _onChange: function () {
     this.setState(getData());
@@ -55,11 +57,12 @@ var Profile = React.createClass({
   componentDidMount: function() {
     var user_id = this.props.params.user_id;
     AppActions.getProfileInfo(user_id);
+    AuthStore.addChangeListener(this._onLog);
     UserStore.addChangeListener(this._onChange);
   },
   componentWillUnmount: function() {
     UserStore.removeChangeListener(this._onChange);
-  //   AuthStore.removeChangeListener(this._onLog);
+    AuthStore.removeChangeListener(this._onLog);
   },
   render: function () {
     var i;

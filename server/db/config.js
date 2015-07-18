@@ -69,6 +69,7 @@ db.knex.schema.hasTable('comments').then(function(exists) {
       comment.integer('likes', 11).defaultTo(0);
       comment.integer('user_id').unsigned();
       comment.integer('photo_id').unsigned();
+      comment.integer('request_id').unsigned();
       comment.timestamps();
     }).then(function(table) {
       console.log('Created comments table');

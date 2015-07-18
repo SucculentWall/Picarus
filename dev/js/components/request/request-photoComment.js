@@ -4,7 +4,6 @@ var Link = require('react-router').Link;
 
 var PhotoComment = React.createClass({
   render: function(){
-    console.log(this.props.data);
     return (
       <li className = 'comment'>
         <span className='photo-comment'>{this.props.data.text}</span>

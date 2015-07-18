@@ -1,5 +1,4 @@
 var React = require('react');
-var AuthStore = require('../../stores/app-authStore');
 var Modal = require('react-bootstrap').Modal;
 var AppActions = require('../../actions/app-actions');
 
@@ -18,13 +17,9 @@ var ProfileAvatar = React.createClass({
 
   open: function (){
     // only open avatar change modal if the user is authenticated
-    if (this.props.data.user_id === AuthStore.getId()) {
+    if (this.props.data.user_id === this.props.data.authId) {
      this.setState({ showModal: true });
     }
-  },
-
-  componentDidMount: function (){
-    
   },
 
   _onSubmit: function(e){
@@ -59,11 +54,6 @@ var ProfileAvatar = React.createClass({
   },
 
   render: function(){
-    var avatarNote = (<div></div>);
-    console.log(this.props.data.user_id, AuthStore.getId());
-    if (this.props.data && this.props.data.user_id === AuthStore.getId()) {
-      var avatarNote = (<p>Click avatar to edit</p>);
-    }
     return (
       <div>
         <Modal show={this.state.showModal} onHide={this.close}>
@@ -79,7 +69,7 @@ var ProfileAvatar = React.createClass({
           </Modal.Footer>
         </Modal>
         <img className='avatar' onClick={this.open} src={'img/'+this.props.data.avatar}/>
-        {avatarNote}
+        { this.props.data.authId === this.props.data.user_id ? <p>Click avatar to change</p> : null }
       </div>
     );
   }

@@ -4,7 +4,11 @@ var assign = require('react/lib/Object.assign');
 var EventEmitter = require('events').EventEmitter;
 
 //  user data
-var _user;
+var _user = {
+  requests: [],
+  comments: [],
+  photos: []
+};
 
 var _receiveProfileInfo = function(data) {
   _user = data;
@@ -104,7 +108,6 @@ UserStore.dispatchToken = AppDispatcher.register(function(action) {
       break;
 
     case AppConstants.UPDATE_AVATAR:
-      console.log('UPDATE AVATAR', action.data);
       _receiveAvatar(action.data);
       UserStore.emitChange();
       break;
@@ -119,11 +122,8 @@ UserStore.dispatchToken = AppDispatcher.register(function(action) {
 
     // New comments
     case AppConstants.UPDATE_COMMENT:
-      console.log('UPDATE_COMMENT action.data: ', action.data);
-      if (_user && UserStore.getUserId() === action.data.user_id){
       _receiveComment(action.data);
       UserStore.emitChange();
-      }
       break;
 
     // New photos
