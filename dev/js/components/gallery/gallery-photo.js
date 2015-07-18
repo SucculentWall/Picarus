@@ -177,7 +177,7 @@ var GalleryPhoto = React.createClass({
           </Modal.Footer>
         </Modal>
         <div>
-          <img onClick={this.open} className={'galleryphoto ' + photoTemplateClasses[this.props.count%numTemplates]} src={'/photos/' + this.props.data.filename} />
+          <img onClick={this.open} className={'galleryphoto ' + photoTemplateClasses[this.props.count%numTemplates]} src={'/photos/small/' + this.props.data.filename} />
         </div>
       </div>
     );

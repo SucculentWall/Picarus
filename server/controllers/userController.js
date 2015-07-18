@@ -12,10 +12,17 @@ var Busboy = require('busboy');
 var fs = require('fs');
 var inspect = require('util').inspect;
 
+// must install the following during deployment for resize to work:
+// brew install imagemagick
+// brew install graphicsmagick
+
+var gulp = require('gulp');
+var imagemin = require('gulp-imagemin');
+var imageResize = require('gulp-image-resize');
+
 module.exports = {
   addUser: function (req, res, next) {
     var data = req.body;  // {username: 'myname'}
-    console.log(data);
     new User({FacebookId: data.FacebookId, username: data.username})
       .fetch()
       .then(function (found) {
@@ -71,6 +78,17 @@ module.exports = {
     });
 
     busboy.on('finish', function () {
+
+      gulp.src('dist/img/' + data.filename)
+        .pipe(imagemin())
+        .pipe(gulp.dest('dist/img'))
+        .pipe(imageResize({
+          width: 150,
+          height: 150,
+          crop: true
+        }))
+        .pipe(gulp.dest('dist/img'));
+
       new User({
           id: data.user_id
         })
@@ -83,7 +101,6 @@ module.exports = {
               .set('avatar', data.filename)
               .save()
               .then(function (created) {
-                console.log(io);
                 io.emit('updateAvatar', data.filename);
               });
             res.send('avatar added');
