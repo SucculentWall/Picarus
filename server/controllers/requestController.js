@@ -70,7 +70,6 @@ module.exports = {
         }}, 'user', 'tags']
       })
       .then(function (request) {
-        console.log('this is how request is spat out: ',request.relations.photos.models)
         res.send(request);
       });
   }

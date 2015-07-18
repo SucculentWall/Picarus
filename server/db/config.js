@@ -139,6 +139,24 @@ db.knex.schema.hasTable('photos_users').then(function(exists) {
       photo_user.integer('photo_id');
     }).then(function(table) {
       console.log('Created photos_users');
+
+      // db triggers on photo UNlike (when a photos_users row is destroyed)
+      var trigFunc = "CREATE FUNCTION decer() RETURNS trigger AS $$ \nBEGIN \n UPDATE users SET karma = karma-2 WHERE id = OLD.user_id; \nRETURN NULL; \n END; \n $$ LANGUAGE plpgsql;";
+
+      db.knex.raw(trigFunc)
+      .then(function(response){
+        console.log('defined decer()');
+
+        // create trigger itself AFTER creating its function
+        //var trigger = "CREATE TRIGGER decKarma AFTER UPDATE OF likes ON photos FOR EACH ROW EXECUTE PROCEDURE decer();";
+
+        db.knex.raw("CREATE TRIGGER decKarma AFTER DELETE ON photos_users FOR EACH ROW EXECUTE PROCEDURE decer();")
+        .then(function(response){
+          console.log('defined decKarma trigger');
+        });
+      });
+
+
     });
   }
 });
