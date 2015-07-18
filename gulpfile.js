@@ -1,5 +1,5 @@
 var gulp = require('gulp'),
-  gulpuglify = require('gulp-uglify'),
+  uglify = require('gulp-uglify'),
   less = require('gulp-less'),
   minifyCSS = require('gulp-minify-css'),
   plumber = require('gulp-plumber'),
@@ -13,12 +13,23 @@ var gulp = require('gulp'),
   reactify = require('reactify'),
   source = require('vinyl-source-stream'),
   buffer = require('vinyl-buffer'),
-  nodemon = require('gulp-nodemon');
+  nodemon = require('gulp-nodemon'),
+  shell = require('gulp-shell'),
+  gulpif = require('gulp-if');
 
-// Only uglify if not in development
-var uglify = function () {
-  return gulpif(process.env.NODE_ENV === 'deployment', gulpuglify());
-};
+//Shell
+gulp.task('brew', shell.task([
+  'brew install imagemagick',
+  'brew install graphicsmagick'
+]));
+gulp.task('apt-get', shell.task([
+  'apt-get install imagemagick',
+  'apt-get install graphicsmagick'
+]));
+gulp.task('shell', function () {
+  if (process.env.NODE_ENV === 'deployment') runSequence('apt-get');
+  else runSequence('brew');
+});
 
 //Scripts : Browserify, Reactify, Uglify
 gulp.task('scripts', function () {
@@ -28,7 +39,7 @@ gulp.task('scripts', function () {
     .pipe(source('main.js'))
     .pipe(buffer())
     .pipe(plumber())
-    // .pipe(uglify())
+    .pipe(gulpif(process.env.NODE_ENV === 'deployment', uglify()))
     //.pipe(rename('app.min.js'))
     .pipe(gulp.dest('dist/js'));
 });
@@ -99,5 +110,5 @@ gulp.task('watch', function () {
 
 // cleans first, then builds the files again
 gulp.task('default', function () {
-  runSequence('clean', 'scripts', 'styles', 'images', 'copy', 'nodemon', 'watch');
+  runSequence('clean', 'shell', 'scripts', 'styles', 'images', 'copy', 'nodemon', 'watch');
 });
