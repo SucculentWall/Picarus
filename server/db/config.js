@@ -1,6 +1,6 @@
 var host = process.env.HOST || '127.0.0.1';
-var port = process.env.DBPORT || 3306;
-var dbuser = process.env.DBUSERNAME || 'root';
+var port = process.env.DBPORT || 5432;
+var dbuser = process.env.DBUSERNAME || '';
 var dbpassword = process.env.DBPASSWORD || '';
 var dbname = process.env.DBNAME || 'picarus';
 
