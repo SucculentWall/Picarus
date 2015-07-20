@@ -110,7 +110,6 @@ module.exports = {
   },
 
   togglePhotoModal: function(id){
-    console.log('no I do (toggle)');
     AppDispatcher.dispatch({
       type: AppConstants.TOGGLE_MODAL_PHOTO,
       data: id
@@ -127,7 +126,6 @@ module.exports = {
   // Server Actions
 
   receiveProfileInfo: function(data) {
-    console.log('I fire first');
     AppDispatcher.dispatch({
       type: AppConstants.RECEIVE_PROFILE_INFO,
       data: data

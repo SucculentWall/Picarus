@@ -216,7 +216,6 @@ UserStore.dispatchToken = AppDispatcher.register(function(action) {
 
     // New photos
     case AppConstants.UPDATE_REQUEST:
-      console.log(action.data);
       if (_user && UserStore.getUserId() === action.data.user_id){
         _receivePhoto(action.data);
         UserStore.emitChange();        
