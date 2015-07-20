@@ -12,11 +12,13 @@ module.exports = function(config) {
     // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
     frameworks: ['browserify','mocha','chai', 'sinon'],
 
+
     // list of files / patterns to load in the browser
-    files: [
-      '*.js',
-      'test/**/*.js'
-    ],
+    // ***NOTE*** Edit source files in include.conf.js & include test spec files below
+    files: require('./include.conf.js').concat([
+      'test/example/*.spec.js',
+      'test/unit/*.spec.js'
+    ]),
 
 
     // list of files to exclude
@@ -31,10 +33,16 @@ module.exports = function(config) {
         transform: ['reactify']
     },
 
+
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
+    // ***NOTE*** Once you're using Browserify, you need to use transforms. 
+    // If you wanted to use Istanbul (e.g. for coverage reporting), for example, 
+    // you'd use a transform and not a preprocessor.
     preprocessors: {
-        'test/**/*.js': ['browserify']
+        'test/example/*.spec.js': ['browserify'],
+        'test/unit/*.spec.js': ['browserify'],
+        'dev/js/**/*.js': ['browserify']
     },
 
 
@@ -65,17 +73,17 @@ module.exports = function(config) {
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
     browsers: ['Chrome'],
 
-
     // Continuous Integration mode
     // if true, Karma captures browsers, runs the tests and exits
     singleRun: false,
 
     plugins: [
+        'karma-coverage',
         'karma-mocha',
         'karma-browserify',
         'karma-chai',
         'karma-sinon',
         'karma-chrome-launcher'
-    ],
+    ]
   })
 }
