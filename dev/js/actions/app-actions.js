@@ -95,6 +95,7 @@ module.exports = {
   },
 
   toggleCommentDisplay: function(id){
+    // console.log('no I do (toggle)');
     AppDispatcher.dispatch({
       type: AppConstants.TOGGLE_COMMENT,
       data: id
@@ -111,6 +112,13 @@ module.exports = {
   togglePhotoModal: function(id){
     AppDispatcher.dispatch({
       type: AppConstants.TOGGLE_MODAL_PHOTO,
+      data: id
+    });
+  },
+
+  toggleReset: function(id) {
+    AppDispatcher.dispatch({
+      type: AppConstants.TOGGLE_RESET,
       data: id
     });
   },

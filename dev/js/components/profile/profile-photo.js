@@ -61,7 +61,6 @@ var ProfilePhoto = React.createClass({
     stateObj.loggedIn = AuthStore.loggedIn();
     stateObj.showCommentEntry = getToggleState(this.props.data.id).showCommentEntry;
     stateObj.showModal = getToggleState(this.props.data.id).showModal;
-
     stateObj.likes = getPhotoLikes(this.props.data.id);
     stateObj.unclicked = checkLiked(this.props.data.id);
     stateObj.numComments = getNumComments(this.props.data.id);
@@ -135,22 +134,29 @@ var ProfilePhoto = React.createClass({
 
     AppActions.loadComments(this.props.data.id);
     AppActions.getPhotoLikes(currUserId);
+    // // commenting out for now, throwing error on user change
+    // if (this.state.showModal){
+    //   AppActions.togglePhotoModal(this.props.data.id);
+    // }
+    // if (this.state.showCommentEntry) {
+    //   AppActions.toggleCommentDisplay(this.props.data.id);
+    // }
   },
 
-  componentWillUnmount: function() {
-    // set states to false when going to new page
-    if (this.state.showModal){
-      AppActions.togglePhotoModal(this.props.data.id);
-    }
-    if (this.state.showCommentEntry) {
-      AppActions.toggleCommentDisplay(this.props.data.id);
-    }
-    
+  componentWillUnmount: function() {    
     UserStore.removeChangeListener(this._onChange);
     UserStore.removeChangeListener(this._onLikeOrUnlike);
 
     RequestStore.removeChangeListener(this._onChange);
     AuthStore.removeChangeListener(this._onLog);
+
+    // // commenting out for now, throwing error on user change
+    // if (this.state.showModal){
+    //   AppActions.togglePhotoModal(this.props.data.id);
+    // }
+    // if (this.state.showCommentEntry) {
+    //   AppActions.toggleCommentDisplay(this.props.data.id);
+    // }
   },
 
   render: function(){

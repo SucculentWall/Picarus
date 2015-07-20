@@ -29,5 +29,8 @@ module.exports = {
 
   // actions isolated to request page
   TOGGLE_COMMENT_REQUEST: 'TOGGLE_COMMENT_REQUEST',
-  TOGGLE_REQUEST_PHOTO: 'TOGGLE_REQUEST_PHOTO'
+  TOGGLE_REQUEST_PHOTO: 'TOGGLE_REQUEST_PHOTO',
+
+  // reset modal and comments display to unopened
+  TOGGLE_RESET: 'TOGGLE_RESET'
 };

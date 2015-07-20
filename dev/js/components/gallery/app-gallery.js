@@ -30,7 +30,6 @@ var Gallery = React.createClass({
         AppActions.getPhotosForTag(params.tagname);
         AppActions.getAllTags();
       } else if (params.query) {
-        console.log('get photos for query: ', params.query);
         AppActions.getPhotosForSearch(params.query);
         AppActions.getRequestsForSearch(params.query);
         AppActions.getAllTags();
@@ -59,7 +58,6 @@ var Gallery = React.createClass({
       AppActions.getPhotosForTag(this.props.params.tagname);
       AppActions.getAllTags();
     } else if (this.props.params.query) {
-      console.log('get photos for query: ', this.props.params.query);
       AppActions.getPhotosForSearch(this.props.params.query);
       AppActions.getRequestsForSearch(this.props.params.query);
       AppActions.getAllTags();

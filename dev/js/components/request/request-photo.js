@@ -116,13 +116,11 @@ var Photo = React.createClass({
 
     AppActions.getPhotoLikes(currUserId, RequestStore.getPhotos());
     AppActions.loadComments(this.props.data.id);
-  },
 
-  // componentDidUpdate: function(){
-  //   console.log('is firing');
-  //   AppActions.getPhotoLikes(currUserId, RequestStore.getPhotos());
-  //   AppActions.loadComments(this.props.data.id);
-  // },
+    // if (this.state.showModal){
+    //   AppActions.toggleRequestPhotoModal(this.props.data.id);
+    // }
+  },
 
   componentWillUnmount: function() {
     // console.log('unmounting ', this.props.data.id);

@@ -22,7 +22,6 @@ var Signin = React.createClass({
   },
 
   componentDidMount: function() {
-    console.log('mounted feed');
     AuthStore.addChangeListener(this._onLog);
   },
   componentWillUnmount: function() {
