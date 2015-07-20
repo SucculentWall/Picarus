@@ -1,11 +1,17 @@
+var host = process.env.HOST || '127.0.0.1';
+var port = process.env.DBPORT || 5432;
+var dbuser = process.env.DBUSERNAME || '';
+var dbpassword = process.env.DBPASSWORD || '';
+var dbname = process.env.DBNAME || 'picarus';
+
 var knex = require('knex')({
   client: 'pg',
   connection: {
-    host     : '127.0.0.1',
-    user     : '',
-    port    : 5432,
-    password : '',
-    database : 'picarus',
+    host     : host,
+    user     : dbuser,
+    port    : port,
+    password : dbpassword,
+    database : dbname,
     charset  : 'utf8'
   }
 });
