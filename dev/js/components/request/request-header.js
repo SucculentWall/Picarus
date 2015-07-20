@@ -3,7 +3,6 @@ var Link = require('react-router').Link;
 
 var RequestHeader = React.createClass({
   render: function(){
-    console.log('request header data ', this.props.data);
     var tagsList = [];
     var tags = this.props.data.tags;
     for (var i=0; i<tags.length; i++) {

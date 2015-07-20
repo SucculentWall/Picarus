@@ -35,12 +35,14 @@ var getPhotoComments = function(id){
 
 var getPhotoLikes = function(id){
   var galleryPhotoLikes = GalleryStore.getLikes(id);
-  console.log('photo likes from this photo on gallery: ', galleryPhotoLikes);
   return galleryPhotoLikes;
 };
 
+var getNumComments = function(id){
+  return RequestStore.getNumComments(id) || 0;
+};
+
 var getToggleState = function(id){
-  // console.log('getToggleState getting from request store: ', RequestStore.getDisplayToggle(id) );
   return { // {showCommentEntry: , showModal: }
     showCommentEntry : GalleryStore.getDisplayToggle(id).showCommentEntry || false,
     showModal : GalleryStore.getDisplayToggle(id).showModal || false
@@ -60,22 +62,25 @@ var GalleryPhoto = React.createClass({
     stateObj.showModal = getToggleState(this.props.data.id).showModal;
     stateObj.likes = getPhotoLikes(this.props.data.id);
     stateObj.unclicked = checkLiked(this.props.data.id);
+    stateObj.numComments = getNumComments(this.props.data.id);
     return stateObj;
   },
 
   close: function (){
-    this.setState({ showModal: false });
+    AppActions.togglePhotoModal(this.props.data.id);
+    // this.setState({ showModal: false });
   },
 
   open: function (){
-    this.setState({ showModal: true });
+    AppActions.togglePhotoModal(this.props.data.id);
+    // this.setState({ showModal: true });
   },
 
   _onClick: function () {
-    console.log('_onClick, what is this: ', this.props);
-
     AppActions.loadComments(this.props.data.id);
-    this.setState({showCommentEntry: !this.state.showCommentEntry});
+    AppActions.toggleCommentDisplay(this.props.data.id);
+
+    // this.setState({showCommentEntry: !this.state.showCommentEntry});
   },
 
   _likeOrUnlike: function() {
@@ -90,9 +95,9 @@ var GalleryPhoto = React.createClass({
   },
 
   _onLikeOrUnlike: function() {
-    console.log('I fIRED');
+    // console.log('I fIRED');
     //AppActions.pickRequest(+this.props.data.requestId);
-    console.log('liked/unliked!');
+    // console.log('liked/unliked!');
     if (this.isMounted()){
       this.setState({likes: getPhotoLikes(this.props.data.id)});
       this.setState({unclicked: checkLiked(this.props.data.id)});
@@ -100,10 +105,13 @@ var GalleryPhoto = React.createClass({
   },
 
   _onChange: function () {
-    console.log('change triggered on photo');
+    // console.log('change triggered on photo');
     if (this.isMounted()){
       this.setState(getPhotoComments(this.props.data.id));
+      this.setState(getToggleState(this.props.data.id)); 
+
       this.setState({unclicked: checkLiked(this.props.data.id)});
+      this.setState({numComments: getNumComments(this.props.data.id)});
     }
   },
 
@@ -115,20 +123,33 @@ var GalleryPhoto = React.createClass({
     willTransitionTo: function(transition, params, element) {
       // pass in current user and all the photos on this current request page
       AppActions.getPhotoLikes(currUserId);
+      AppActions.loadComments(this.props.data.id);
     }
   },
 
   componentDidMount: function() {
     RequestStore.addChangeListener(this._onChange);
     GalleryStore.addChangeListener(this._onLikeOrUnlike);
+    GalleryStore.addChangeListener(this._onChange);
+
     AuthStore.addChangeListener(this._onLog);
 
     AppActions.getPhotoLikes(currUserId);
+    AppActions.loadComments(this.props.data.id);
   },
 
   componentWillUnmount: function() {
+    // set states to false when going to new page
+    if (this.state.showModal){
+      AppActions.togglePhotoModal(this.props.data.id);
+    }
+    if (this.state.showCommentEntry) {
+      AppActions.toggleCommentDisplay(this.props.data.id);
+    }
+    
     RequestStore.removeChangeListener(this._onChange);
     GalleryStore.removeChangeListener(this._onLikeOrUnlike);
+    GalleryStore.removeChangeListener(this._onChange);
     AuthStore.removeChangeListener(this._onLog);
   },
 
@@ -140,7 +161,7 @@ var GalleryPhoto = React.createClass({
     }
     comments = (
       <div>
-        <span className="comment-slider" onClick={this._onClick}>Comments</span>
+        <span className="comment-slider" onClick={this._onClick}> {this.state.numComments} Comments</span>
         <ul>
           { this.state.showCommentEntry ? {photoComments} : null}
           { this.state.showCommentEntry && this.state.loggedIn ? <MakeComment data={this.props.data}/> : null }

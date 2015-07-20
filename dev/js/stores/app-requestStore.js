@@ -25,6 +25,7 @@ var _receivePhoto = function(photoData) {
 };
 
 var _receiveComments = function(photoData) {
+  // console.log('let\'s have us a look at comments: ',photoData.data.comments );
   _comments[photoData.data.id] = photoData.data.comments;
 };
 
@@ -36,7 +37,6 @@ var _toggleCommentDisplay = function(id) {
 var _toggleModal = function(id) {
   var modal = _modalDisplay[id] || false;
   _modalDisplay[id] = !modal;
-  console.log('modal toggle display toggled FROM ', modal, ' TO ', _modalDisplay[id]);
 };
 
 var _receiveNewComment = function(commentData) {
@@ -71,7 +71,6 @@ var _receiveAllPhotoLikes = function(joinData) {
     var obj = joinData[i];
     _likeLog[obj.photo_id] = true; 
   }
-  console.log('this is like_log: ', _likeLog);
 };
 
 var RequestStore = assign({},EventEmitter.prototype, {
@@ -81,6 +80,12 @@ var RequestStore = assign({},EventEmitter.prototype, {
 
   getComment: function(photoId) {
     return _comments[photoId]; 
+  },
+
+  getNumComments: function(photoId){
+    if (_comments[photoId]) {
+      return _comments[photoId].length;
+    }
   },
 
   getDisplayToggle: function(id){
@@ -180,7 +185,7 @@ RequestStore.dispatchToken = AppDispatcher.register(function(action) {
       RequestStore.emitChange();        
       break;
 
-    case AppConstants.TOGGLE_COMMENT:
+    case AppConstants.TOGGLE_COMMENT_REQUEST:
       _toggleCommentDisplay(action.data);
       RequestStore.emitChange();
       break;
@@ -189,7 +194,6 @@ RequestStore.dispatchToken = AppDispatcher.register(function(action) {
       _toggleModal(action.data);
       RequestStore.emitChange();
       break;
-
 
     case AppConstants.LIKE_PHOTO:
       _receiveNewLike(action.data);

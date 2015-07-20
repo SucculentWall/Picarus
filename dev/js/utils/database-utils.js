@@ -23,16 +23,6 @@ module.exports = {
       });
   },
 
-  getRequest:function (id) {
-    axios.get('/api/requests/'+id)
-      .then(function(response) {
-        AppActions.receiveRequest(response);      
-      })
-      .catch(function(error) {
-        console.log(error);
-      });
-  },
-
   addRequest: function(text, username, tags) {
     // var context = this;
     axios.post('/api/requests', {
@@ -57,6 +47,21 @@ module.exports = {
       });
   },
 
+  getRequest:function (id) {
+    axios.get('/api/requests/'+id)
+      .then(function(response) {
+        AppActions.receiveRequest(response); 
+        // use this to get the comments on this request's photos     
+        for (var i = 0; i < response.data.photos.length; i++) {
+          var photo = response.data.photos[i];
+          AppActions.loadComments(photo.id);
+        }
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
+  },
+
   addComment: function(text, username, photo_id, request_id) {
     // var context = this;
     axios.post('/api/comments', {
@@ -66,6 +71,7 @@ module.exports = {
         request_id: request_id
       })
       .then(function(response) {
+        AppActions.receiveComments(response);
       })
       .catch(function(error) {
         console.log(error);
@@ -84,7 +90,6 @@ module.exports = {
       .then(function(response) {
         // no longer need to requery (socket emit will trigger it)
         // context.getRequest(request_id);
-        console.log('add photo response: ', response);
       })
       .catch(function(error) {
         console.log(error);
@@ -144,7 +149,6 @@ module.exports = {
   likePhoto: function(photoId) {
     axios.post('/api/photos/likes', {photo_id: photoId, like: true}) // this api request goes to photoRouter
       .then(function(response) {  // this reponse AppActions to fire an action type
-        console.log('response from sending a like to DB: ', response);
         AppActions.receivePhotoLike(response);
       })
       .catch(function(error) {
@@ -155,11 +159,6 @@ module.exports = {
   unlikePhoto: function(photoId) {
     axios.post('/api/photos/likes', {photo_id: photoId, like: false}) // this api request goes to photoRouter
       .then(function(response) {  // this reponse AppActions to fire an action type
-
-
-
-        
-        console.log('response from sending an UNlike to DB: ', response);
         AppActions.receivePhotoLike(response);
       })
       .catch(function(error) {
@@ -197,7 +196,6 @@ module.exports = {
       })
       .catch(function(error) {
         // not found
-        console.log('not found?: ',error);
       });
   }
 };

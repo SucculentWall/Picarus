@@ -22,18 +22,15 @@ var _toggleCommentDisplay = function(id) {
 var _toggleModal = function(id) {
   var modal = _modalDisplay[id] || false;
   _modalDisplay[id] = !modal;
-  // console.log('modal toggle display toggled FROM ', modal, ' TO ', _modalDisplay[id]);
 };
 
 var _receiveAllPhotoLikes = function(joinData) {
-  console.log('coming in join data: ', joinData);
   // joinData is an array of objects
   _likeLog = {};
   for (var i = 0; i < joinData.length; i++) {
     var obj = joinData[i];
     _likeLog[obj.photo_id] = true; 
   }
-  console.log('this is like_log: ', _likeLog);
 };
 
 var _receivePhotos = function(photos) {
@@ -51,7 +48,6 @@ var _receiveSearchRequests = function(requests) {
 };
 
 var _updatePhotoLikes = function(data) {
-  console.log('this is data passed to Gall: ', data);
   var likeOrUnlike = data.config.data.like; // true or false
   var photoId = data.data.id;
   // if was a like
@@ -72,7 +68,6 @@ var _receiveTags = function(tagsArray) {
 var GalleryStore = assign({},EventEmitter.prototype, {
 
   getAllPhotos: function() {
-    console.log('this is photoList from galleryStore: ', _photoList);
     return _photoList;
   },
 
@@ -96,7 +91,6 @@ var GalleryStore = assign({},EventEmitter.prototype, {
   },
 
   getLikes: function(id) {
-    console.log('this is photoList from galleryStore: ', _photoList);
     if (_photoList[id]){
       return _photoList[id].likes;
     }
@@ -104,17 +98,14 @@ var GalleryStore = assign({},EventEmitter.prototype, {
   },
 
   getPhotoLikeStatus: function(photo_id) {
-    console.log('da like log: ', _likeLog);
     // check photos_users
     if (Object.keys(_likeLog).length === 0) {
-      console.log('zero likes!'); 
       return true;
     }
     if (_likeLog[photo_id] === undefined) {
       // this is how we try to init unliked
       return true;
     } else {
-      console.log('this doesn\'t run?');
       return false;
     }
   },
@@ -156,7 +147,7 @@ GalleryStore.dispatchToken = AppDispatcher.register(function(action) {
       GalleryStore.emitChange();
       break;
 
-    case AppConstants.TOGGLE_REQUEST_PHOTO:
+    case AppConstants.TOGGLE_MODAL_PHOTO:
       _toggleModal(action.data);
       GalleryStore.emitChange();
       break;

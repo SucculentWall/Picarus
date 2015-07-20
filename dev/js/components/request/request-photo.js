@@ -16,6 +16,10 @@ var getPhotoComments = function(id){
   return {photoComments: RequestStore.getComment(id) || []};
 };
 
+var getNumComments = function(id){
+  return RequestStore.getNumComments(id) || 0;
+};
+
 var getToggleState = function(id){
   // console.log('getToggleState getting from request store: ', RequestStore.getDisplayToggle(id) );
   return { // {showCommentEntry: , showModal: }
@@ -46,13 +50,12 @@ var Photo = React.createClass({
 
     // likes
     stateObj.likes = getPhotoLikes(this.props.data.id);
-    // hold 'unlicked' className to toggle on click
-    // console.log('checking....: ',checkLiked(this.props.data.id));
-    stateObj.unclicked = checkLiked(this.props.data.id); // NOTE: this needs to be based on db truth (has this user liked this photo) join table time 
-    console.log('initialing unlicked: ', stateObj.unclicked);
+    // based on db truth (has this user liked this photo) from join table  
+    stateObj.unclicked = checkLiked(this.props.data.id); 
+    // number of comments
+    stateObj.numComments = getNumComments(this.props.data.id);
     return stateObj;
   },
-
 
   close: function (){
     AppActions.toggleRequestPhotoModal(this.props.data.id);
@@ -67,13 +70,12 @@ var Photo = React.createClass({
   _openComments: function () {
     // console.log('_openComments, what is this: ', this);
     AppActions.loadComments(this.props.data.id);
-    AppActions.toggleCommentDisplay(this.props.data.id);
+    AppActions.toggleRequestCommentDisplay(this.props.data.id);
   },
 
   // click, this needs to change the store so a re-render happens (unclicked is not being reset for some reason)
   _likeOrUnlike: function() {
     // console.log('current state! : ', this.state.unclicked)
-    console.log('liked photo_id: ', this.props.data.id);
     if (this.state.unclicked === true) {
       // increment
       AppActions.likePhoto(this.props.data.id);
@@ -87,29 +89,24 @@ var Photo = React.createClass({
   // change callbacks
   _onLikeOrUnlike: function() {
     // AppActions.getPhotoLikes(currUserId, RequestStore.getPhotos());
-
-    this.setState({unclicked: checkLiked(this.props.data.id)});
-    this.setState({likes: getPhotoLikes(this.props.data.id)});
+    if (this.isMounted()){
+      this.setState({unclicked: checkLiked(this.props.data.id)});
+      this.setState({likes: getPhotoLikes(this.props.data.id)});
+    }
   },
 
   _onChange: function () {
+
     // console.log('change triggered on photo');
     if (this.isMounted()) { 
       this.setState(getPhotoComments(this.props.data.id));
       this.setState(getToggleState(this.props.data.id)); 
+      this.setState({numComments: getNumComments(this.props.data.id)});
     }
-    // console.log('current state stuff: ', this.state);
   },
 
   _onLog: function () {
     this.setState({loggedIn: AuthStore.loggedIn()});
-  },
-
-  statics: {
-    willTransitionTo: function(transition, params, element) {
-      // pass in current user and all the photos on this current request page
-      AppActions.getPhotoLikes(currUserId, RequestStore.getPhotos());
-    }
   },
   
   componentDidMount: function() {
@@ -118,7 +115,14 @@ var Photo = React.createClass({
     AuthStore.addChangeListener(this._onLog);
 
     AppActions.getPhotoLikes(currUserId, RequestStore.getPhotos());
+    AppActions.loadComments(this.props.data.id);
   },
+
+  // componentDidUpdate: function(){
+  //   console.log('is firing');
+  //   AppActions.getPhotoLikes(currUserId, RequestStore.getPhotos());
+  //   AppActions.loadComments(this.props.data.id);
+  // },
 
   componentWillUnmount: function() {
     // console.log('unmounting ', this.props.data.id);
@@ -138,7 +142,7 @@ var Photo = React.createClass({
     commentsList.push(loggedInSign);
     comments = (
       <div>
-        <span className="comment-slider" onClick={this._openComments}>Comments</span>
+        <span className="comment-slider" onClick={this._openComments}> {this.state.numComments} Comments</span>
         <ul>
           { this.state.showCommentEntry ? {commentsList} : null}
         </ul>

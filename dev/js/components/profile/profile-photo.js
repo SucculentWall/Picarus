@@ -2,12 +2,15 @@ var React = require('react');
 
 var AppActions = require('../../actions/app-actions');
 var RequestStore = require('../../stores/app-requestStore');
+var UserStore = require('../../stores/app-userStore');
 var PhotoComment = require('../request/request-photoComment');
 var MakeComment = require('../request/request-makeComment');
 var AuthStore = require('../../stores/app-authStore');
 var Modal = require('react-bootstrap').Modal;
 
 var photoComments, comments, numTemplates;
+
+var currUserId = AuthStore.getId();
 
 var photoTemplateClasses = [
   //column layout for 1st row of photos (adds up to 12)
@@ -25,47 +28,127 @@ var photoTemplateClasses = [
   //layouts repeat
 ];
 
+
 var getPhotoComments = function(id){
   return {photoComments: RequestStore.getComment(id)};
 };
+
+var getPhotoLikes = function(id){
+  var profilePagePhotoLikes = UserStore.getLikes(id);
+  return profilePagePhotoLikes;
+};
+
+var getNumComments = function(id){
+  return RequestStore.getNumComments(id) || 0;
+};
+
+var getToggleState = function(id){
+  return { // {showCommentEntry: , showModal: }
+    showCommentEntry : UserStore.getDisplayToggle(id).showCommentEntry || false,
+    showModal : UserStore.getDisplayToggle(id).showModal || false
+  };
+};
+
+var checkLiked = function(id){
+  return UserStore.getPhotoLikeStatus(id);
+};
+
 
 var ProfilePhoto = React.createClass({
   
   getInitialState: function(){
     var stateObj = getPhotoComments(this.props.data.id);
     stateObj.loggedIn = AuthStore.loggedIn();
-    stateObj.showCommentEntry = false;
-    stateObj.showModal = false;
+    stateObj.showCommentEntry = getToggleState(this.props.data.id).showCommentEntry;
+    stateObj.showModal = getToggleState(this.props.data.id).showModal;
+
+    stateObj.likes = getPhotoLikes(this.props.data.id);
+    stateObj.unclicked = checkLiked(this.props.data.id);
+    stateObj.numComments = getNumComments(this.props.data.id);
+
     return stateObj;
   },
 
   close: function (){
-    this.setState({ showModal: false });
+    AppActions.togglePhotoModal(this.props.data.id);
+    // this.setState({ showModal: false });
   },
 
   open: function (){
-    this.setState({ showModal: true });
+    AppActions.togglePhotoModal(this.props.data.id);
+    // this.setState({ showModal: true });
   },
 
   _onClick: function () {
     AppActions.loadComments(this.props.data.id);
-    this.setState({showCommentEntry: !this.state.showCommentEntry});
+    AppActions.toggleCommentDisplay(this.props.data.id);
+
+    // this.setState({showCommentEntry: !this.state.showCommentEntry});
+  },
+
+  _likeOrUnlike: function() {
+    this.setState({unclicked: !this.state.unclicked});
+    if (this.state.unclicked === true) {
+      // increment
+      AppActions.likePhoto(this.props.data.id);
+    } else {
+      // decrement
+      AppActions.unlikePhoto(this.props.data.id);
+    }
+  },
+
+  _onLikeOrUnlike: function() {
+    if (this.isMounted()){
+      this.setState({likes: getPhotoLikes(this.props.data.id)});
+      this.setState({unclicked: checkLiked(this.props.data.id)});
+    }
   },
 
   _onChange: function () {
-    this.setState(getPhotoComments(this.props.data.id));
+    if (this.isMounted()){
+      this.setState(getPhotoComments(this.props.data.id));
+      this.setState(getToggleState(this.props.data.id)); 
+
+      this.setState({unclicked: checkLiked(this.props.data.id)});
+      this.setState({numComments: getNumComments(this.props.data.id)});
+    }
   },
 
   _onLog: function () {
     this.setState({loggedIn: AuthStore.loggedIn()});
   },
 
+  statics: {
+    willTransitionTo: function(transition, params, element) {
+      // pass in current user and all the photos on this current request page
+      AppActions.getPhotoLikes(currUserId);
+      AppActions.loadComments(this.props.data.id);
+    }
+  },
+
   componentDidMount: function() {
+    UserStore.addChangeListener(this._onChange);
+    UserStore.addChangeListener(this._onLikeOrUnlike);
+
     RequestStore.addChangeListener(this._onChange);
     AuthStore.addChangeListener(this._onLog);
+
+    AppActions.loadComments(this.props.data.id);
+    AppActions.getPhotoLikes(currUserId);
   },
 
   componentWillUnmount: function() {
+    // set states to false when going to new page
+    if (this.state.showModal){
+      AppActions.togglePhotoModal(this.props.data.id);
+    }
+    if (this.state.showCommentEntry) {
+      AppActions.toggleCommentDisplay(this.props.data.id);
+    }
+    
+    UserStore.removeChangeListener(this._onChange);
+    UserStore.removeChangeListener(this._onLikeOrUnlike);
+
     RequestStore.removeChangeListener(this._onChange);
     AuthStore.removeChangeListener(this._onLog);
   },
@@ -78,11 +161,20 @@ var ProfilePhoto = React.createClass({
     }
     comments = (
       <div>
-        <p onClick={this._onClick}>Comments</p>
+        <p onClick={this._onClick}> {this.state.numComments} Comments</p>
         <ul>
           { this.state.showCommentEntry ? {photoComments} : null}
           { this.state.showCommentEntry && this.state.loggedIn ? <MakeComment data={this.props.data}/> : null }
         </ul>
+      </div>
+    );
+    heart = (
+      <div className = {this.state.unclicked ? 'glyphicon glyphicon-heart unclicked' : 'glyphicon glyphicon-heart'} onClick={this._likeOrUnlike}></div>
+    );
+    likes = (
+      <div className='likes'>
+        <span> {this.state.likes} likes </span>
+        {this.state.loggedIn ? {heart} : null}
       </div>
     );
     return (
@@ -97,6 +189,7 @@ var ProfilePhoto = React.createClass({
           <Modal.Footer>
             <span className='modal-description'>{this.props.data.description}</span>
             <a href={'/photos/' + this.props.data.filename} target='_blank'>Full image</a>
+            {likes}
             {comments}
           </Modal.Footer>
         </Modal>

@@ -10,6 +10,54 @@ var _user = {
   photos: []
 };
 
+// likes
+var _commentDisplay = {}; // photo_ids are keys
+var _modalDisplay = {}; // eg photo_id: true
+
+// whether or not the current user has already liked (photo_id : true)
+var _likeLog = {};
+
+var _toggleCommentDisplay = function(id) {
+  var display = _commentDisplay[id] || false; 
+  _commentDisplay[id] = !display;
+};
+
+var _toggleModal = function(id) {
+  var modal = _modalDisplay[id] || false;
+  _modalDisplay[id] = !modal;
+  // console.log('modal toggle display toggled FROM ', modal, ' TO ', _modalDisplay[id]);
+};
+
+var _receiveAllPhotoLikes = function(joinData) {
+  // joinData is an array of objects
+  _likeLog = {};
+  for (var i = 0; i < joinData.length; i++) {
+    var obj = joinData[i];
+    _likeLog[obj.photo_id] = true; 
+  }
+};
+
+var _updatePhotoLikes = function(data) {
+  var likeOrUnlike = data.config.data.like; // true or false
+  var photoId = data.data.id;
+  // if was a like
+  if (likeOrUnlike) {
+    // put in log
+    _likeLog[photoId] = true;
+  } else {
+    // remove from log
+    delete _likeLog[photoId];
+  }
+
+  // replace the photo stats
+  for (var i = 0; i < _user.photos.length; i++) {
+    var aPhoto = _user.photos[i];
+    if (aPhoto.id === photoId) {
+      _user.photos[i] = data.data;
+    }    
+  }
+};
+
 var _receiveProfileInfo = function(data) {
   _user = data;
 };
@@ -73,6 +121,36 @@ var UserStore = assign({},EventEmitter.prototype, {
     return _user.photos;
   },
 
+  getLikes: function(id){
+    for (var i = 0; i < _user.photos.length; i++) {
+      var aPhoto = _user.photos[i];
+      if (aPhoto.id === id) {
+        return aPhoto.likes;
+      }    
+    } 
+    return 0;
+  },
+
+  getPhotoLikeStatus: function(photo_id) {
+    // check photos_users
+    if (Object.keys(_likeLog).length === 0) {
+      return true;
+    }
+    if (_likeLog[photo_id] === undefined) {
+      // this is how we try to init unliked
+      return true;
+    } else {
+      return false;
+    }
+  },
+
+  getDisplayToggle: function(id){
+    return {
+      showCommentEntry: _commentDisplay[id],
+      showModal: _modalDisplay[id]
+    }
+  },
+
   getAvatar: function() {
     return _user.avatar;
   },
@@ -133,6 +211,30 @@ UserStore.dispatchToken = AppDispatcher.register(function(action) {
         _receivePhoto(action.data);
         UserStore.emitChange();        
       }
+      break;
+
+    // Comment toggle
+    case AppConstants.TOGGLE_COMMENT:
+      _toggleCommentDisplay(action.data);
+      UserStore.emitChange();
+      break;
+
+    // Modal toggle  
+    case AppConstants.TOGGLE_MODAL_PHOTO:
+      _toggleModal(action.data);
+      UserStore.emitChange();
+      break;
+
+    // liked a photo  
+    case AppConstants.LIKE_PHOTO:
+      _updatePhotoLikes(action.data);
+      UserStore.emitChange();
+      break;
+
+    // load likes of photos into _likeLog
+    case AppConstants.RECEIVE_PHOTO_LIKES:
+      _receiveAllPhotoLikes(action.data.data);
+      UserStore.emitChange();
       break;
 
     default:

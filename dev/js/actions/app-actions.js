@@ -87,6 +87,13 @@ module.exports = {
     dbUtils.addAvatar(photo, user_id);
   },
 
+  toggleRequestCommentDisplay: function(id){
+    AppDispatcher.dispatch({
+      type: AppConstants.TOGGLE_COMMENT_REQUEST,
+      data: id
+    });
+  },
+
   toggleCommentDisplay: function(id){
     AppDispatcher.dispatch({
       type: AppConstants.TOGGLE_COMMENT,
@@ -97,6 +104,13 @@ module.exports = {
   toggleRequestPhotoModal: function(id){
     AppDispatcher.dispatch({
       type: AppConstants.TOGGLE_REQUEST_PHOTO,
+      data: id
+    });
+  },
+
+  togglePhotoModal: function(id){
+    AppDispatcher.dispatch({
+      type: AppConstants.TOGGLE_MODAL_PHOTO,
       data: id
     });
   },
@@ -153,7 +167,6 @@ module.exports = {
   },
 
   receivePhotoLike: function(data) {
-    console.log('after db processed like action: ', data);
     AppDispatcher.dispatch({
       type: AppConstants.LIKE_PHOTO,
       data: data
