@@ -50,14 +50,13 @@ var SelectedRequest = React.createClass({
     RequestStore.addChangeListener(this._onChange);
     AuthStore.addChangeListener(this._onLog);
     AppActions.pickRequest(this.props.params.requestId);
-
-    // needs to load all the comments for each picture on that request also
-    
   },
+
   componentWillUnmount: function() {
     RequestStore.removeChangeListener(this._onChange);
     AuthStore.removeChangeListener(this._onLog);
   },
+  
   render: function(){
     var photosList = [];
     var photos = this.state.photos;

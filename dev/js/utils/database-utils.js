@@ -172,7 +172,7 @@ module.exports = {
         AppActions.receiveProfileInfo(response.data);
       })
       .catch(function(error) {
-        console.log(error);
+        console.log('dispatching in the middle: ',error);
       });
   },
 

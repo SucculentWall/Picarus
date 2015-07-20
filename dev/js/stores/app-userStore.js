@@ -182,6 +182,8 @@ UserStore.dispatchToken = AppDispatcher.register(function(action) {
 
     case AppConstants.RECEIVE_PROFILE_INFO:
       _receiveProfileInfo(action.data);
+
+
       UserStore.emitChange();
       break;
 

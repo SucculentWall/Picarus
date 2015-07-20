@@ -144,11 +144,13 @@ GalleryStore.dispatchToken = AppDispatcher.register(function(action) {
 
     case AppConstants.TOGGLE_COMMENT:
       _toggleCommentDisplay(action.data);
+
       GalleryStore.emitChange();
       break;
 
     case AppConstants.TOGGLE_MODAL_PHOTO:
       _toggleModal(action.data);
+
       GalleryStore.emitChange();
       break;
 
