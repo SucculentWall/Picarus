@@ -167,19 +167,19 @@ var Photo = React.createClass({
             <Modal.Title modalClassName='modal-title'>Submitted by: <Link to='user' params={{user_id: this.props.data.user_id}} >{this.props.data.username}</Link></Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <img className='request-photo' src={'/photos/' + this.props.data.filename} />
+            <img className='request-photo' src={'https://s3-us-west-1.amazonaws.com/picarus/' + this.props.data.filename} />
           </Modal.Body>
           {/* Modal.Footer includes the comments */}
           <Modal.Footer>
             <span className='modal-description'>{this.props.data.description}</span>
-            <a href={'/photos/' + this.props.data.filename} target='_blank'>Full image</a>
+            <a href={'https://s3-us-west-1.amazonaws.com/picarus/' + this.props.data.filename} target='_blank'>Full image</a>
             {likes}
             {comments}
           </Modal.Footer>
         </Modal>
 
         <div className='request-photo'>
-          <img onClick={this.open} className='request-photo' src={'/photos/' + this.props.data.filename} />
+          <img onClick={this.open} className='request-photo' src={'https://s3-us-west-1.amazonaws.com/picarus/' + this.props.data.filename} />
         </div>
         <span className="description">{this.props.data.description}</span>
         <span className='photo-username'>Submitted by: <Link to='user' params={{user_id: this.props.data.user_id}} >{this.props.data.username}</Link></span>

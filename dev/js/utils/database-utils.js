@@ -78,14 +78,16 @@ module.exports = {
       });
   },
 
-  addPhoto: function(photo, username, request_id, tags, description) {
+  addPhoto: function(photo, username, request_id, tags, description, size) {
     var context = this;
     var data = new FormData();
     data.append('username', username);
     data.append('request_id', request_id);
-    data.append('photo', photo);
     data.append('tags', JSON.stringify(tags));
     data.append('description', description);
+    data.append('size', size);
+    data.append('photo', photo);
+    console.log('DATA FROM DBUTILS: ', data);
     axios.post('/api/photos', data)
       .then(function(response) {
         // no longer need to requery (socket emit will trigger it)
@@ -190,11 +192,12 @@ module.exports = {
       });
   },
 
-  addAvatar: function(photo, user_id) {
+  addAvatar: function(photo, user_id, size) {
     var context = this;
     var data = new FormData();
-    data.append('photo', photo);
+    data.append('size', size);
     data.append('user_id', user_id);
+    data.append('photo', photo);
     axios.post('/api/users/avatars', data)
       .then(function(response) {
       })

@@ -6,7 +6,7 @@ var gulp = require('gulp'),
   minifyCSS = require('gulp-minify-css'),
   plumber = require('gulp-plumber'),
   livereload = require('gulp-livereload'),
-  imagemin = require('gulp-imagemin'),
+  // imagemin = require('gulp-imagemin'),
   prefix = require('gulp-autoprefixer'),
   rename = require('gulp-rename'),
   runSequence = require('run-sequence'),
@@ -65,7 +65,7 @@ gulp.task('styles', function () {
 //Images: Compress
 gulp.task('images', function () {
   gulp.src('img/*')
-    .pipe(imagemin())
+    // .pipe(imagemin())
     .pipe(gulp.dest('dist/img'));
 });
 

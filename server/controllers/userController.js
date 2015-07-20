@@ -21,8 +21,14 @@ var inspect = require('util').inspect;
 // brew install graphicsmagick
 
 var gulp = require('gulp');
-var imagemin = require('gulp-imagemin');
-var imageResize = require('gulp-image-resize');
+// var imagemin = require('gulp-imagemin');
+// var imageResize = require('gulp-image-resize');
+
+// AWS S3 photo storage
+var aws = require('aws-sdk');
+aws.config.loadFromPath('./AWSConfig.json');
+
+var s3 = new aws.S3();
 
 module.exports = {
   addUser: function (req, res, next) {
@@ -84,21 +90,33 @@ module.exports = {
       //   var output = gfs.createWriteStream({filename: data.filename});
       //   filestream.pipe(output);
       // });
-      var output = fs.createWriteStream('dist/img/' + data.filename);
-      filestream.pipe(output);
+
+      // var output = fs.createWriteStream('dist/img/' + data.filename);
+      // filestream.pipe(output);
+      filestream.length = +data.size;
+
+      s3.putObject({
+        ACL: 'public-read',
+        Bucket: 'picarus',
+        Key: data.filename,
+        Body: filestream,
+        ContentType: 'image/jpg'
+      }, function(error, response) {
+        console.log('uploaded profile avatar file[' + data.filename + '] to [' + data.filename + '] as image/jpg');
+        console.log(arguments);
+      });
     });
 
     busboy.on('finish', function () {
-
-      gulp.src('dist/img/' + data.filename)
-        .pipe(imagemin())
-        .pipe(gulp.dest('dist/img'))
-        .pipe(imageResize({
-          width: 150,
-          height: 150,
-          crop: true
-        }))
-        .pipe(gulp.dest('dist/img'));
+      // gulp.src('dist/img/' + data.filename)
+      //   // .pipe(imagemin())
+      //   .pipe(gulp.dest('dist/img'))
+      //   // .pipe(imageResize({
+      //   //   width: 150,
+      //   //   height: 150,
+      //   //   crop: true
+      //   // }))
+      //   .pipe(gulp.dest('dist/img'));
 
       new User({
           id: data.user_id
