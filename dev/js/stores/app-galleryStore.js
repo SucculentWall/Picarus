@@ -22,7 +22,7 @@ var _toggleCommentDisplay = function(id) {
 var _toggleModal = function(id) {
   var modal = _modalDisplay[id] || false;
   _modalDisplay[id] = !modal;
-  // console.log('modal toggle display toggled FROM ', modal, ' TO ', _modalDisplay[id]);
+  console.log('modal toggle display toggled FROM ', modal, ' TO ', _modalDisplay[id]);
 };
 
 var _receiveAllPhotoLikes = function(joinData) {
@@ -33,7 +33,6 @@ var _receiveAllPhotoLikes = function(joinData) {
     var obj = joinData[i];
     _likeLog[obj.photo_id] = true; 
   }
-  console.log('this is like_log: ', _likeLog);
 };
 
 var _receivePhotos = function(photos) {
@@ -153,7 +152,7 @@ GalleryStore.dispatchToken = AppDispatcher.register(function(action) {
       GalleryStore.emitChange();
       break;
 
-    case AppConstants.TOGGLE_REQUEST_PHOTO:
+    case AppConstants.TOGGLE_MODAL_PHOTO:
       _toggleModal(action.data);
       GalleryStore.emitChange();
       break;

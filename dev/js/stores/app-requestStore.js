@@ -188,7 +188,7 @@ RequestStore.dispatchToken = AppDispatcher.register(function(action) {
       RequestStore.emitChange();        
       break;
 
-    case AppConstants.TOGGLE_COMMENT:
+    case AppConstants.TOGGLE_COMMENT_REQUEST:
       _toggleCommentDisplay(action.data);
       RequestStore.emitChange();
       break;
@@ -197,7 +197,6 @@ RequestStore.dispatchToken = AppDispatcher.register(function(action) {
       _toggleModal(action.data);
       RequestStore.emitChange();
       break;
-
 
     case AppConstants.LIKE_PHOTO:
       _receiveNewLike(action.data);

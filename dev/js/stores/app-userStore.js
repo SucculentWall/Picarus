@@ -59,7 +59,6 @@ var _updatePhotoLikes = function(data) {
     }    
   }
 };
-////////////
 
 var _receiveProfileInfo = function(data) {
   _user = data;
@@ -224,14 +223,13 @@ UserStore.dispatchToken = AppDispatcher.register(function(action) {
       break;
 
     // Modal toggle  
-    case AppConstants.TOGGLE_REQUEST_PHOTO:
+    case AppConstants.TOGGLE_MODAL_PHOTO:
       _toggleModal(action.data);
       UserStore.emitChange();
       break;
 
     // liked a photo  
     case AppConstants.LIKE_PHOTO:
-      console.log('photo store received: ', action.data);
       _updatePhotoLikes(action.data);
       UserStore.emitChange();
       break;

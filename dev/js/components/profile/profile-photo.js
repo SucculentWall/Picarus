@@ -71,16 +71,20 @@ var ProfilePhoto = React.createClass({
   },
 
   close: function (){
-    this.setState({ showModal: false });
+    AppActions.togglePhotoModal(this.props.data.id);
+    // this.setState({ showModal: false });
   },
 
   open: function (){
-    this.setState({ showModal: true });
+    AppActions.togglePhotoModal(this.props.data.id);
+    // this.setState({ showModal: true });
   },
 
   _onClick: function () {
     AppActions.loadComments(this.props.data.id);
-    this.setState({showCommentEntry: !this.state.showCommentEntry});
+    AppActions.toggleCommentDisplay(this.props.data.id);
+
+    // this.setState({showCommentEntry: !this.state.showCommentEntry});
   },
 
   _likeOrUnlike: function() {
@@ -106,6 +110,8 @@ var ProfilePhoto = React.createClass({
   _onChange: function () {
     if (this.isMounted()){
       this.setState(getPhotoComments(this.props.data.id));
+      this.setState(getToggleState(this.props.data.id)); 
+
       this.setState({unclicked: checkLiked(this.props.data.id)});
       this.setState({numComments: getNumComments(this.props.data.id)});
     }
@@ -135,6 +141,14 @@ var ProfilePhoto = React.createClass({
   },
 
   componentWillUnmount: function() {
+    // set states to false when going to new page
+    if (this.state.showModal){
+      AppActions.togglePhotoModal(this.props.data.id);
+    }
+    if (this.state.showCommentEntry) {
+      AppActions.toggleCommentDisplay(this.props.data.id);
+    }
+    
     UserStore.removeChangeListener(this._onChange);
     UserStore.removeChangeListener(this._onLikeOrUnlike);
 

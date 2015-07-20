@@ -35,7 +35,6 @@ var getPhotoComments = function(id){
 
 var getPhotoLikes = function(id){
   var galleryPhotoLikes = GalleryStore.getLikes(id);
-  console.log('photo likes from this photo on gallery: ', galleryPhotoLikes);
   return galleryPhotoLikes;
 };
 
@@ -68,16 +67,20 @@ var GalleryPhoto = React.createClass({
   },
 
   close: function (){
-    this.setState({ showModal: false });
+    AppActions.togglePhotoModal(this.props.data.id);
+    // this.setState({ showModal: false });
   },
 
   open: function (){
-    this.setState({ showModal: true });
+    AppActions.togglePhotoModal(this.props.data.id);
+    // this.setState({ showModal: true });
   },
 
   _onClick: function () {
     AppActions.loadComments(this.props.data.id);
-    this.setState({showCommentEntry: !this.state.showCommentEntry});
+    AppActions.toggleCommentDisplay(this.props.data.id);
+
+    // this.setState({showCommentEntry: !this.state.showCommentEntry});
   },
 
   _likeOrUnlike: function() {
@@ -105,6 +108,8 @@ var GalleryPhoto = React.createClass({
     // console.log('change triggered on photo');
     if (this.isMounted()){
       this.setState(getPhotoComments(this.props.data.id));
+      this.setState(getToggleState(this.props.data.id)); 
+
       this.setState({unclicked: checkLiked(this.props.data.id)});
       this.setState({numComments: getNumComments(this.props.data.id)});
     }
@@ -125,6 +130,8 @@ var GalleryPhoto = React.createClass({
   componentDidMount: function() {
     RequestStore.addChangeListener(this._onChange);
     GalleryStore.addChangeListener(this._onLikeOrUnlike);
+    GalleryStore.addChangeListener(this._onChange);
+
     AuthStore.addChangeListener(this._onLog);
 
     AppActions.getPhotoLikes(currUserId);
@@ -132,8 +139,17 @@ var GalleryPhoto = React.createClass({
   },
 
   componentWillUnmount: function() {
+    // set states to false when going to new page
+    if (this.state.showModal){
+      AppActions.togglePhotoModal(this.props.data.id);
+    }
+    if (this.state.showCommentEntry) {
+      AppActions.toggleCommentDisplay(this.props.data.id);
+    }
+    
     RequestStore.removeChangeListener(this._onChange);
     GalleryStore.removeChangeListener(this._onLikeOrUnlike);
+    GalleryStore.removeChangeListener(this._onChange);
     AuthStore.removeChangeListener(this._onLog);
   },
 

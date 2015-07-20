@@ -70,7 +70,7 @@ var Photo = React.createClass({
   _openComments: function () {
     // console.log('_openComments, what is this: ', this);
     AppActions.loadComments(this.props.data.id);
-    AppActions.toggleCommentDisplay(this.props.data.id);
+    AppActions.toggleRequestCommentDisplay(this.props.data.id);
   },
 
   // click, this needs to change the store so a re-render happens (unclicked is not being reset for some reason)
