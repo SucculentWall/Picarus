@@ -55,7 +55,7 @@ var _updatePhotoLikes = function(data) {
   for (var i = 0; i < _user.photos.length; i++) {
     var aPhoto = _user.photos[i];
     if (aPhoto.id === photoId) {
-      user.photos[i] = data.data;
+      _user.photos[i] = data.data;
     }    
   }
 };
@@ -127,11 +127,25 @@ var UserStore = assign({},EventEmitter.prototype, {
   getLikes: function(id){
     for (var i = 0; i < _user.photos.length; i++) {
       var aPhoto = _user.photos[i];
-      if (aPhoto.id === photoId) {
+      if (aPhoto.id === id) {
         return aPhoto.likes;
       }    
     } 
     return 0;
+  },
+
+  getPhotoLikeStatus: function(photo_id) {
+    // check photos_users
+    if (Object.keys(_likeLog).length === 0) {
+      console.log('zero likes!'); 
+      return true;
+    }
+    if (_likeLog[photo_id] === undefined) {
+      // this is how we try to init unliked
+      return true;
+    } else {
+      return false;
+    }
   },
 
   getDisplayToggle: function(id){
@@ -201,6 +215,31 @@ UserStore.dispatchToken = AppDispatcher.register(function(action) {
         _receivePhoto(action.data);
         UserStore.emitChange();        
       }
+      break;
+
+    // Comment toggle
+    case AppConstants.TOGGLE_COMMENT:
+      _toggleCommentDisplay(action.data);
+      UserStore.emitChange();
+      break;
+
+    // Modal toggle  
+    case AppConstants.TOGGLE_REQUEST_PHOTO:
+      _toggleModal(action.data);
+      UserStore.emitChange();
+      break;
+
+    // liked a photo  
+    case AppConstants.LIKE_PHOTO:
+      console.log('photo store received: ', action.data);
+      _updatePhotoLikes(action.data);
+      UserStore.emitChange();
+      break;
+
+    // load likes of photos into _likeLog
+    case AppConstants.RECEIVE_PHOTO_LIKES:
+      _receiveAllPhotoLikes(action.data.data);
+      UserStore.emitChange();
       break;
 
     default:

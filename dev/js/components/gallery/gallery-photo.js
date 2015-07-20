@@ -90,9 +90,9 @@ var GalleryPhoto = React.createClass({
   },
 
   _onLikeOrUnlike: function() {
-    console.log('I fIRED');
+    // console.log('I fIRED');
     //AppActions.pickRequest(+this.props.data.requestId);
-    console.log('liked/unliked!');
+    // console.log('liked/unliked!');
     if (this.isMounted()){
       this.setState({likes: getPhotoLikes(this.props.data.id)});
       this.setState({unclicked: checkLiked(this.props.data.id)});
@@ -100,7 +100,7 @@ var GalleryPhoto = React.createClass({
   },
 
   _onChange: function () {
-    console.log('change triggered on photo');
+    // console.log('change triggered on photo');
     if (this.isMounted()){
       this.setState(getPhotoComments(this.props.data.id));
       this.setState({unclicked: checkLiked(this.props.data.id)});

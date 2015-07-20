@@ -10,6 +10,8 @@ var Modal = require('react-bootstrap').Modal;
 
 var photoComments, comments, numTemplates;
 
+var currUserId = AuthStore.getId();
+
 var photoTemplateClasses = [
   //column layout for 1st row of photos (adds up to 12)
   'col-xs-4',
@@ -33,7 +35,7 @@ var getPhotoComments = function(id){
 
 var getPhotoLikes = function(id){
   var profilePagePhotoLikes = UserStore.getLikes(id);
-  console.log('photo likes from this photo on gallery: ', galleryPhotoLikes);
+  console.log('photo likes from this photo on profile: ', profilePagePhotoLikes);
   return profilePagePhotoLikes;
 };
 
@@ -44,6 +46,11 @@ var getToggleState = function(id){
   };
 };
 
+var checkLiked = function(id){
+  return UserStore.getPhotoLikeStatus(id);
+};
+
+
 var ProfilePhoto = React.createClass({
   
   getInitialState: function(){
@@ -51,7 +58,9 @@ var ProfilePhoto = React.createClass({
     stateObj.loggedIn = AuthStore.loggedIn();
     stateObj.showCommentEntry = getToggleState(this.props.data.id).showCommentEntry;
     stateObj.showModal = getToggleState(this.props.data.id).showModal;
-    
+
+    stateObj.likes = getPhotoLikes(this.props.data.id);
+    stateObj.unclicked = checkLiked(this.props.data.id);
     return stateObj;
   },
 
@@ -68,20 +77,61 @@ var ProfilePhoto = React.createClass({
     this.setState({showCommentEntry: !this.state.showCommentEntry});
   },
 
+  _likeOrUnlike: function() {
+    this.setState({unclicked: !this.state.unclicked});
+    if (this.state.unclicked === true) {
+      // increment
+      console.log('liked!');
+      AppActions.likePhoto(this.props.data.id);
+    } else {
+      // decrement
+      console.log('unliked');
+      AppActions.unlikePhoto(this.props.data.id);
+    }
+  },
+
+  _onLikeOrUnlike: function() {
+    console.log('I fIRED');
+    //AppActions.pickRequest(+this.props.data.requestId);
+    // console.log('liked/unliked!');
+    if (this.isMounted()){
+      this.setState({likes: getPhotoLikes(this.props.data.id)});
+      this.setState({unclicked: checkLiked(this.props.data.id)});
+    }
+  },
+
   _onChange: function () {
-    this.setState(getPhotoComments(this.props.data.id));
+    if (this.isMounted()){
+      this.setState(getPhotoComments(this.props.data.id));
+      this.setState({unclicked: checkLiked(this.props.data.id)});
+    }
   },
 
   _onLog: function () {
     this.setState({loggedIn: AuthStore.loggedIn()});
   },
 
+  statics: {
+    willTransitionTo: function(transition, params, element) {
+      // pass in current user and all the photos on this current request page
+      AppActions.getPhotoLikes(currUserId);
+    }
+  },
+
   componentDidMount: function() {
+    UserStore.addChangeListener(this._onChange);
+    UserStore.addChangeListener(this._onLikeOrUnlike);
+
     RequestStore.addChangeListener(this._onChange);
     AuthStore.addChangeListener(this._onLog);
+
+    AppActions.getPhotoLikes(currUserId);
   },
 
   componentWillUnmount: function() {
+    UserStore.removeChangeListener(this._onChange);
+    UserStore.removeChangeListener(this._onLikeOrUnlike);
+
     RequestStore.removeChangeListener(this._onChange);
     AuthStore.removeChangeListener(this._onLog);
   },
@@ -101,6 +151,15 @@ var ProfilePhoto = React.createClass({
         </ul>
       </div>
     );
+    heart = (
+      <div className = {this.state.unclicked ? 'glyphicon glyphicon-heart unclicked' : 'glyphicon glyphicon-heart'} onClick={this._likeOrUnlike}></div>
+    );
+    likes = (
+      <div className='likes'>
+        <span> {this.state.likes} likes </span>
+        {this.state.loggedIn ? {heart} : null}
+      </div>
+    );
     return (
       <div className='photo'>
         <Modal show={this.state.showModal} onHide={this.close} dialogClassName='modalcontent'>
@@ -113,6 +172,7 @@ var ProfilePhoto = React.createClass({
           <Modal.Footer>
             <span className='modal-description'>{this.props.data.description}</span>
             <a href={'/photos/' + this.props.data.filename} target='_blank'>Full image</a>
+            {likes}
             {comments}
           </Modal.Footer>
         </Modal>

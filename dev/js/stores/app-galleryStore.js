@@ -103,7 +103,6 @@ var GalleryStore = assign({},EventEmitter.prototype, {
   },
 
   getPhotoLikeStatus: function(photo_id) {
-    console.log('da like log: ', _likeLog);
     // check photos_users
     if (Object.keys(_likeLog).length === 0) {
       console.log('zero likes!'); 
@@ -113,7 +112,6 @@ var GalleryStore = assign({},EventEmitter.prototype, {
       // this is how we try to init unliked
       return true;
     } else {
-      console.log('this doesn\'t run?');
       return false;
     }
   },
