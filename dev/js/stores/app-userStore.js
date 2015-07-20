@@ -126,12 +126,7 @@ var UserStore = assign({},EventEmitter.prototype, {
   },
 
   getUserPhotos: function() {
-    var recentUserPhotos = [];
-    if (!_user.photos) return [];
-    for (var i = _user.photos.length-1; i >= 0; i--) {
-      recentUserPhotos.push(_user.photos[i]);
-    }
-    return recentUserPhotos;
+    return _user.photos;
   },
 
   getLikes: function(id){

@@ -57,50 +57,52 @@ var Profile = React.createClass({
   componentDidMount: function() {
     var user_id = this.props.params.user_id;
     AppActions.getProfileInfo(user_id);
-    AuthStore.addChangeListener(this._onLog);
     UserStore.addChangeListener(this._onChange);
+    AuthStore.addChangeListener(this._onLog);
   },
   componentWillUnmount: function() {
     UserStore.removeChangeListener(this._onChange);
     AuthStore.removeChangeListener(this._onLog);
   },
   render: function () {
-    if (!this.state.user_id) return (<div className = 'request col-xs-8 container'>User does not exist!</div>);
-    var i, j;
-    var profileRequests = [];
-    var profileComments = [];
-    var profilePhotos = [];
-    if (this.state.requests && this.state.comments && this.state.photos) {
-      for (i = 0; i < this.state.requests.length; i++) {
-        profileRequests.push(<ProfileRequest key={i} data={this.state.requests[i]} />);
+    var valid = function (data) {
+      var i, j;
+      var profileRequests = [];
+      var profileComments = [];
+      var profilePhotos = [];
+      for (i = 0; i < 5; i++) {
+        profileRequests.push(<ProfileRequest key={i} data={data.requests[i]} />);
+        profileComments.push(<ProfileComment key={i} data={data.comments[i]} />);
       }
-      for (i = 0; i < this.state.comments.length; i++) {
-        profileComments.push(<ProfileComment key={i} data={this.state.comments[i]} />);
+      for (i = 0; i < data.photos.length; i++) {
+        profilePhotos.push(<ProfilePhoto key={i} count={i} data={data.photos[i]} />);
       }
-      for (i = 0; i < this.state.photos.length; i++) {
-        profilePhotos.push(<ProfilePhoto key={i} count={i} data={this.state.photos[i]} />);
-      }
-    }
+      return (
+        <div>
+          <ProfileHeader data={data} />
+          <ProfileAvatar data={data} />
+          <h2 className='prof-cat'>Karma: {data.karma}</h2>
+          <div>
+            <h2 className='prof-cat'>Recent Requests: </h2>
+              {profileRequests}
+          </div>
+          <div>
+            <h2 className='prof-cat'>Recent Comments: </h2>
+              {profileComments}
+          </div>
+          <div>
+            <h2 className='prof-cat'>Uploaded Photos: </h2>
+              {profilePhotos}
+          </div>
+        </div>
+      );
+    };
 
     return (
       <div className = 'request col-xs-8 container'>
-        <ProfileHeader data={this.state} />
-        <ProfileAvatar data={this.state} />
-        <h2 className='prof-cat'>Karma: {this.state.karma}</h2>
-        <div>
-          <h2 className='prof-cat'>Recent Requests: </h2>
-            {profileRequests}
-        </div>
-        <div>
-          <h2 className='prof-cat'>Recent Comments: </h2>
-            {profileComments}
-        </div>
-        <div>
-          <h2 className='prof-cat'>Uploaded Photos: </h2>
-            {profilePhotos}
-        </div>
+        { this.state.user_id ? valid(this.state) : null }
       </div>
-    );
+      );
   }
 });
 
