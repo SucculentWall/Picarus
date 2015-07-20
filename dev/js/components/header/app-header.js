@@ -20,7 +20,10 @@ var Header = React.createClass({
   _onSubmit: function(e) {
     e.preventDefault();
     text = React.findDOMNode(this.refs.text).value;
-    this.transitionTo('search', {query: text});
+
+    if (text!==''){
+      this.transitionTo('search', {query: text});
+    }
     React.findDOMNode(this.refs.text).value = '';
   },
 
@@ -40,13 +43,12 @@ var Header = React.createClass({
     return (
       <div className = 'nav'>
         <Link to='/'><span id='logo'>Picarus</span></Link>
-        <form className="search-form" onSubmit={this._onSubmit}>
-          <input className="search-bar" ref="text" type="text" placeholder="Search for photos" />
-          <i className='glyphicon glyphicon-search search-submit' onClick={this._onSubmit}></i>
+        <form className="search-form" onSubmit={this._onSubmit} >
+          <input  className="search-bar" ref="text" type="text" placeholder="Search for photos" required/>
+          <i className='glyphicon glyphicon-search search-submit' onClick={this._onSubmit} required></i>
         </form>
         { AuthStore.getUsername() ? <Link to={'/user/' + AuthStore.getId()} paramstwo={{user_id: 3}} className='sign'>Hello, {AuthStore.getUsername()}! </Link> : null }
         <Link to='/' className='sign'>Gallery</Link>
-        { this.state.loggedIn ? <span className='sign' onClick={this._handleLogout}>Logout</span> : <Auth/> }
       </div>
     );
   }

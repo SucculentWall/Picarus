@@ -10,6 +10,10 @@ var io = require('../server.js');
 
 var Busboy = require('busboy');
 
+var aws = require('aws-sdk');
+aws.config.loadFromPath('./AWSConfig.json');
+
+var s3 = new aws.S3();
 //Mongoose setup
 // var mongoose = require('mongoose');
 // var Grid = require('gridfs-stream');
@@ -84,21 +88,37 @@ module.exports = {
       //   var output = gfs.createWriteStream({filename: data.filename});
       //   filestream.pipe(output);
       // });
-      var output = fs.createWriteStream('dist/img/' + data.filename);
-      filestream.pipe(output);
+
+      // var output = fs.createWriteStream('dist/img/' + data.filename);
+      // filestream.pipe(output);
+      filestream.length = +data.size;
+
+
+
+      s3.putObject({
+        ACL: 'public-read',
+        Bucket: 'picarus',
+        Key: data.filename,
+        Body: filestream,
+        ContentType: 'image/jpg'
+      }, function(error, response) {
+        console.log('uploaded profile avatar file[' + data.filename + '] to [' + data.filename + '] as image/jpg');
+        console.log(arguments);
+      });
+
     });
 
     busboy.on('finish', function () {
 
-      gulp.src('dist/img/' + data.filename)
-        .pipe(imagemin())
-        .pipe(gulp.dest('dist/img'))
-        .pipe(imageResize({
-          width: 150,
-          height: 150,
-          crop: true
-        }))
-        .pipe(gulp.dest('dist/img'));
+      // gulp.src('dist/img/' + data.filename)
+        // .pipe(imagemin())
+        // .pipe(gulp.dest('dist/img'))
+        // .pipe(imageResize({
+        //   width: 150,
+        //   height: 150,
+        //   crop: true
+        // }))
+        // .pipe(gulp.dest('dist/img'));
 
       new User({
           id: data.user_id
@@ -112,7 +132,8 @@ module.exports = {
               .set('avatar', data.filename)
               .save()
               .then(function (created) {
-                io.emit('updateAvatar', data.filename);
+                console.log(' this is data: ', data);
+                io.emit('updateAvatar', data.filename, data.user_id);
               });
             res.send('avatar added');
           }

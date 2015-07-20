@@ -24,11 +24,13 @@ window.checkLoginState = function () {
 
 window.fbAsyncInit = function() {
   FB.init({
-    appId      : '503701019795522',
+    // localhost appId : 503699336462357 (Icarus)
+    // the webApp : 846989622054922 (PicarusDeploy)
+    appId      : '846989622054922',
     cookie     : true,  // enable cookies to allow the server to access 
                         // the session
     xfbml      : true,  // parse social plugins on this page
-    version    : 'v2.3' // use version 2.3
+    version    : 'v2.4' // use version 2.3
   });
 
   // Now that we've initialized the JavaScript SDK, we call 

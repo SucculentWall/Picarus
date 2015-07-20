@@ -22,19 +22,6 @@ var ProfileAvatar = React.createClass({
     }
   },
 
-  _onSubmit: function(e){
-    e.preventDefault();
-    // photo from state
-    var photo = this.state.photo;
-    // user_id from data passed down
-    var user_id = this.props.data.user_id;
-    // action
-    AppActions.addAvatar(photo, user_id);
-    // clear file value
-    React.findDOMNode(this.refs.file).value = null;
-    this.setState({preview : null, showModal: false});
-  },
-
   _handleFile: function(e){
     var self = this;
     var reader = new FileReader();
@@ -47,11 +34,31 @@ var ProfileAvatar = React.createClass({
 
     // select the event target (the selected image file)
     var file = e.target.files[0];
+    var size = e.target.files[0].size;
+    
     // save to state
     this.setState({
-      photo: file
+      photo: file,
+      size: size
     });
   },
+
+  _onSubmit: function(e){
+    e.preventDefault();
+    // photo from state
+    var photo = this.state.photo;
+    // user_id from data passed down
+    var user_id = this.props.data.user_id;
+    // size
+    var size = this.state.size;
+    // action
+    AppActions.addAvatar(photo, user_id, size);
+    // clear file value
+    React.findDOMNode(this.refs.file).value = null;
+    this.setState({preview : null, showModal: false});
+  },
+
+
 
   render: function(){
     var self = function (data) {
@@ -69,19 +76,31 @@ var ProfileAvatar = React.createClass({
               </form>
             </Modal.Footer>
           </Modal>
-          { data.props.data.avatar === null ? null : <img className='avatar' onClick={data.open} src={'img/'+data.props.data.avatar}/>}
+          { data.props.data.avatar === null ? null : <img className='avatar' onClick={data.open} src={'https://s3-us-west-1.amazonaws.com/picarus/'+data.props.data.avatar}/>}
           <p>Click avatar to change</p>
         </div>
         );
     };
     var other = (
       <div>
-        { this.props.data.avatar === null ? null : <img className='avatar' src={'img/'+this.props.data.avatar}/>}
+        { this.props.data.avatar === null ? null : <img className='avatar' src={'https://s3-us-west-1.amazonaws.com/picarus/'+this.props.data.avatar}/>}
       </div>
     );
     return (
       <div>
       {this.props.data.user_id !== this.props.data.authId ? other : self(this) }
+        <Modal show={this.state.showModal} onHide={this.close}>
+          <Modal.Header closeButton>
+            <Modal.Title modalClassName='modal-title'>Change Avatar</Modal.Title>
+          </Modal.Header>
+          <Modal.Footer>
+            <form className='avatar-form' onSubmit={this._onSubmit} encType='multipart/form-data'>
+              {this.state.preview ? preview :null}
+              <input ref='file' type='file' onChange={this._handleFile} required />
+              <input type='submit' value='Change Avatar' />
+            </form>
+          </Modal.Footer>
+        </Modal>
       </div>
     );
   }

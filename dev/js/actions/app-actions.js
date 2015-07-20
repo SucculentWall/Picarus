@@ -52,9 +52,9 @@ module.exports = {
     dbUtils.getRequestsForSearch(query);
   },
 
-  addPhoto: function(photo, username, request_id, tags, description){
+  addPhoto: function(photo, username, request_id, tags, description, size){
     dbUtils = require('../utils/database-utils');
-    dbUtils.addPhoto(photo, username, request_id, tags, description);
+    dbUtils.addPhoto(photo, username, request_id, tags, description, size);
   },
 
   likePhoto: function(id) {
@@ -82,9 +82,9 @@ module.exports = {
     dbUtils.getComments(id);
   },
 
-  addAvatar: function(photo, user_id){
+  addAvatar: function(photo, user_id, size){
     dbUtils = require('../utils/database-utils');
-    dbUtils.addAvatar(photo, user_id);
+    dbUtils.addAvatar(photo, user_id, size);
   },
 
   toggleRequestCommentDisplay: function(id){

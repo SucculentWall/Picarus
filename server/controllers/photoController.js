@@ -11,6 +11,11 @@ var io = require('../server.js');
 
 var Busboy = require('busboy');
 
+var aws = require('aws-sdk');
+aws.config.loadFromPath('./AWSConfig.json');
+
+var s3 = new aws.S3();
+
 //Mongoose setup
 // var mongoose = require('mongoose');
 // var Grid = require('gridfs-stream');
@@ -50,20 +55,34 @@ module.exports = {
       //   var output = gfs.createWriteStream({filename: data.filename});
       //   filestream.pipe(output);
       // });
-      var output = fs.createWriteStream('photos/' + data.filename);
-      filestream.pipe(output);
+
+      // var output = fs.createWriteStream('photos/' + data.filename);
+      // filestream.pipe(output);
+      filestream.length = +data.size;
+
+      s3.putObject({
+        ACL: 'public-read',
+        Bucket: 'picarus',
+        Key: data.filename,
+        Body: filestream,
+        ContentType: 'image/jpg'
+      }, function(error, response) {
+        console.log('uploaded file[' + data.filename + '] to [' + data.filename + '] as image/jpg');
+        console.log(arguments);
+      });
+
     });
 
 
     busboy.on('finish', function () {
-      gulp.src('photos/' + data.filename)
-        .pipe(imagemin())
-        .pipe(gulp.dest('photos/small'))
-        .pipe(imageResize({
-          width: 500,
-          height: 500
-        }))
-        .pipe(gulp.dest('photos/small'));
+      // gulp.src('photos/' + data.filename)
+      //   .pipe(imagemin())
+      //   .pipe(gulp.dest('photos/small'))
+      //   .pipe(imageResize({
+      //     width: 400,
+      //     height: 400
+      //   }))
+      //   .pipe(gulp.dest('photos/small'));
 
       new User({
           username: data.username

@@ -190,17 +190,17 @@ var ProfilePhoto = React.createClass({
             <Modal.Title modalClassName='modal-title'>Submitted by: {this.props.data.username}</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <img className = 'requestphoto' src={'/photos/' + this.props.data.filename} />
+            <img className = 'requestphoto' src={'https://s3-us-west-1.amazonaws.com/picarus/' + this.props.data.filename} />
           </Modal.Body>
           <Modal.Footer>
             <span className='modal-description'>{this.props.data.description}</span>
-            <a href={'/photos/' + this.props.data.filename} target='_blank'>Full image</a>
+            <a href={'https://s3-us-west-1.amazonaws.com/picarus/' + this.props.data.filename} target='_blank'>Full image</a>
             {likes}
             {comments}
           </Modal.Footer>
         </Modal>
         <div>
-          <img onClick={this.open} className={'galleryphoto ' + photoTemplateClasses[this.props.count%numTemplates]} src={'/photos/small/' + this.props.data.filename} />
+          <img onClick={this.open} className={'galleryphoto ' + photoTemplateClasses[this.props.count%numTemplates]} src={'https://s3-us-west-1.amazonaws.com/picarus/' + this.props.data.filename} />
         </div>
       </div>
     );

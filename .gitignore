@@ -15,12 +15,14 @@ lib-cov
 # Coverage directory used by tools like istanbul
 coverage
 
-# Compiled Dirs (http://nodejs.org/api/addons.html)
-build/
-dist/
 
 # Photos folder
 photos/
+
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml
 
 # Dependency directorys
 # Deployed apps should consider commenting these lines out:
@@ -28,7 +30,9 @@ photos/
 node_modules/
 bower_components/
 
-# Elastic Beanstalk Files
-.elasticbeanstalk/*
-!.elasticbeanstalk/*.cfg.yml
-!.elasticbeanstalk/*.global.yml
+# AWS NOTE: ignore again before pushing to github
+AWSConfig.json
+
+# Compiled Dirs (http://nodejs.org/api/addons.html)
+build/
+dist/

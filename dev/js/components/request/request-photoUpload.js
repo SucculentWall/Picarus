@@ -7,6 +7,26 @@ var PhotoUpload = React.createClass({
   getInitialState: function() {
     return { photo: null };
   },
+  _handleFile: function(e){
+    var self = this;
+    var reader = new FileReader();
+    reader.onload = function(e) {
+      preview = <span class="preview">Preview: <img id='preview' src={e.target.result}/></span>;
+      self.setState({preview: true});
+    };
+
+    reader.readAsDataURL(e.target.files[0]);
+
+
+    // select the event target (the selected image file)
+    var file = e.target.files[0];
+    var size = e.target.files[0].size;
+    // save to state
+    this.setState({
+      photo: file,
+      size: size
+    });
+  },
   _onSubmit: function(e){
     e.preventDefault();
     //Username from AuthStore
@@ -19,6 +39,8 @@ var PhotoUpload = React.createClass({
     var tags = this.props.data.tags.map(function(tagObj){
       return tagObj.tagname;
     });
+    var size = this.state.size;
+
     var description = React.findDOMNode(this.refs.description).value;
     
     var text = React.findDOMNode(this.refs.description).value;
@@ -34,31 +56,13 @@ var PhotoUpload = React.createClass({
       });
       tags = tags.concat(refinedTags);
     }
-
+    console.log('this is size again: ', size);
     // action
-    AppActions.addPhoto(photo, username, request_id, tags, description);
+    AppActions.addPhoto(photo, username, request_id, tags, description, size);
     // clear file value
     React.findDOMNode(this.refs.file).value = null;
     React.findDOMNode(this.refs.description).value = null;
     this.setState({preview : false});
-  },
-  _handleFile: function(e){
-    var self = this;
-    var reader = new FileReader();
-    reader.onload = function(e) {
-      preview = <span class="preview">Preview: <img id='preview' src={e.target.result}/></span>;
-      self.setState({preview: true});
-    };
-
-    reader.readAsDataURL(e.target.files[0]);
-
-
-    // select the event target (the selected image file)
-    var file = e.target.files[0];
-    // save to state
-    this.setState({
-      photo: file
-    });
   },
   render: function(){
     // BOB is the placeholder in the username for now, but any valid username can be submitted
