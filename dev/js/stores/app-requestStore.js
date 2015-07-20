@@ -25,6 +25,7 @@ var _receivePhoto = function(photoData) {
 };
 
 var _receiveComments = function(photoData) {
+  // console.log('let\'s have us a look at comments: ',photoData.data.comments );
   _comments[photoData.data.id] = photoData.data.comments;
 };
 
@@ -81,6 +82,12 @@ var RequestStore = assign({},EventEmitter.prototype, {
 
   getComment: function(photoId) {
     return _comments[photoId]; 
+  },
+
+  getNumComments: function(photoId){
+    if (_comments[photoId]) {
+      return _comments[photoId].length;
+    }
   },
 
   getDisplayToggle: function(id){
@@ -158,6 +165,7 @@ RequestStore.dispatchToken = AppDispatcher.register(function(action) {
   switch(action.type) {
     // pickRequest in SelectedRequest View (on mount) -> getRequest ajax fn -> receiveRequest action type dispatch
     case AppConstants.RECEIVE_REQUEST:
+    console.log('received from picking a request: ', action.data);
       _receiveRequest(action.data.data);
       RequestStore.emitChange();
       break;

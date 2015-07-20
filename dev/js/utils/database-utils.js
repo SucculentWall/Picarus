@@ -23,16 +23,6 @@ module.exports = {
       });
   },
 
-  getRequest:function (id) {
-    axios.get('/api/requests/'+id)
-      .then(function(response) {
-        AppActions.receiveRequest(response);      
-      })
-      .catch(function(error) {
-        console.log(error);
-      });
-  },
-
   addRequest: function(text, username, tags) {
     // var context = this;
     axios.post('/api/requests', {
@@ -57,6 +47,22 @@ module.exports = {
       });
   },
 
+  getRequest:function (id) {
+    axios.get('/api/requests/'+id)
+      .then(function(response) {
+        console.log('this is getRequest response: ', response);
+        AppActions.receiveRequest(response); 
+        // use this to get the comments on this request's photos     
+        for (var i = 0; i < response.data.photos.length; i++) {
+          var photo = response.data.photos[i];
+          AppActions.loadComments(photo.id);
+        }
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
+  },
+
   addComment: function(text, username, photo_id, request_id) {
     // var context = this;
     axios.post('/api/comments', {
@@ -66,6 +72,7 @@ module.exports = {
         request_id: request_id
       })
       .then(function(response) {
+        AppActions.receiveComments(response);
       })
       .catch(function(error) {
         console.log(error);

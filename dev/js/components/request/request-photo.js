@@ -16,6 +16,10 @@ var getPhotoComments = function(id){
   return {photoComments: RequestStore.getComment(id) || []};
 };
 
+var getNumComments = function(id){
+  return RequestStore.getNumComments(id) || 0;
+};
+
 var getToggleState = function(id){
   // console.log('getToggleState getting from request store: ', RequestStore.getDisplayToggle(id) );
   return { // {showCommentEntry: , showModal: }
@@ -46,10 +50,10 @@ var Photo = React.createClass({
 
     // likes
     stateObj.likes = getPhotoLikes(this.props.data.id);
-    // hold 'unlicked' className to toggle on click
-    // console.log('checking....: ',checkLiked(this.props.data.id));
-    stateObj.unclicked = checkLiked(this.props.data.id); // NOTE: this needs to be based on db truth (has this user liked this photo) join table time 
-    console.log('initialing unlicked: ', stateObj.unclicked);
+    // based on db truth (has this user liked this photo) from join table  
+    stateObj.unclicked = checkLiked(this.props.data.id); 
+    // number of comments
+    stateObj.numComments = getNumComments(this.props.data.id);
     return stateObj;
   },
 
@@ -94,12 +98,15 @@ var Photo = React.createClass({
   },
 
   _onChange: function () {
+
     // console.log('change triggered on photo');
     if (this.isMounted()) { 
       this.setState(getPhotoComments(this.props.data.id));
       this.setState(getToggleState(this.props.data.id)); 
+      console.log('num of coms: ', getNumComments(this.props.data.id));
+      this.setState({numComments: getNumComments(this.props.data.id)});
     }
-    // console.log('current state stuff: ', this.state);
+    console.log('current state stuff: ', this.state);
   },
 
   _onLog: function () {
@@ -109,7 +116,9 @@ var Photo = React.createClass({
   statics: {
     willTransitionTo: function(transition, params, element) {
       // pass in current user and all the photos on this current request page
+      console.log('is NOT firing');
       AppActions.getPhotoLikes(currUserId, RequestStore.getPhotos());
+      AppActions.loadComments(this.props.data.id);
     }
   },
   
@@ -119,7 +128,14 @@ var Photo = React.createClass({
     AuthStore.addChangeListener(this._onLog);
 
     AppActions.getPhotoLikes(currUserId, RequestStore.getPhotos());
+    AppActions.loadComments(this.props.data.id);
   },
+
+  // componentDidUpdate: function(){
+  //   console.log('is firing');
+  //   AppActions.getPhotoLikes(currUserId, RequestStore.getPhotos());
+  //   AppActions.loadComments(this.props.data.id);
+  // },
 
   componentWillUnmount: function() {
     // console.log('unmounting ', this.props.data.id);
@@ -139,7 +155,7 @@ var Photo = React.createClass({
     commentsList.push(loggedInSign);
     comments = (
       <div>
-        <span className="comment-slider" onClick={this._openComments}>Comments</span>
+        <span className="comment-slider" onClick={this._openComments}> {this.state.numComments} Comments</span>
         <ul>
           { this.state.showCommentEntry ? {commentsList} : null}
         </ul>

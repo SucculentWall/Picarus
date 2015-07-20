@@ -45,18 +45,14 @@ var SelectedRequest = React.createClass({
   _onChange: function () {
     this.setState(getData());
   },
-  // componentDidUpdate: function(){
-  //   console.log('did componentDidUpdate');
-  // },
-  // componentWillUpdate: function(){
-  //   console.log('will componentWillUpdate');
-  //   AppActions.pickRequest(this.props.params.requestId);
-  //   RequestStore.removeChangeListener(this._onChange);
-  // },
+
   componentDidMount: function() {
     RequestStore.addChangeListener(this._onChange);
     AuthStore.addChangeListener(this._onLog);
     AppActions.pickRequest(this.props.params.requestId);
+
+    // needs to load all the comments for each picture on that request also
+    
   },
   componentWillUnmount: function() {
     RequestStore.removeChangeListener(this._onChange);

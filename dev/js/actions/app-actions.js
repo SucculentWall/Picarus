@@ -146,6 +146,7 @@ module.exports = {
   },
 
   receiveComments: function(data) {
+    console.log('data from loadComments: ', data);
     AppDispatcher.dispatch({
       type: AppConstants.RECEIVE_COMMENTS,
       data: data

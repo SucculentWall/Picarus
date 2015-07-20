@@ -91,9 +91,6 @@ var ProfilePhoto = React.createClass({
   },
 
   _onLikeOrUnlike: function() {
-    console.log('I fIRED');
-    //AppActions.pickRequest(+this.props.data.requestId);
-    // console.log('liked/unliked!');
     if (this.isMounted()){
       this.setState({likes: getPhotoLikes(this.props.data.id)});
       this.setState({unclicked: checkLiked(this.props.data.id)});
