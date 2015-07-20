@@ -57,7 +57,6 @@ var Photo = React.createClass({
     return stateObj;
   },
 
-
   close: function (){
     AppActions.toggleRequestPhotoModal(this.props.data.id);
     // this.setState({ showModal: false });
@@ -103,7 +102,6 @@ var Photo = React.createClass({
     if (this.isMounted()) { 
       this.setState(getPhotoComments(this.props.data.id));
       this.setState(getToggleState(this.props.data.id)); 
-      console.log('num of coms: ', getNumComments(this.props.data.id));
       this.setState({numComments: getNumComments(this.props.data.id)});
     }
     console.log('current state stuff: ', this.state);
@@ -111,15 +109,6 @@ var Photo = React.createClass({
 
   _onLog: function () {
     this.setState({loggedIn: AuthStore.loggedIn()});
-  },
-
-  statics: {
-    willTransitionTo: function(transition, params, element) {
-      // pass in current user and all the photos on this current request page
-      console.log('is NOT firing');
-      AppActions.getPhotoLikes(currUserId, RequestStore.getPhotos());
-      AppActions.loadComments(this.props.data.id);
-    }
   },
   
   componentDidMount: function() {

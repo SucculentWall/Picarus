@@ -39,8 +39,11 @@ var getPhotoLikes = function(id){
   return galleryPhotoLikes;
 };
 
+var getNumComments = function(id){
+  return RequestStore.getNumComments(id) || 0;
+};
+
 var getToggleState = function(id){
-  // console.log('getToggleState getting from request store: ', RequestStore.getDisplayToggle(id) );
   return { // {showCommentEntry: , showModal: }
     showCommentEntry : GalleryStore.getDisplayToggle(id).showCommentEntry || false,
     showModal : GalleryStore.getDisplayToggle(id).showModal || false
@@ -60,6 +63,7 @@ var GalleryPhoto = React.createClass({
     stateObj.showModal = getToggleState(this.props.data.id).showModal;
     stateObj.likes = getPhotoLikes(this.props.data.id);
     stateObj.unclicked = checkLiked(this.props.data.id);
+    stateObj.numComments = getNumComments(this.props.data.id);
     return stateObj;
   },
 
@@ -72,8 +76,6 @@ var GalleryPhoto = React.createClass({
   },
 
   _onClick: function () {
-    console.log('_onClick, what is this: ', this.props);
-
     AppActions.loadComments(this.props.data.id);
     this.setState({showCommentEntry: !this.state.showCommentEntry});
   },
@@ -104,6 +106,7 @@ var GalleryPhoto = React.createClass({
     if (this.isMounted()){
       this.setState(getPhotoComments(this.props.data.id));
       this.setState({unclicked: checkLiked(this.props.data.id)});
+      this.setState({numComments: getNumComments(this.props.data.id)});
     }
   },
 
@@ -115,6 +118,7 @@ var GalleryPhoto = React.createClass({
     willTransitionTo: function(transition, params, element) {
       // pass in current user and all the photos on this current request page
       AppActions.getPhotoLikes(currUserId);
+      AppActions.loadComments(this.props.data.id);
     }
   },
 
@@ -124,6 +128,7 @@ var GalleryPhoto = React.createClass({
     AuthStore.addChangeListener(this._onLog);
 
     AppActions.getPhotoLikes(currUserId);
+    AppActions.loadComments(this.props.data.id);
   },
 
   componentWillUnmount: function() {
@@ -140,7 +145,7 @@ var GalleryPhoto = React.createClass({
     }
     comments = (
       <div>
-        <span className="comment-slider" onClick={this._onClick}>Comments</span>
+        <span className="comment-slider" onClick={this._onClick}> {this.state.numComments} Comments</span>
         <ul>
           { this.state.showCommentEntry ? {photoComments} : null}
           { this.state.showCommentEntry && this.state.loggedIn ? <MakeComment data={this.props.data}/> : null }

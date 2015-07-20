@@ -39,6 +39,10 @@ var getPhotoLikes = function(id){
   return profilePagePhotoLikes;
 };
 
+var getNumComments = function(id){
+  return RequestStore.getNumComments(id) || 0;
+};
+
 var getToggleState = function(id){
   return { // {showCommentEntry: , showModal: }
     showCommentEntry : UserStore.getDisplayToggle(id).showCommentEntry || false,
@@ -61,6 +65,8 @@ var ProfilePhoto = React.createClass({
 
     stateObj.likes = getPhotoLikes(this.props.data.id);
     stateObj.unclicked = checkLiked(this.props.data.id);
+    stateObj.numComments = getNumComments(this.props.data.id);
+
     return stateObj;
   },
 
@@ -101,6 +107,7 @@ var ProfilePhoto = React.createClass({
     if (this.isMounted()){
       this.setState(getPhotoComments(this.props.data.id));
       this.setState({unclicked: checkLiked(this.props.data.id)});
+      this.setState({numComments: getNumComments(this.props.data.id)});
     }
   },
 
@@ -112,6 +119,7 @@ var ProfilePhoto = React.createClass({
     willTransitionTo: function(transition, params, element) {
       // pass in current user and all the photos on this current request page
       AppActions.getPhotoLikes(currUserId);
+      AppActions.loadComments(this.props.data.id);
     }
   },
 
@@ -122,6 +130,7 @@ var ProfilePhoto = React.createClass({
     RequestStore.addChangeListener(this._onChange);
     AuthStore.addChangeListener(this._onLog);
 
+    AppActions.loadComments(this.props.data.id);
     AppActions.getPhotoLikes(currUserId);
   },
 
@@ -141,7 +150,7 @@ var ProfilePhoto = React.createClass({
     }
     comments = (
       <div>
-        <p onClick={this._onClick}>Comments</p>
+        <p onClick={this._onClick}> {this.state.numComments} Comments</p>
         <ul>
           { this.state.showCommentEntry ? {photoComments} : null}
           { this.state.showCommentEntry && this.state.loggedIn ? <MakeComment data={this.props.data}/> : null }
