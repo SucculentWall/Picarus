@@ -99,7 +99,13 @@ module.exports = {
   getAllPhotos: function() {
     axios.get('/api/photos')
       .then(function(response) {
-        AppActions.receivePhotos(response.data);      
+        AppActions.receivePhotos(response.data);
+
+        // make all to be untoggled
+        for (var i = 0; i < response.data.length; i++) {
+          var id = response.data[i].id;
+          AppActions.toggleReset(id);
+        }   
       })
       .catch(function(error) {
         console.log(error);
@@ -169,7 +175,6 @@ module.exports = {
   getProfileInfo: function(user_id) {
     axios.get('/api/users/' + user_id)
       .then(function(response) {
-        console.log('this juicy user: ', response);
         AppActions.receiveProfileInfo(response.data);
 
         // make sure their toggle statuses are false
