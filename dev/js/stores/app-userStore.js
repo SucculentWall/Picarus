@@ -126,7 +126,12 @@ var UserStore = assign({},EventEmitter.prototype, {
   },
 
   getUserPhotos: function() {
-    return _user.photos;
+    var recentUserPhotos = [];
+    if (!_user.photos) return [];
+    for (var i = _user.photos.length-1; i >= 0; i--) {
+      recentUserPhotos.push(_user.photos[i]);
+    }
+    return recentUserPhotos;
   },
 
   getLikes: function(id){
@@ -168,7 +173,12 @@ var UserStore = assign({},EventEmitter.prototype, {
   },
 
   getAllUserComments: function() {
-    return _user.comments;
+  var recentUserPhotos = [];
+    if (!_user.photos) return [];
+    for (var i = _user.photos.length-1; i >= 0; i--) {
+      recentUserPhotos.push(_user.photos[i]);
+    }
+    return recentUserPhotos;
   },
 
   emitChange: function() {

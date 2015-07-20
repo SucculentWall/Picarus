@@ -65,7 +65,8 @@ var Profile = React.createClass({
     AuthStore.removeChangeListener(this._onLog);
   },
   render: function () {
-    var i;
+    if (!this.state.user_id) return (<div className = 'request col-xs-8 container'>User does not exist!</div>);
+    var i, j;
     var profileRequests = [];
     var profileComments = [];
     var profilePhotos = [];
@@ -76,7 +77,7 @@ var Profile = React.createClass({
       for (i = 0; i < this.state.comments.length; i++) {
         profileComments.push(<ProfileComment key={i} data={this.state.comments[i]} />);
       }
-      for (i = this.state.photos.length-1; i >= 0; i--) {
+      for (i = 0; i < this.state.photos.length; i++) {
         profilePhotos.push(<ProfilePhoto key={i} count={i} data={this.state.photos[i]} />);
       }
     }
