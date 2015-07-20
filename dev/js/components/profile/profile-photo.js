@@ -2,6 +2,7 @@ var React = require('react');
 
 var AppActions = require('../../actions/app-actions');
 var RequestStore = require('../../stores/app-requestStore');
+var UserStore = require('../../stores/app-userStore');
 var PhotoComment = require('../request/request-photoComment');
 var MakeComment = require('../request/request-makeComment');
 var AuthStore = require('../../stores/app-authStore');
@@ -25,8 +26,22 @@ var photoTemplateClasses = [
   //layouts repeat
 ];
 
+
 var getPhotoComments = function(id){
   return {photoComments: RequestStore.getComment(id)};
+};
+
+var getPhotoLikes = function(id){
+  var profilePagePhotoLikes = UserStore.getLikes(id);
+  console.log('photo likes from this photo on gallery: ', galleryPhotoLikes);
+  return profilePagePhotoLikes;
+};
+
+var getToggleState = function(id){
+  return { // {showCommentEntry: , showModal: }
+    showCommentEntry : UserStore.getDisplayToggle(id).showCommentEntry || false,
+    showModal : UserStore.getDisplayToggle(id).showModal || false
+  };
 };
 
 var ProfilePhoto = React.createClass({
@@ -34,8 +49,9 @@ var ProfilePhoto = React.createClass({
   getInitialState: function(){
     var stateObj = getPhotoComments(this.props.data.id);
     stateObj.loggedIn = AuthStore.loggedIn();
-    stateObj.showCommentEntry = false;
-    stateObj.showModal = false;
+    stateObj.showCommentEntry = getToggleState(this.props.data.id).showCommentEntry;
+    stateObj.showModal = getToggleState(this.props.data.id).showModal;
+    
     return stateObj;
   },
 

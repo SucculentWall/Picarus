@@ -54,7 +54,9 @@ var _updatePhotoLikes = function(data) {
   // replace the photo stats
   for (var i = 0; i < _user.photos.length; i++) {
     var aPhoto = _user.photos[i];
-    console.log('user.photos: ', _.user.photos);
+    if (aPhoto.id === photoId) {
+      user.photos[i] = data.data;
+    }    
   }
 };
 ////////////
@@ -122,6 +124,23 @@ var UserStore = assign({},EventEmitter.prototype, {
     return _user.photos;
   },
 
+  getLikes: function(id){
+    for (var i = 0; i < _user.photos.length; i++) {
+      var aPhoto = _user.photos[i];
+      if (aPhoto.id === photoId) {
+        return aPhoto.likes;
+      }    
+    } 
+    return 0;
+  },
+
+  getDisplayToggle: function(id){
+    return {
+      showCommentEntry: _commentDisplay[id],
+      showModal: _modalDisplay[id]
+    }
+  },
+
   getAvatar: function() {
     return _user.avatar;
   },
@@ -171,7 +190,6 @@ UserStore.dispatchToken = AppDispatcher.register(function(action) {
 
     // New comments
     case AppConstants.UPDATE_COMMENT:
-      console.log('user.photos: ', _.user.photos);
       _receiveComment(action.data);
       UserStore.emitChange();
       break;
