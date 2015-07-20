@@ -28,6 +28,14 @@ var _toggleModal = function(id) {
   // console.log('modal toggle display toggled FROM ', modal, ' TO ', _modalDisplay[id]);
 };
 
+var _resetToggle = function(id) {
+  var display = _commentDisplay[id] || false; 
+  var modal = _modalDisplay[id] || false;
+  _commentDisplay[id] = false;
+  _modalDisplay[id] = false;
+
+};
+
 var _receiveAllPhotoLikes = function(joinData) {
   // joinData is an array of objects
   _likeLog = {};
@@ -224,6 +232,12 @@ UserStore.dispatchToken = AppDispatcher.register(function(action) {
     // Modal toggle  
     case AppConstants.TOGGLE_MODAL_PHOTO:
       _toggleModal(action.data);
+      UserStore.emitChange();
+      break;
+
+    // reset toggle on page change
+    case AppConstants.TOGGLE_RESET:
+      _resetToggle(action.data);     
       UserStore.emitChange();
       break;
 

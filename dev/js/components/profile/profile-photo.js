@@ -134,6 +134,13 @@ var ProfilePhoto = React.createClass({
 
     AppActions.loadComments(this.props.data.id);
     AppActions.getPhotoLikes(currUserId);
+    // // commenting out for now, throwing error on user change
+    // if (this.state.showModal){
+    //   AppActions.togglePhotoModal(this.props.data.id);
+    // }
+    // if (this.state.showCommentEntry) {
+    //   AppActions.toggleCommentDisplay(this.props.data.id);
+    // }
   },
 
   componentWillUnmount: function() {    
@@ -143,7 +150,7 @@ var ProfilePhoto = React.createClass({
     RequestStore.removeChangeListener(this._onChange);
     AuthStore.removeChangeListener(this._onLog);
 
-    // commenting out for now, throwing error on user change
+    // // commenting out for now, throwing error on user change
     // if (this.state.showModal){
     //   AppActions.togglePhotoModal(this.props.data.id);
     // }

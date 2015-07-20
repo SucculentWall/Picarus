@@ -136,6 +136,14 @@ var GalleryPhoto = React.createClass({
 
     AppActions.getPhotoLikes(currUserId);
     AppActions.loadComments(this.props.data.id);
+
+    // // commenting out for now, throwing error on user change
+    // if (this.state.showModal){
+    //   AppActions.togglePhotoModal(this.props.data.id);
+    // }
+    // if (this.state.showCommentEntry) {
+    //   AppActions.toggleCommentDisplay(this.props.data.id);
+    // }
   },
 
   componentWillUnmount: function() {
@@ -145,7 +153,7 @@ var GalleryPhoto = React.createClass({
     AuthStore.removeChangeListener(this._onLog);
     // set states to false when going to new page
 
-    // commenting out for now, throwing error on user change
+    // //commenting out for now, throwing error on user change
     // if (this.state.showModal){
     //   AppActions.togglePhotoModal(this.props.data.id);
     // }

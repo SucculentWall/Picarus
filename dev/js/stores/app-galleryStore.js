@@ -24,6 +24,14 @@ var _toggleModal = function(id) {
   _modalDisplay[id] = !modal;
 };
 
+var _resetToggle = function(id) {
+  var display = _commentDisplay[id] || false; 
+  var modal = _modalDisplay[id] || false;
+  _commentDisplay[id] = false;
+  _modalDisplay[id] = false;
+
+};
+
 var _receiveAllPhotoLikes = function(joinData) {
   // joinData is an array of objects
   _likeLog = {};
@@ -164,6 +172,10 @@ GalleryStore.dispatchToken = AppDispatcher.register(function(action) {
       GalleryStore.emitChange();
       break;
 
+    case AppConstants.TOGGLE_RESET:
+      _resetToggle(action.data);     
+      GalleryStore.emitChange();
+      break; 
 
     default:
   }

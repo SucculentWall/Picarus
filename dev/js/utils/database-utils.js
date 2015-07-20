@@ -169,7 +169,16 @@ module.exports = {
   getProfileInfo: function(user_id) {
     axios.get('/api/users/' + user_id)
       .then(function(response) {
+        console.log('this juicy user: ', response);
         AppActions.receiveProfileInfo(response.data);
+
+        // make sure their toggle statuses are false
+        var photos = response.data.photos;
+
+        for (var i = 0; i < photos.length; i++) {
+          var id = photos[i].id;
+          AppActions.toggleReset(id);
+        }
       })
       .catch(function(error) {
         console.log('dispatching in the middle: ',error);
