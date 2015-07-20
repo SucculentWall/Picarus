@@ -76,7 +76,6 @@ var Photo = React.createClass({
   // click, this needs to change the store so a re-render happens (unclicked is not being reset for some reason)
   _likeOrUnlike: function() {
     // console.log('current state! : ', this.state.unclicked)
-    console.log('liked photo_id: ', this.props.data.id);
     if (this.state.unclicked === true) {
       // increment
       AppActions.likePhoto(this.props.data.id);
@@ -104,7 +103,6 @@ var Photo = React.createClass({
       this.setState(getToggleState(this.props.data.id)); 
       this.setState({numComments: getNumComments(this.props.data.id)});
     }
-    console.log('current state stuff: ', this.state);
   },
 
   _onLog: function () {

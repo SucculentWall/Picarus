@@ -64,7 +64,6 @@ var SelectedRequest = React.createClass({
     for (var i=0; i<photos.length; i++) {
       photosList.push(<Photo key={i} data={photos[i]} />);
     }
-    console.log('photos received from Request Store: ', photos);
     return (
       <div className = 'request col-xs-8 container'>
         <RequestHeader data={this.state} />

@@ -37,7 +37,6 @@ var _toggleCommentDisplay = function(id) {
 var _toggleModal = function(id) {
   var modal = _modalDisplay[id] || false;
   _modalDisplay[id] = !modal;
-  console.log('modal toggle display toggled FROM ', modal, ' TO ', _modalDisplay[id]);
 };
 
 var _receiveNewComment = function(commentData) {
@@ -72,7 +71,6 @@ var _receiveAllPhotoLikes = function(joinData) {
     var obj = joinData[i];
     _likeLog[obj.photo_id] = true; 
   }
-  console.log('this is like_log: ', _likeLog);
 };
 
 var RequestStore = assign({},EventEmitter.prototype, {
@@ -165,7 +163,6 @@ RequestStore.dispatchToken = AppDispatcher.register(function(action) {
   switch(action.type) {
     // pickRequest in SelectedRequest View (on mount) -> getRequest ajax fn -> receiveRequest action type dispatch
     case AppConstants.RECEIVE_REQUEST:
-    console.log('received from picking a request: ', action.data);
       _receiveRequest(action.data.data);
       RequestStore.emitChange();
       break;

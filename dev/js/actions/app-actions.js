@@ -160,7 +160,6 @@ module.exports = {
   },
 
   receiveComments: function(data) {
-    console.log('data from loadComments: ', data);
     AppDispatcher.dispatch({
       type: AppConstants.RECEIVE_COMMENTS,
       data: data
@@ -168,7 +167,6 @@ module.exports = {
   },
 
   receivePhotoLike: function(data) {
-    console.log('after db processed like action: ', data);
     AppDispatcher.dispatch({
       type: AppConstants.LIKE_PHOTO,
       data: data

@@ -35,7 +35,6 @@ var getPhotoComments = function(id){
 
 var getPhotoLikes = function(id){
   var profilePagePhotoLikes = UserStore.getLikes(id);
-  console.log('photo likes from this photo on profile: ', profilePagePhotoLikes);
   return profilePagePhotoLikes;
 };
 
@@ -91,11 +90,9 @@ var ProfilePhoto = React.createClass({
     this.setState({unclicked: !this.state.unclicked});
     if (this.state.unclicked === true) {
       // increment
-      console.log('liked!');
       AppActions.likePhoto(this.props.data.id);
     } else {
       // decrement
-      console.log('unliked');
       AppActions.unlikePhoto(this.props.data.id);
     }
   },

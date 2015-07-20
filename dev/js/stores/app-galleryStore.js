@@ -22,11 +22,9 @@ var _toggleCommentDisplay = function(id) {
 var _toggleModal = function(id) {
   var modal = _modalDisplay[id] || false;
   _modalDisplay[id] = !modal;
-  console.log('modal toggle display toggled FROM ', modal, ' TO ', _modalDisplay[id]);
 };
 
 var _receiveAllPhotoLikes = function(joinData) {
-  console.log('coming in join data: ', joinData);
   // joinData is an array of objects
   _likeLog = {};
   for (var i = 0; i < joinData.length; i++) {
@@ -70,7 +68,6 @@ var _receiveTags = function(tagsArray) {
 var GalleryStore = assign({},EventEmitter.prototype, {
 
   getAllPhotos: function() {
-    console.log('this is photoList from galleryStore: ', _photoList);
     return _photoList;
   },
 
@@ -94,7 +91,6 @@ var GalleryStore = assign({},EventEmitter.prototype, {
   },
 
   getLikes: function(id) {
-    console.log('this is photoList from galleryStore: ', _photoList);
     if (_photoList[id]){
       return _photoList[id].likes;
     }
@@ -104,7 +100,6 @@ var GalleryStore = assign({},EventEmitter.prototype, {
   getPhotoLikeStatus: function(photo_id) {
     // check photos_users
     if (Object.keys(_likeLog).length === 0) {
-      console.log('zero likes!'); 
       return true;
     }
     if (_likeLog[photo_id] === undefined) {

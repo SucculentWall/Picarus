@@ -29,14 +29,12 @@ var _toggleModal = function(id) {
 };
 
 var _receiveAllPhotoLikes = function(joinData) {
-  console.log('coming in join data: ', joinData);
   // joinData is an array of objects
   _likeLog = {};
   for (var i = 0; i < joinData.length; i++) {
     var obj = joinData[i];
     _likeLog[obj.photo_id] = true; 
   }
-  console.log('this is like_log: ', _likeLog);
 };
 
 var _updatePhotoLikes = function(data) {
@@ -136,7 +134,6 @@ var UserStore = assign({},EventEmitter.prototype, {
   getPhotoLikeStatus: function(photo_id) {
     // check photos_users
     if (Object.keys(_likeLog).length === 0) {
-      console.log('zero likes!'); 
       return true;
     }
     if (_likeLog[photo_id] === undefined) {

@@ -36,7 +36,6 @@ window.fbAsyncInit = function() {
 
   FB.getLoginStatus(function(response) {
     FB.api('/me', function (resp) {
-      console.log('fb\'s response to me: ', response);
       dbUtils.findOrCreateUser(resp.id.toString(),resp.name, response);
     });
   });
