@@ -15,7 +15,8 @@ var gulp = require('gulp'),
   buffer = require('vinyl-buffer'),
   nodemon = require('gulp-nodemon'),
   shell = require('gulp-shell'),
-  gulpif = require('gulp-if');
+  gulpif = require('gulp-if'),
+  Server = require('karma').Server;
 
 //Shell
 gulp.task('brew', shell.task([
@@ -91,6 +92,13 @@ gulp.task('nodemon', function () {
     script: 'server/server.js',
     delay: 2500
   });
+});
+
+gulp.task('testClient', function (done) {
+  new Server({
+    configFile: __dirname + '/karma.conf.js',
+    singleRun: true
+  }, done).start();
 });
 
 // Watch: Scripts, Styles, Images, LiveReload

@@ -16,8 +16,10 @@ module.exports = function(config) {
     // list of files / patterns to load in the browser
     // ***NOTE*** Edit source files in include.conf.js & include test spec files below
     files: require('./include.conf.js').concat([
+      'test/helper/*.js',
       'test/example/*.spec.js',
-      'test/unit/*.spec.js'
+      'test/unit/*.spec.js',
+      'test/integration/*.spec.js'
     ]),
 
 
@@ -40,8 +42,10 @@ module.exports = function(config) {
     // If you wanted to use Istanbul (e.g. for coverage reporting), for example, 
     // you'd use a transform and not a preprocessor.
     preprocessors: {
+        'test/helper/*.js': ['browserify'],
         'test/example/*.spec.js': ['browserify'],
         'test/unit/*.spec.js': ['browserify'],
+        'test/integration/*.spec.js': ['browserify'],
         'dev/js/**/*.js': ['browserify']
     },
 
