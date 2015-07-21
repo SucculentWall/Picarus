@@ -46,7 +46,7 @@ module.exports = {
 
     new User({id: id})
       .fetch({
-        withRelated: ['requests', 'photos', 'comments']
+        withRelated: ['requests', { 'photos': function(qb) {qb.orderBy('created_at','DESC');} }, 'comments']
       })
       .then(function (found) {
         if (found) {

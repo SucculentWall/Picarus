@@ -49,8 +49,8 @@ module.exports = {
         .pipe(imagemin())
         .pipe(gulp.dest('photos/small'))
         .pipe(imageResize({
-          width: 400,
-          height: 400
+          width: 500,
+          height: 500
         }))
         .pipe(gulp.dest('photos/small'));
 

@@ -54,22 +54,34 @@ var ProfileAvatar = React.createClass({
   },
 
   render: function(){
+    var self = function (data) {
+      return (
+        <div>
+          <Modal show={data.state.showModal} onHide={data.close}>
+            <Modal.Header closeButton>
+              <Modal.Title modalClassName='modal-title'>Change Avatar</Modal.Title>
+            </Modal.Header>
+            <Modal.Footer>
+              <form className='avatar-form' onSubmit={data._onSubmit} encType='multipart/form-data'>
+                {data.state.preview ? preview :null}
+                <input ref='file' type='file' onChange={data._handleFile} required />
+                <input type='submit' value='Change Avatar' />
+              </form>
+            </Modal.Footer>
+          </Modal>
+          { data.props.data.avatar === null ? null : <img className='avatar' onClick={data.open} src={'img/'+data.props.data.avatar}/>}
+          <p>Click avatar to change</p>
+        </div>
+        );
+    };
+    var other = (
+      <div>
+        { this.props.data.avatar === null ? null : <img className='avatar' src={'img/'+this.props.data.avatar}/>}
+      </div>
+    );
     return (
       <div>
-        <Modal show={this.state.showModal} onHide={this.close}>
-          <Modal.Header closeButton>
-            <Modal.Title modalClassName='modal-title'>Change Avatar</Modal.Title>
-          </Modal.Header>
-          <Modal.Footer>
-            <form className='avatar-form' onSubmit={this._onSubmit} encType='multipart/form-data'>
-              {this.state.preview ? preview :null}
-              <input ref='file' type='file' onChange={this._handleFile} required />
-              <input type='submit' value='Change Avatar' />
-            </form>
-          </Modal.Footer>
-        </Modal>
-        { this.props.data.avatar === null ? null : <img className='avatar' onClick={this.open} src={'img/'+this.props.data.avatar}/>}
-        { this.props.data.authId === this.props.data.user_id ? <p>Click avatar to change</p> : null }
+      {this.props.data.user_id !== this.props.data.authId ? other : self(this) }
       </div>
     );
   }
