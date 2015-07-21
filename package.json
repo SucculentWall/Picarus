@@ -39,6 +39,7 @@
     "gulp-rename": "^1.2.2",
     "gulp-shell": "^0.4.2",
     "gulp-uglify": "^1.2.0",
+    "jsdom": "^5.6.1",
     "karma": "^0.13.2",
     "karma-browserify": "^4.2.1",
     "karma-chai": "^0.1.0",
