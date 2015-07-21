@@ -3,17 +3,20 @@ var Link = require('react-router').Link;
 
 var ProfileRequest = React.createClass({
   render: function(){
-    if (!this.props.data) {
-      return (<div></div>);
-    }
-    else {
-      var formattedDate = new Date(this.props.data.created_at).toLocaleString();
+    var valid = function(data) {
+      var formattedDate = new Date(data.created_at).toLocaleString();
       return (
-        <div>
-          {formattedDate}  <Link to='requests' params={{requestId: this.props.data.id}} className='recent'>{this.props.data.text}</Link>
-        </div>
+        <p>
+          {formattedDate}
+          <Link to='requests' params={{requestId: data.id}} className='recent'> {data.text}</Link>
+        </p>
       );
-    }
+    };
+    return (
+      <div>
+        {!this.props.data ? null : valid(this.props.data)}
+      </div>
+    );
   }
 });
 
