@@ -71,14 +71,17 @@ var _receiveProfileInfo = function(data) {
 };
 
 var _receiveRequest = function(requestData) {
+  if (!_user.requests) _user.requests = [];
   _user.requests.push(requestData);
 };
 
 var _receiveComment = function(commentData) {
+  if (!_user.comments) _user.comments = [];
   _user.comments.push(commentData);
 };
 
 var _receivePhoto = function(photoData) {
+  if (!_user.photos) _user.photos = [];
   _user.photos.push(photoData);
 };
 
@@ -156,7 +159,7 @@ var UserStore = assign({},EventEmitter.prototype, {
     return {
       showCommentEntry: _commentDisplay[id],
       showModal: _modalDisplay[id]
-    }
+    };
   },
 
   getAvatar: function() {
@@ -168,12 +171,7 @@ var UserStore = assign({},EventEmitter.prototype, {
   },
 
   getAllUserComments: function() {
-  var recentUserPhotos = [];
-    if (!_user.photos) return [];
-    for (var i = _user.photos.length-1; i >= 0; i--) {
-      recentUserPhotos.push(_user.photos[i]);
-    }
-    return recentUserPhotos;
+    return _user.comments;
   },
 
   emitChange: function() {
@@ -215,8 +213,10 @@ UserStore.dispatchToken = AppDispatcher.register(function(action) {
 
     // New comments
     case AppConstants.UPDATE_COMMENT:
-      _receiveComment(action.data);
-      UserStore.emitChange();
+      if(_user && UserStore.getUserId() === action.data.user_id) {
+        _receiveComment(action.data);
+        UserStore.emitChange();
+      }
       break;
 
     // New photos
