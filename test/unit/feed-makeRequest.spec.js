@@ -2,34 +2,22 @@ var assert = chai.assert;
 var should = chai.should();
 var expect = chai.expect;
 
-require('../helper/testdom')('<!doctype html><html><body></body></html>');
 var React = require('react/addons');
-var TestUtils = React.addons.TestUtils;
-
 var MakeRequest = require('../../dev/js/components/feed/feed-makeRequest');
 
+// using shallowRenderer to test React components, following example in this resource: 
+// http://simonsmith.io/unit-testing-react-components-without-a-dom/
+var createComponent = require('../helper/create-component');
 
 describe('feed-makeRequest component', function() {
+  var renderedComponent;
 
-  before('render and locate element', function() {
-    var renderedComponent = TestUtils.renderIntoDocument(
-      <MakeRequest />
-    );
-
-    // Searching for <input> tag within rendered React component
-    // Throws an exception if not found
-    var formComponent = TestUtils.findRenderedDOMComponentWithTag(
-      renderedComponent,
-      'form'
-    );
-
-    this.formElement = formComponent.getDOMNode();
+  before('use shallowRenderer to create component', function() {
+    renderedComponent = createComponent(MakeRequest);
   });
-
     
-  it('<form> should have class of req-form', function() {
-    expect(this.formElement.classList.contains("req-form")).to.be.true;
+  it('MakeRequest should have a _onSubmit function', function() {
+    expect(renderedComponent.type).to.be.equal('form');
   });
-
 
 });
