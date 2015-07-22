@@ -1,6 +1,5 @@
 // Karma configuration
 // Generated on Fri Jul 17 2015 16:44:13 GMT-0700 (PDT)
-var istanbul = require('browserify-istanbul');
 
 module.exports = function(config) {
   config.set({
@@ -11,7 +10,7 @@ module.exports = function(config) {
 
     // frameworks to use
     // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
-    frameworks: ['browserify','mocha','chai', 'sinon'],
+    frameworks: ['browserify','mocha','chai', 'sinon', 'jasmine-ajax', 'jasmine'],
 
 
     // list of files / patterns to load in the browser
@@ -33,7 +32,7 @@ module.exports = function(config) {
 
     browserify: {
         debug: true,
-        transform: ['reactify', istanbul]
+        transform: ['reactify']
     },
 
 
@@ -54,13 +53,8 @@ module.exports = function(config) {
     // test results reporter to use
     // possible values: 'dots', 'progress'
     // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-    reporters: ['progress', 'coverage'],
+    reporters: ['progress'],
 
-    // Configure the reporter
-    coverageReporter: {
-      type: 'html',
-      dir: 'test/results/coverage/'
-    },
 
     // web server port
     port: 9876,
@@ -93,7 +87,9 @@ module.exports = function(config) {
         'karma-browserify',
         'karma-chai',
         'karma-sinon',
-        'karma-chrome-launcher'
+        'karma-chrome-launcher',
+        'karma-jasmine',
+        'karma-jasmine-ajax'
     ]
   })
 }
