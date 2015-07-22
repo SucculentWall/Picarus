@@ -136,6 +136,11 @@ gulp.task('watch', function () {
 });
 
 // cleans first, then builds the files again
+
+gulp.task('build', function () {
+  runSequence('shell');
+});
+
 gulp.task('default', function () {
-  runSequence('clean', 'shell', 'scripts', 'styles', 'images', 'copy', 'nodemon', 'watch');
+  runSequence('clean', 'scripts', 'styles', 'images', 'copy', 'nodemon', 'watch');
 });
