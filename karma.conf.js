@@ -1,5 +1,6 @@
 // Karma configuration
 // Generated on Fri Jul 17 2015 16:44:13 GMT-0700 (PDT)
+var istanbul = require('browserify-istanbul');
 
 module.exports = function(config) {
   config.set({
@@ -32,7 +33,7 @@ module.exports = function(config) {
 
     browserify: {
         debug: true,
-        transform: ['reactify']
+        transform: ['reactify', istanbul]
     },
 
 
@@ -53,8 +54,13 @@ module.exports = function(config) {
     // test results reporter to use
     // possible values: 'dots', 'progress'
     // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-    reporters: ['progress'],
+    reporters: ['progress', 'coverage'],
 
+    // Configure the reporter
+    coverageReporter: {
+      type: 'html',
+      dir: 'test/results/coverage/'
+    },
 
     // web server port
     port: 9876,
