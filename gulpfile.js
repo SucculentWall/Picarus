@@ -16,6 +16,7 @@ var gulp = require('gulp'),
   nodemon = require('gulp-nodemon'),
   shell = require('gulp-shell'),
   gulpif = require('gulp-if'),
+  protractor = require("gulp-protractor").protractor,
   Server = require('karma').Server;
 
 //Shell
@@ -94,12 +95,30 @@ gulp.task('nodemon', function () {
   });
 });
 
+
+// Testing: Karma, Protractor
+
 gulp.task('testClient', function (done) {
   new Server({
     configFile: __dirname + '/karma.conf.js',
     singleRun: true
   }, done).start();
 });
+
+
+gulp.task('protractor', function () {
+  gulp.src(["./test/e2e/*.spec.js"])
+    .pipe(protractor({
+      configFile: "./protractor.conf.js",
+      args: ['--baseUrl', 'http://127.0.0.1:8888']
+    }))
+    .on('error', function(e) { throw e })
+});
+
+gulp.task('teste2e', function () {
+  runSequence('nodemon', 'protractor');
+});
+
 
 // Watch: Scripts, Styles, Images, LiveReload
 gulp.task('watch', function () {
