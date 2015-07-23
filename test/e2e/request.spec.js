@@ -1,6 +1,8 @@
+var path = require('path');
+
 describe('Requests', function() {
 
-  it('should make a request', function() {
+  xit('should make a request if there isn\'t one', function() {
     // at homepage
     browser.get('/');
 
@@ -30,10 +32,10 @@ describe('Requests', function() {
 
   });
 
-  it('should reach Gallery', function() {
+  xit('should reach Gallery', function() {
 
-    // check if the Gallery link exists (TODO add class)
-    var galleryLink = $$('a').get(2);
+    // check if the Gallery link exists
+    var galleryLink = $('.gallery-link');
     expect(galleryLink.getText()).toBe('Gallery');
 
     // check if the Gallery link works
@@ -50,13 +52,13 @@ describe('Requests', function() {
 
   });
 
-  it('should reach User page', function() {
+  xit('should reach User page', function() {
 
     // go to the first Request page
     browser.get('/#/requests/1');
 
-    // check if a User link exists (TODO add class)
-    var userLink = $$('a').get(3);
+    // check if a User link exists
+    var userLink = $$('.user-link').first();
     expect(userLink.getText()).toBe('Tester');
 
     // check if the User link works
@@ -72,5 +74,42 @@ describe('Requests', function() {
     });
 
   });
+
+it('should upload a photo if there isn\'t one', function() {
+
+    // go to the first Request page
+    browser.get('/#/requests/1');
+
+    // check if any photo is present
+    $$('.request-photo').isPresent().then(function(bool){
+      if(!bool) {
+        // get file to upload
+        var file = 'test.jpg';
+        var filePath = path.resolve(__dirname, file);
+        $('input[type="file"]').sendKeys(filePath);
+
+        // add description
+        $('.photo-description').sendKeys('#testJpg');
+
+        // click the last submission button on the page
+        $$('.photo-submission').last().click();      
+      } 
+    });
+    
+    browser.sleep(1000).then(function(){
+      var photo = $$('.request-photo').last();
+      // check if photo is valid
+      photo.getAttribute('src').then(function(src){
+        expect(src.slice(src.length-4)).toBe('.jpg');
+      });
+      // click the photo
+      photo.click();
+      browser.sleep(1000).then(function(){
+        // modal should show up
+        expect($('.modal-header').isPresent()).toBe(true);
+      });
+    });
+});
+
 
 });

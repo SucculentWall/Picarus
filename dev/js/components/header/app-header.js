@@ -45,7 +45,7 @@ var Header = React.createClass({
           <i className='glyphicon glyphicon-search search-submit' onClick={this._onSubmit}></i>
         </form>
         { AuthStore.getUsername() ? <Link to={'/user/' + AuthStore.getId()} paramstwo={{user_id: 3}} className='sign'>Hello, {AuthStore.getUsername()}! </Link> : null }
-        <Link to='/' className='sign'>Gallery</Link>
+        <Link to='/' className='gallery-link sign'>Gallery</Link>
         { this.state.loggedIn ? <span className='sign' onClick={this._handleLogout}>Logout</span> : <Auth/> }
       </div>
     );
