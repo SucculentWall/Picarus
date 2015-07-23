@@ -2,7 +2,7 @@ var path = require('path');
 
 describe('Requests', function() {
 
-  xit('should make a request if there isn\'t one', function() {
+  it('should make a request if there isn\'t one', function() {
     // at homepage
     browser.get('/');
 
@@ -32,7 +32,7 @@ describe('Requests', function() {
 
   });
 
-  xit('should reach Gallery', function() {
+  it('should reach Gallery', function() {
 
     // check if the Gallery link exists
     var galleryLink = $('.gallery-link');
@@ -52,7 +52,7 @@ describe('Requests', function() {
 
   });
 
-  xit('should reach User page', function() {
+  it('should reach User page', function() {
 
     // go to the first Request page
     browser.get('/#/requests/1');
@@ -75,13 +75,13 @@ describe('Requests', function() {
 
   });
 
-it('should upload a photo if there isn\'t one', function() {
+  it('should upload a photo if there isn\'t one', function() {
 
     // go to the first Request page
     browser.get('/#/requests/1');
 
     // check if any photo is present
-    $$('.request-photo').isPresent().then(function(bool){
+    $('.request-photo').isPresent().then(function(bool){
       if(!bool) {
         // get file to upload
         var file = 'test.jpg';
@@ -109,6 +109,46 @@ it('should upload a photo if there isn\'t one', function() {
         expect($('.modal-header').isPresent()).toBe(true);
       });
     });
+  });
+
+  it('should like photo', function() {
+
+    // go to the first Request page
+    browser.get('/#/requests/1');
+
+    // find number of likes for last photo
+    var likesText = $$('span.likes-count').last().getText().then(function(text){
+      return text;
+    });
+
+    // click like for last photo
+    $$('.glyphicon-heart').last().click();
+
+    browser.sleep(1000).then(function(){
+      // make sure text is now different
+      expect($$('span.likes-count').last().getText()).toNotBe(likesText);
+    });
+
+  });
+
+  it('should comment', function() {
+
+    // go to the first Request page
+    browser.get('/#/requests/1');
+
+    // click comment slider for last photo
+    $$('.comment-slider').first().click();
+
+    browser.sleep(1000).then(function(){
+      // send comment
+      var testComment = '#test comment';
+      $('.comment-input').sendKeys(testComment);
+      $('.comment-submit').click();
+      browser.sleep(1000).then(function(){
+        expect($$('.photo-comment').first().getText()).toBe(testComment);
+      });
+    });
+    
 });
 
 
