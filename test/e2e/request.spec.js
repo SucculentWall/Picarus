@@ -1,30 +1,25 @@
 var path = require('path');
 
+// make request and upload photo have xit
+
 describe('Requests', function() {
 
-  it('should make a request if there isn\'t one', function() {
+  xit('should make a request', function() {
     // at homepage
     browser.get('/');
 
     browser.sleep(1000).then(function(){
-      // if anything in the feed is present
-      element(by.css('li.req')).isPresent().then(
-        function(bool) {
-          if (bool) {
-            // if so, click it
-            $$('li.req').first().click();
-          } else {
-            // if not, create a new one called #test
-            $('.request-input').sendKeys('#test');
-            $('.submission').click();
-            browser.sleep(1000).then(function(){
-              // and click it
-              $$('li.req').first().click();
-            });
-          }
-        }
-      );
+      // create a new request called #test
+      $('.request-input').sendKeys('#test');
+      $('.submission').click();
+      browser.sleep(1000).then(function(){
+        // and click it
+        $$('li.req').first().click();
+      });
     });
+
+    $$('li.req').first().click();
+  
     browser.sleep(1000).then(function(){
       // check if the Request Title exists
       expect($('.req-title').isPresent()).toBe(true);
@@ -33,6 +28,9 @@ describe('Requests', function() {
   });
 
   it('should reach Gallery', function() {
+
+    // go to the first Request page
+    browser.get('/#/requests/1');
 
     // check if the Gallery link exists
     var galleryLink = $('.gallery-link');
@@ -75,26 +73,28 @@ describe('Requests', function() {
 
   });
 
-  it('should upload a photo if there isn\'t one', function() {
+  xit('should upload a photo', function() {
 
     // go to the first Request page
     browser.get('/#/requests/1');
 
-    // check if any photo is present
-    $('.request-photo').isPresent().then(function(bool){
-      if(!bool) {
-        // get file to upload
-        var file = 'test.jpg';
-        var filePath = path.resolve(__dirname, file);
-        $('input[type="file"]').sendKeys(filePath);
+    // get file to upload
+    var file = 'test.jpg';
+    var filePath = path.resolve(__dirname, file);
+    $('input[type="file"]').sendKeys(filePath);
 
-        // add description
-        $('.photo-description').sendKeys('#testJpg');
+    // add description
+    $('.photo-description').sendKeys('#testJpg');
 
-        // click the last submission button on the page
-        $$('.photo-submission').last().click();      
-      } 
-    });
+    // click the last submission button on the page
+    $$('.photo-submission').last().click();    
+
+  }); 
+  
+  it('should show modal', function() {
+
+    // go to the first Request page
+    browser.get('/#/requests/1');
     
     browser.sleep(1000).then(function(){
       var photo = $$('.request-photo').last();
