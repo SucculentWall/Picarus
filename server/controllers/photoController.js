@@ -22,18 +22,13 @@ var inspect = require('util').inspect;
 // brew install graphicsmagick
 
 var gulp = require('gulp');
-// var imagemin = require('gulp-imagemin');
-// var imageResize = require('gulp-image-resize');
-
-// AWS S3 photo storage
-var aws = require('aws-sdk');
-aws.config.loadFromPath('./AWSConfig.json');
-
-var s3 = new aws.S3();
+var imagemin = require('gulp-imagemin');
+var imageResize = require('gulp-image-resize');
 
 module.exports = {
 
   addPhoto: function (req, res, next) {
+
     var data = {};
 
     var busboy = new Busboy({
@@ -41,15 +36,14 @@ module.exports = {
     });
 
     // fieldnames are the keys passed in with form data (eg with postman)
-    // size, filename, username, etc are fields
     busboy.on('field', function (fieldname, val, fieldnameTruncated, valTruncated) {
       data[fieldname] = val;
     });
 
-    // photo is FILE (when appnending to data in db utils, need to make sure photo FILE is passed in last)
     busboy.on('file', function (fieldname, filestream, filename, encoding, mimetype) {
       data.filename = utils.makeid(10) + '_' + filename; // random alphanum string + icarus.jpg
       data.filetype = filename.split('.').pop();
+<<<<<<< HEAD
       // Grid.mongo = mongoose.mongo;
       // var conn = mongoose.createConnection('mongodb://127.0.0.1/picarus');
       // conn.once('open', function() {
@@ -73,18 +67,22 @@ module.exports = {
         console.log(arguments);
       });
 
+=======
+      var output = fs.createWriteStream('photos/' + data.filename);
+      filestream.pipe(output);
+>>>>>>> (deploy) ignore node_modules, build, dist, AWSConfig.json, bower components
     });
 
 
     busboy.on('finish', function () {
-      // gulp.src('photos/' + data.filename)
-      //   // .pipe(imagemin())
-      //   .pipe(gulp.dest('photos/small'))
-      //   // .pipe(imageResize({
-      //   //   width: 400,
-      //   //   height: 400
-      //   // }))
-      //   .pipe(gulp.dest('photos/small'));
+      gulp.src('photos/' + data.filename)
+        .pipe(imagemin())
+        .pipe(gulp.dest('photos/small'))
+        .pipe(imageResize({
+          width: 400,
+          height: 400
+        }))
+        .pipe(gulp.dest('photos/small'));
 
       new User({
           username: data.username
