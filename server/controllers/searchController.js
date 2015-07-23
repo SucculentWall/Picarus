@@ -24,7 +24,7 @@ module.exports = {
         .fetchAll()
         .then(function(requests) {
           var uniq = {};
-          var uniqPhotos = [];
+          var transferArray = [];
           for (var i = 0; i < photos.models.length; i++) {
             uniq[photos.models[i]['id']] = photos.models[i];
           };
@@ -33,8 +33,8 @@ module.exports = {
           }
           photos.models = uniqPhotos;
 
-          var uniq = {};
-          var uniqRequests = [];
+          uniq = {};
+          transferArray = [];
           for (var i = 0; i < requests.models.length; i++) {
             uniq[requests.models[i]['id']] = requests.models[i];
           };
