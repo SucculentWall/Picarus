@@ -77,7 +77,6 @@ module.exports = {
     busboy.on('file', function (fieldname, filestream, filename, encoding, mimetype) {
       data.filename = utils.makeid(10) + '_' + filename; // random alphanum string + icarus.jpg
       data.filetype = filename.split('.').pop();
-<<<<<<< HEAD
       // Grid.mongo = mongoose.mongo;
       // var conn = mongoose.createConnection('mongodb://127.0.0.1/picarus');
       // conn.once('open', function() {
@@ -100,23 +99,20 @@ module.exports = {
         console.log('uploaded profile avatar file[' + data.filename + '] to [' + data.filename + '] as image/jpg');
         console.log(arguments);
       });
-=======
-      var output = fs.createWriteStream('dist/img/' + data.filename);
-      filestream.pipe(output);
->>>>>>> (deploy) ignore node_modules, build, dist, AWSConfig.json, bower components
+
     });
 
     busboy.on('finish', function () {
 
-      gulp.src('dist/img/' + data.filename)
-        .pipe(imagemin())
-        .pipe(gulp.dest('dist/img'))
-        .pipe(imageResize({
-          width: 150,
-          height: 150,
-          crop: true
-        }))
-        .pipe(gulp.dest('dist/img'));
+      // gulp.src('dist/img/' + data.filename)
+        // .pipe(imagemin())
+        // .pipe(gulp.dest('dist/img'))
+        // .pipe(imageResize({
+        //   width: 150,
+        //   height: 150,
+        //   crop: true
+        // }))
+        // .pipe(gulp.dest('dist/img'));
 
       new User({
           id: data.user_id

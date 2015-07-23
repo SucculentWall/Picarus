@@ -43,7 +43,6 @@ module.exports = {
     busboy.on('file', function (fieldname, filestream, filename, encoding, mimetype) {
       data.filename = utils.makeid(10) + '_' + filename; // random alphanum string + icarus.jpg
       data.filetype = filename.split('.').pop();
-<<<<<<< HEAD
       // Grid.mongo = mongoose.mongo;
       // var conn = mongoose.createConnection('mongodb://127.0.0.1/picarus');
       // conn.once('open', function() {
@@ -67,22 +66,18 @@ module.exports = {
         console.log(arguments);
       });
 
-=======
-      var output = fs.createWriteStream('photos/' + data.filename);
-      filestream.pipe(output);
->>>>>>> (deploy) ignore node_modules, build, dist, AWSConfig.json, bower components
     });
 
 
     busboy.on('finish', function () {
-      gulp.src('photos/' + data.filename)
-        .pipe(imagemin())
-        .pipe(gulp.dest('photos/small'))
-        .pipe(imageResize({
-          width: 400,
-          height: 400
-        }))
-        .pipe(gulp.dest('photos/small'));
+      // gulp.src('photos/' + data.filename)
+      //   .pipe(imagemin())
+      //   .pipe(gulp.dest('photos/small'))
+      //   .pipe(imageResize({
+      //     width: 400,
+      //     height: 400
+      //   }))
+      //   .pipe(gulp.dest('photos/small'));
 
       new User({
           username: data.username
