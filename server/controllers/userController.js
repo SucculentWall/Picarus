@@ -10,6 +10,10 @@ var io = require('../server.js');
 
 var Busboy = require('busboy');
 
+var aws = require('aws-sdk');
+aws.config.loadFromPath('./AWSConfig.json');
+
+var s3 = new aws.S3();
 //Mongoose setup
 // var mongoose = require('mongoose');
 // var Grid = require('gridfs-stream');
@@ -89,6 +93,8 @@ module.exports = {
       // filestream.pipe(output);
       filestream.length = +data.size;
 
+
+
       s3.putObject({
         ACL: 'public-read',
         Bucket: 'picarus',
@@ -126,7 +132,8 @@ module.exports = {
               .set('avatar', data.filename)
               .save()
               .then(function (created) {
-                io.emit('updateAvatar', data.filename);
+                console.log(' this is data: ', data);
+                io.emit('updateAvatar', data.filename, data.user_id);
               });
             res.send('avatar added');
           }

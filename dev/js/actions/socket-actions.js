@@ -3,10 +3,11 @@ var AppConstants = require('../constants/app-constants');
 
 var socket = io();
 
-socket.on('updateAvatar', function(data){
+socket.on('updateAvatar', function(filename, id){
   AppDispatcher.dispatch({
     type: AppConstants.UPDATE_AVATAR,
-    data: data
+    filename: filename,
+    id: id
   });
 });
 

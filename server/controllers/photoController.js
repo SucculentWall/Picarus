@@ -11,6 +11,11 @@ var io = require('../server.js');
 
 var Busboy = require('busboy');
 
+var aws = require('aws-sdk');
+aws.config.loadFromPath('./AWSConfig.json');
+
+var s3 = new aws.S3();
+
 //Mongoose setup
 // var mongoose = require('mongoose');
 // var Grid = require('gridfs-stream');

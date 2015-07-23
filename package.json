@@ -1,15 +1,16 @@
 {
-  "name": "icarus",
+  "name": "picarus",
   "version": "0.0.0",
   "description": "A photo sharing app",
   "main": "server/server.js",
   "scripts": {
     "test": "echo 'hello world!'",
-    "start": "node server/server.js"
+    "start": "npm install",
+    "postinstall": "node server/server.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/SucculentWall/Icarus.git"
+    "url": "git+https://github.com/SucculentWall/Picarus.git"
   },
   "keywords": [
     "photo",

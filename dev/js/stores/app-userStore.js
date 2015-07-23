@@ -85,8 +85,13 @@ var _receivePhoto = function(photoData) {
   _user.photos.push(photoData);
 };
 
-var _receiveAvatar = function(avatarPath) {
-  _user.avatar = avatarPath;
+var _receiveAvatar = function(filename, id) {
+  id = +id;
+  _user.id = +_user.id;
+  if (_user.id === id) {
+    console.log('it was true');
+    _user.avatar = filename;
+  }
 };
 
 var UserStore = assign({},EventEmitter.prototype, {
@@ -199,7 +204,9 @@ UserStore.dispatchToken = AppDispatcher.register(function(action) {
       break;
 
     case AppConstants.UPDATE_AVATAR:
-      _receiveAvatar(action.data);
+      _receiveAvatar(action.filename, action.id);
+      console.log('update avatar payload: ', action.filename, action.id);
+      console.log(' this is _user.id: ', _user.id);
       UserStore.emitChange();
       break;
 

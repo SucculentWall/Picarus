@@ -127,7 +127,7 @@ gulp.task('protractor', function () {
       configFile: "./protractor.conf.js",
       args: ['--baseUrl', 'http://127.0.0.1:8888/']
     }))
-    .on('error', function(e) { throw e })
+    .on('error', function(e) { throw e; });
 });
 
 // Watch: Scripts, Styles, Images, LiveReload
@@ -151,10 +151,18 @@ gulp.task('build', function () {
   runSequence('shell');
 });
 
+// gulp.task('default', function () {
+//   runSequence('auth', 'clean', 'scripts', 'styles', 'images', 'copy', 'nodemon', 'watch');
+// });
+
 gulp.task('default', function () {
-  runSequence('auth', 'clean', 'scripts', 'styles', 'images', 'copy', 'nodemon', 'watch');
+  runSequence('auth', 'clean', 'scripts', 'styles', 'images', 'copy', 'watch');
 });
 
+// gulp.task('testnode', function () {
+//   runSequence('tester', 'clean', 'scripts', 'styles', 'images', 'copy', 'nodemon');
+// });
+
 gulp.task('testnode', function () {
-  runSequence('tester', 'clean', 'scripts', 'styles', 'images', 'copy', 'nodemon');
+  runSequence('tester', 'clean', 'scripts', 'styles', 'images', 'copy');
 });

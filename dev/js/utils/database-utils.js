@@ -181,10 +181,11 @@ module.exports = {
 
         // make sure their toggle statuses are false
         var photos = response.data.photos;
-
-        for (var i = 0; i < photos.length; i++) {
-          var id = photos[i].id;
-          AppActions.toggleReset(id);
+        if (photos) {
+          for (var i = 0; i < photos.length; i++) {
+            var id = photos[i].id;
+            AppActions.toggleReset(id);
+          }
         }
       })
       .catch(function(error) {

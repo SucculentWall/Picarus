@@ -20,9 +20,9 @@ coverage
 photos/
 
 # Elastic Beanstalk Files
-.elasticbeanstalk/*
-!.elasticbeanstalk/*.cfg.yml
-!.elasticbeanstalk/*.global.yml
+ .elasticbeanstalk/*
+ !.elasticbeanstalk/*.cfg.yml
+ !.elasticbeanstalk/*.global.yml
 
 # Dependency directorys
 # Deployed apps should consider commenting these lines out:
