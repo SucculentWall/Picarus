@@ -151,7 +151,7 @@ var Photo = React.createClass({
     );
     likes = (
       <div className='likes'>
-        <span> {this.state.likes} likes </span>
+        <span className='likes-count'> {this.state.likes} likes </span>
         {this.state.loggedIn ? {heart} : null}
       </div>
     );
