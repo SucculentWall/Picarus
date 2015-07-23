@@ -1,3 +1,5 @@
+require('./environment');
+
 var gulp = require('gulp'),
   uglify = require('gulp-uglify'),
   less = require('gulp-less'),
@@ -17,7 +19,9 @@ var gulp = require('gulp'),
   shell = require('gulp-shell'),
   gulpif = require('gulp-if'),
   protractor = require("gulp-protractor").protractor,
+  replace = require('gulp-replace'),
   Server = require('karma').Server;
+
 
 //Shell
 gulp.task('brew', shell.task([
@@ -105,20 +109,26 @@ gulp.task('testClient', function (done) {
   }, done).start();
 });
 
+gulp.task('tester', function () {
+  gulp.src('./environment.js')
+    .pipe(replace('false','true'))
+    .pipe(gulp.dest('./'));
+});
+
+gulp.task('auth', function () {
+  gulp.src('./environment.js')
+    .pipe(replace('true','false'))
+    .pipe(gulp.dest('./'));
+});
 
 gulp.task('protractor', function () {
   gulp.src(["./test/e2e/*.spec.js"])
     .pipe(protractor({
       configFile: "./protractor.conf.js",
-      args: ['--baseUrl', 'http://127.0.0.1:8888']
+      args: ['--baseUrl', 'http://127.0.0.1:8888/']
     }))
     .on('error', function(e) { throw e })
 });
-
-gulp.task('teste2e', function () {
-  runSequence('nodemon', 'protractor');
-});
-
 
 // Watch: Scripts, Styles, Images, LiveReload
 gulp.task('watch', function () {
@@ -142,5 +152,9 @@ gulp.task('build', function () {
 });
 
 gulp.task('default', function () {
-  runSequence('clean', 'scripts', 'styles', 'images', 'copy', 'nodemon', 'watch');
+  runSequence('auth', 'clean', 'scripts', 'styles', 'images', 'copy', 'nodemon', 'watch');
+});
+
+gulp.task('testnode', function () {
+  runSequence('tester', 'clean', 'scripts', 'styles', 'images', 'copy', 'nodemon');
 });
