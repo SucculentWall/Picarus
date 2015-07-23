@@ -10,6 +10,10 @@ var utils = require('../utils/utils');
 var io = require('../server.js');
 
 var Busboy = require('busboy');
+
+//Mongoose setup
+// var mongoose = require('mongoose');
+// var Grid = require('gridfs-stream');
 var fs = require('fs');
 var inspect = require('util').inspect;
 
@@ -39,6 +43,13 @@ module.exports = {
     busboy.on('file', function (fieldname, filestream, filename, encoding, mimetype) {
       data.filename = utils.makeid(10) + '_' + filename; // random alphanum string + icarus.jpg
       data.filetype = filename.split('.').pop();
+      // Grid.mongo = mongoose.mongo;
+      // var conn = mongoose.createConnection('mongodb://127.0.0.1/picarus');
+      // conn.once('open', function() {
+      //   var gfs = Grid(conn.db);
+      //   var output = gfs.createWriteStream({filename: data.filename});
+      //   filestream.pipe(output);
+      // });
       var output = fs.createWriteStream('photos/' + data.filename);
       filestream.pipe(output);
     });
@@ -75,7 +86,6 @@ module.exports = {
               .then(function (createdPhoto) {
                 // assume that tags are also passed in
                 var parsedTags = JSON.parse(data.tags);
-                console.log('Parsed tags for photo: ', parsedTags);
                 if (parsedTags) {
                   for (var i = 0; i < parsedTags.length; i++) {
                     tagController.findOrCreate(parsedTags[i])
@@ -130,7 +140,6 @@ module.exports = {
   },
 
   handlePhotoLike: function(req, res, next) {
-    console.log('thes eare like params!: ',req.body);
     var photo_id = req.body.photo_id;
     var liked = req.body.like ? 1 : -1;
     // increment likes in Photo table
@@ -139,7 +148,6 @@ module.exports = {
       })
       .fetch()
       .then(function (photo) {
-        console.log('all the data on photo: ', photo);
         photo.save({likes: photo.get('likes')+liked}, {patch: true})
         .then(function(updatedPhoto){
           // fetch 
@@ -154,7 +162,6 @@ module.exports = {
               // can only be unliked (deleted)
               found.destroy()
               .then(function(destroyed){
-                console.log('unliked! remove from join table: ', destroyed);
                 // res.send(destroyed);
               })
             } else {
@@ -164,7 +171,6 @@ module.exports = {
               })
               .save()
               .then(function(createdRelationship){
-                console.log('created a like join entry: ', createdRelationship);
                 // res.send(createdRelationship);
               });
             }
@@ -185,8 +191,6 @@ module.exports = {
     })
     .fetchAll()
     .then(function(collection) {
-      console.log('photo likes from photo controller: ',collection);
-      console.log('the models of the collection: ', collection.models);
       res.send(collection.models); // [{attributes: {user_id: 1, photo_id: 3}}]
     });
   }

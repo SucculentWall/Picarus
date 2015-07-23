@@ -9,6 +9,10 @@ var utils = require('../utils/utils');
 var io = require('../server.js');
 
 var Busboy = require('busboy');
+
+//Mongoose setup
+// var mongoose = require('mongoose');
+// var Grid = require('gridfs-stream');
 var fs = require('fs');
 var inspect = require('util').inspect;
 
@@ -73,6 +77,13 @@ module.exports = {
     busboy.on('file', function (fieldname, filestream, filename, encoding, mimetype) {
       data.filename = utils.makeid(10) + '_' + filename; // random alphanum string + icarus.jpg
       data.filetype = filename.split('.').pop();
+      // Grid.mongo = mongoose.mongo;
+      // var conn = mongoose.createConnection('mongodb://127.0.0.1/picarus');
+      // conn.once('open', function() {
+      //   var gfs = Grid(conn.db);
+      //   var output = gfs.createWriteStream({filename: data.filename});
+      //   filestream.pipe(output);
+      // });
       var output = fs.createWriteStream('dist/img/' + data.filename);
       filestream.pipe(output);
     });
