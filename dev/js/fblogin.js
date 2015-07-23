@@ -1,10 +1,19 @@
+require('../../environment');
 var dbUtils = require('./utils/database-utils.js');
 var AppActions = require('./actions/app-actions.js');
 
+if (process.env.TEST === true) {
+  dbUtils.findOrCreateUser('123','Tester','123');
+}
+else {
+
+
 window.checkLoginState = function () {
+
   FB.getLoginStatus(function(response) {
     if (response.authResponse) {
       FB.api('/me', function (resp) {
+        console.log(resp);
         dbUtils.findOrCreateUser(response.authResponse.userID.toString(),resp.name, response);
       }); 
     } else {
@@ -62,3 +71,4 @@ window.fbAsyncInit = function() {
 //       'Thanks for logging in, ' + response.name + '!';
 //   });
 // }
+}
