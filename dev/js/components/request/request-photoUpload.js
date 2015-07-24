@@ -71,7 +71,7 @@ var PhotoUpload = React.createClass({
         {this.state.preview ? preview :null}
         <input ref="file" type="file" onChange={this._handleFile} required />
         <input className="photo-description" ref="description" type="text" placeholder="write a short description" required />
-        <input className="submission" type="submit" value="Submit" />
+        <input className="photo-submission submission" type="submit" value="Submit" />
       </form>
     );
   }

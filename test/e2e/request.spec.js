@@ -1,28 +1,25 @@
+var path = require('path');
+
+// make request and upload photo have xit
+
 describe('Requests', function() {
 
-  it('should make a request', function() {
+  xit('should make a request', function() {
     // at homepage
     browser.get('/');
 
     browser.sleep(1000).then(function(){
-      // if anything in the feed is present
-      element(by.css('li.req')).isPresent().then(
-        function(bool) {
-          if (bool) {
-            // if so, click it
-            $$('li.req').first().click();
-          } else {
-            // if not, create a new one called #test
-            $('.request-input').sendKeys('#test');
-            $('.submission').click();
-            browser.sleep(1000).then(function(){
-              // and click it
-              $$('li.req').first().click();
-            });
-          }
-        }
-      );
+      // create a new request called #test
+      $('.request-input').sendKeys('#test');
+      $('.submission').click();
+      browser.sleep(1000).then(function(){
+        // and click it
+        $$('li.req').first().click();
+      });
     });
+
+    $$('li.req').first().click();
+  
     browser.sleep(1000).then(function(){
       // check if the Request Title exists
       expect($('.req-title').isPresent()).toBe(true);
@@ -32,8 +29,11 @@ describe('Requests', function() {
 
   it('should reach Gallery', function() {
 
-    // check if the Gallery link exists (TODO add class)
-    var galleryLink = $$('a').get(2);
+    // go to the first Request page
+    browser.get('/#/requests/1');
+
+    // check if the Gallery link exists
+    var galleryLink = $('.gallery-link');
     expect(galleryLink.getText()).toBe('Gallery');
 
     // check if the Gallery link works
@@ -55,8 +55,8 @@ describe('Requests', function() {
     // go to the first Request page
     browser.get('/#/requests/1');
 
-    // check if a User link exists (TODO add class)
-    var userLink = $$('a').get(3);
+    // check if a User link exists
+    var userLink = $$('.user-link').first();
     expect(userLink.getText()).toBe('Tester');
 
     // check if the User link works
@@ -72,5 +72,84 @@ describe('Requests', function() {
     });
 
   });
+
+  xit('should upload a photo', function() {
+
+    // go to the first Request page
+    browser.get('/#/requests/1');
+
+    // get file to upload
+    var file = 'test.jpg';
+    var filePath = path.resolve(__dirname, file);
+    $('input[type="file"]').sendKeys(filePath);
+
+    // add description
+    $('.photo-description').sendKeys('#testJpg');
+
+    // click the last submission button on the page
+    $$('.photo-submission').last().click();    
+
+  }); 
+  
+  it('should show modal', function() {
+
+    // go to the first Request page
+    browser.get('/#/requests/1');
+    
+    browser.sleep(1000).then(function(){
+      var photo = $$('.request-photo').last();
+      // check if photo is valid
+      photo.getAttribute('src').then(function(src){
+        expect(src.slice(src.length-4)).toBe('.jpg');
+      });
+      // click the photo
+      photo.click();
+      browser.sleep(1000).then(function(){
+        // modal should show up
+        expect($('.modal-header').isPresent()).toBe(true);
+      });
+    });
+  });
+
+  it('should like photo', function() {
+
+    // go to the first Request page
+    browser.get('/#/requests/1');
+
+    // find number of likes for last photo
+    var likesText = $$('span.likes-count').last().getText().then(function(text){
+      return text;
+    });
+
+    // click like for last photo
+    $$('.glyphicon-heart').last().click();
+
+    browser.sleep(1000).then(function(){
+      // make sure text is now different
+      expect($$('span.likes-count').last().getText()).toNotBe(likesText);
+    });
+
+  });
+
+  it('should comment', function() {
+
+    // go to the first Request page
+    browser.get('/#/requests/1');
+
+    // click comment slider for last photo
+    $$('.comment-slider').first().click();
+
+    browser.sleep(1000).then(function(){
+      // send comment
+      var testComment = '#test comment';
+      $('.comment-input').sendKeys(testComment);
+      $('.comment-submit').click();
+      browser.sleep(1000).then(function(){
+        expect($$('.photo-comment').first().getText()).toBe(testComment);
+      });
+    });
+    
+});
+
 
 });

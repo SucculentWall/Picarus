@@ -11,7 +11,7 @@ var RequestHeader = React.createClass({
     return (
       <div className = 'req-header'>
         <h1 className = 'req-title'>{this.props.data.text}</h1>
-        <h3 className = 'req-username'>Requested By : <Link to='user' params={{user_id: this.props.data.user_id}} >{this.props.data.username}</Link></h3>
+        <h3 className = 'req-username'>Requested By : <Link className='user-link' to='user' params={{user_id: this.props.data.user_id}} >{this.props.data.username}</Link></h3>
         <p>Tags: {tagsList}</p>
       </div>
     );
