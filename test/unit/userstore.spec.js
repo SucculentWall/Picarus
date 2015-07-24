@@ -95,7 +95,8 @@ describe('UserStore', function() {
 
       AppDispatcher.dispatch({
         type: 'UPDATE_AVATAR',
-        data: 'exampleAvatar.png'
+        filename: 'exampleAvatar.png',
+        id: 1
       });
 
     });
