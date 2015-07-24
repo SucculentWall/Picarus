@@ -159,10 +159,6 @@ gulp.task('default', function () {
   runSequence('auth', 'clean', 'scripts', 'styles', 'images', 'copy', 'watch');
 });
 
-// gulp.task('testnode', function () {
-//   runSequence('tester', 'clean', 'scripts', 'styles', 'images', 'copy', 'nodemon');
-// });
-
 gulp.task('testnode', function () {
-  runSequence('tester', 'clean', 'scripts', 'styles', 'images', 'copy');
+  runSequence('tester', 'clean', 'scripts', 'styles', 'images', 'copy', 'nodemon');
 });

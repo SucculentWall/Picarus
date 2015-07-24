@@ -164,7 +164,7 @@ var Photo = React.createClass({
         <Modal show={this.state.showModal} onHide={this.close} dialogClassName='modalcontent'>
           {/* Modal.Header has a closeButton prop (x in the top right) */}
           <Modal.Header closeButton>
-            <Modal.Title modalClassName='modal-title'>Submitted by: <Link to='user' params={{user_id: this.props.data.user_id}} >{this.props.data.username}</Link></Modal.Title>
+            <Modal.Title modalClassName='modal-title'>Submitted by: <Link className='user-link' to='user' params={{user_id: this.props.data.user_id}} >{this.props.data.username}</Link></Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <img className='request-photo' src={'https://s3-us-west-1.amazonaws.com/picarus/' + this.props.data.filename} />
