@@ -7,6 +7,7 @@ var Auth = require('../app-auth');
 var PhotoUpload = require('./request-photoUpload');
 var AuthStore = require('../../stores/app-authStore');
 
+var currUserId = AuthStore.getId() || 0;
 
 var getData = function(){
   return {
@@ -35,6 +36,7 @@ var SelectedRequest = React.createClass({
   statics: {
     willTransitionTo: function(transition, params, element) {
       AppActions.pickRequest(params.requestId);
+      var currUserId = AuthStore.getId() || 0;
     }
   },
 
@@ -47,14 +49,14 @@ var SelectedRequest = React.createClass({
   },
 
   componentDidMount: function() {
-    RequestStore.addChangeListener(this._onChange);
     AuthStore.addChangeListener(this._onLog);
+    RequestStore.addChangeListener(this._onChange);
     AppActions.pickRequest(this.props.params.requestId);
   },
 
   componentWillUnmount: function() {
-    RequestStore.removeChangeListener(this._onChange);
     AuthStore.removeChangeListener(this._onLog);
+    RequestStore.removeChangeListener(this._onChange);
   },
   
   render: function(){

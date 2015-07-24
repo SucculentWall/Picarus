@@ -41,17 +41,19 @@ var _receiveAllPhotoLikes = function(joinData) {
   _likeLog = {};
   for (var i = 0; i < joinData.length; i++) {
     var obj = joinData[i];
-    _likeLog[obj.photo_id] = true; 
+    _likeLog[obj.photo_id] = obj.user_id; 
   }
 };
 
 var _updatePhotoLikes = function(data) {
+  console.log('this is the update data: ',data);
   var likeOrUnlike = data.config.data.like; // true or false
   var photoId = data.data.id;
+  var currUserId = data.config.data.currUserId;
   // if was a like
   if (likeOrUnlike) {
     // put in log
-    _likeLog[photoId] = true;
+    _likeLog[photoId] = currUserId;
   } else {
     // remove from log
     delete _likeLog[photoId];
@@ -147,12 +149,12 @@ var UserStore = assign({},EventEmitter.prototype, {
     return 0;
   },
 
-  getPhotoLikeStatus: function(photo_id) {
+  getPhotoLikeStatus: function(user_id, photo_id) {
     // check photos_users
     if (Object.keys(_likeLog).length === 0) {
       return true;
     }
-    if (_likeLog[photo_id] === undefined) {
+    if (_likeLog[photo_id] !== user_id) {
       // this is how we try to init unliked
       return true;
     } else {
@@ -205,8 +207,6 @@ UserStore.dispatchToken = AppDispatcher.register(function(action) {
 
     case AppConstants.UPDATE_AVATAR:
       _receiveAvatar(action.filename, action.id);
-      console.log('update avatar payload: ', action.filename, action.id);
-      console.log(' this is _user.id: ', _user.id);
       UserStore.emitChange();
       break;
 

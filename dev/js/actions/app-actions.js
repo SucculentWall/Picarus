@@ -57,17 +57,18 @@ module.exports = {
     dbUtils.addPhoto(photo, username, request_id, tags, description, size);
   },
 
-  likePhoto: function(id) {
+  likePhoto: function(id, currUserId) {
     dbUtils = require('../utils/database-utils');
-    dbUtils.likePhoto(id);
+    dbUtils.likePhoto(id, currUserId);
   },
 
-  unlikePhoto: function(id) {
+  unlikePhoto: function(id, currUserId) {
     dbUtils = require('../utils/database-utils');
-    dbUtils.unlikePhoto(id);
+    dbUtils.unlikePhoto(id, currUserId);
   },
 
   getPhotoLikes: function(user_id, photos) {
+    console.log('appActions sent dbutils this: ', user_id);
     dbUtils = require("../utils/database-utils");
     dbUtils.getPhotoLikes(user_id, photos);
   },
@@ -175,6 +176,7 @@ module.exports = {
   },
 
   receivePhotoLike: function(data) {
+    console.log('like data received on front-end: ', data);
     AppDispatcher.dispatch({
       type: AppConstants.LIKE_PHOTO,
       data: data

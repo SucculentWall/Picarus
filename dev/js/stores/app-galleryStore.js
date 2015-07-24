@@ -33,11 +33,12 @@ var _resetToggle = function(id) {
 };
 
 var _receiveAllPhotoLikes = function(joinData) {
+  console.log('this is the table data received: ', joinData);
   // joinData is an array of objects
   _likeLog = {};
   for (var i = 0; i < joinData.length; i++) {
     var obj = joinData[i];
-    _likeLog[obj.photo_id] = true; 
+    _likeLog[obj.photo_id] = obj.user_id; 
   }
 };
 
@@ -56,12 +57,15 @@ var _receiveSearchRequests = function(requests) {
 };
 
 var _updatePhotoLikes = function(data) {
+  console.log('this is the update data: ',data);
+
   var likeOrUnlike = data.config.data.like; // true or false
   var photoId = data.data.id;
+  var currUserId = data.config.data.currUserId;
   // if was a like
   if (likeOrUnlike) {
     // put in log
-    _likeLog[photoId] = true;
+    _likeLog[photoId] = currUserId;
   } else {
     // remove from log
     delete _likeLog[photoId];
@@ -105,12 +109,15 @@ var GalleryStore = assign({},EventEmitter.prototype, {
     return 0;
   },
 
-  getPhotoLikeStatus: function(photo_id) {
+  getPhotoLikeStatus: function(user_id, photo_id) {
     // check photos_users
+    console.log('what came in: ',user_id, photo_id);
+    console.log('and _likeLog: ', _likeLog);
     if (Object.keys(_likeLog).length === 0) {
       return true;
     }
-    if (_likeLog[photo_id] === undefined) {
+    if (_likeLog[photo_id] !== user_id) {
+      console.log('is is coming in here?');
       // this is how we try to init unliked
       return true;
     } else {
@@ -163,6 +170,7 @@ GalleryStore.dispatchToken = AppDispatcher.register(function(action) {
       break;
 
     case AppConstants.LIKE_PHOTO:
+      console.log('was like photo picked up?');
       _updatePhotoLikes(action.data);
       GalleryStore.emitChange();
       break;

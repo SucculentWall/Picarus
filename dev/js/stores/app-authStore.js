@@ -4,7 +4,6 @@ var assign = require("react/lib/Object.assign");
 var EventEmitter = require('events').EventEmitter;
 
 
-
 //  all or most recent photo requests
 var _user = {};
 
@@ -25,7 +24,8 @@ var AuthStore = assign({},EventEmitter.prototype, {
   },
 
   getId: function() {
-    return _user.id;
+    console.log('async issue? : ', _user.id);
+    return _user.id || 0;
   },
 
   getFacebookId: function() {

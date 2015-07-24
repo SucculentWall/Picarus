@@ -50,7 +50,10 @@ var getToggleState = function(id){
 };
 
 var checkLiked = function(id){
-  return GalleryStore.getPhotoLikeStatus(id);
+  currUserId = AuthStore.getId();
+  console.log('from checkLiked of gallery-photo: ', currUserId);
+  console.log('photo id from checkLiked: ', id);
+  return GalleryStore.getPhotoLikeStatus(currUserId, id);
 };
 
 var GalleryPhoto = React.createClass({
@@ -87,17 +90,14 @@ var GalleryPhoto = React.createClass({
     this.setState({unclicked: !this.state.unclicked});
     if (this.state.unclicked === true) {
       // increment
-      AppActions.likePhoto(this.props.data.id);
+      AppActions.likePhoto(this.props.data.id, currUserId);
     } else {
       // decrement
-      AppActions.unlikePhoto(this.props.data.id);
+      AppActions.unlikePhoto(this.props.data.id, currUserId);
     }
   },
 
   _onLikeOrUnlike: function() {
-    // console.log('I fIRED');
-    //AppActions.pickRequest(+this.props.data.requestId);
-    // console.log('liked/unliked!');
     if (this.isMounted()){
       this.setState({likes: getPhotoLikes(this.props.data.id)});
       this.setState({unclicked: checkLiked(this.props.data.id)});
@@ -117,6 +117,9 @@ var GalleryPhoto = React.createClass({
 
   _onLog: function () {
     this.setState({loggedIn: AuthStore.loggedIn()});
+    var curr = AuthStore.getId();
+    console.log('this is gallery photo\'s onLog: ', curr, currUserId);
+    AppActions.getPhotoLikes(curr);
   },
 
   statics: {
@@ -128,12 +131,12 @@ var GalleryPhoto = React.createClass({
   },
 
   componentDidMount: function() {
+    AuthStore.addChangeListener(this._onLog);
     RequestStore.addChangeListener(this._onChange);
     GalleryStore.addChangeListener(this._onLikeOrUnlike);
     GalleryStore.addChangeListener(this._onChange);
 
-    AuthStore.addChangeListener(this._onLog);
-
+    console.log('currUserId from gallery photo comp: ', currUserId);
     AppActions.getPhotoLikes(currUserId);
     AppActions.loadComments(this.props.data.id);
 

@@ -22,7 +22,7 @@ router.post('/avatars/', function(req,res,next){
   photoController.addAvatar(req, res, next);
 });
 
-router.get('/check', function(req, res, next){
+router.post('/check', function(req, res, next){
   photoController.getPhotoLikes(req, res, next);
 })
 
