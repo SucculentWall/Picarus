@@ -179,11 +179,11 @@ var GalleryPhoto = React.createClass({
       </div>
     );
     heart = (
-      <div className = {this.state.unclicked ? 'glyphicon glyphicon-heart unclicked' : 'glyphicon glyphicon-heart'} onClick={this._likeOrUnlike}></div>
+      <div className = {this.state.unclicked ? 'glyphicon glyphicon-heart modal-heart unclicked' : 'glyphicon glyphicon-heart modal-heart'} onClick={this._likeOrUnlike}></div>
     );
     likes = (
       <div className='likes'>
-        <span> {this.state.likes} likes </span>
+        <span className='modal-likes'> {this.state.likes} likes </span>
         {this.state.loggedIn ? {heart} : null}
       </div>
     );
@@ -194,7 +194,7 @@ var GalleryPhoto = React.createClass({
         <Modal show={this.state.showModal} onHide={this.close} dialogClassName='modalcontent'>
           {/* Modal.Header has a closeButton prop (x in the top right) */}
           <Modal.Header closeButton>
-            <Modal.Title modalClassName='modal-title'>Submitted by: <Link to='user' params={{user_id: this.props.data.user_id}} >{this.props.data.username}</Link></Modal.Title>
+            <Modal.Title modalClassName='modal-title'>Submitted by: <Link className='user-link' to='user' params={{user_id: this.props.data.user_id}} >{this.props.data.username}</Link></Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <img className = 'requestphoto' src={'https://s3-us-west-1.amazonaws.com/picarus/' + this.props.data.filename} />
@@ -208,7 +208,7 @@ var GalleryPhoto = React.createClass({
           </Modal.Footer>
         </Modal>
         <div>
-          <img onClick={this.open} className={'galleryphoto ' + photoTemplateClasses[this.props.count%numTemplates]} src={'https://s3-us-west-1.amazonaws.com/picarus/' + this.props.data.filename} />
+          <img onClick={this.open} className={'gallery-photo ' + photoTemplateClasses[this.props.count%numTemplates]} src={'https://s3-us-west-1.amazonaws.com/picarus/' + this.props.data.filename} />
         </div>
       </div>
     );

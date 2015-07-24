@@ -29,9 +29,9 @@ module.exports = {
             uniq[photos.models[i]['id']] = photos.models[i];
           };
           for (var key in uniq) {
-            uniqPhotos.push(uniq[key]);
+            transferArray.push(uniq[key]);
           }
-          photos.models = uniqPhotos;
+          photos.models = transferArray;
 
           uniq = {};
           transferArray = [];
@@ -39,9 +39,9 @@ module.exports = {
             uniq[requests.models[i]['id']] = requests.models[i];
           };
           for (var key in uniq) {
-            uniqRequests.push(uniq[key]);
+            transferArray.push(uniq[key]);
           }
-          requests.models = uniqRequests;
+          requests.models = transferArray;
 
           if (photos && requests) {
             res.send({photos:photos, requests: requests});

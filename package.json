@@ -5,8 +5,7 @@
   "main": "server/server.js",
   "scripts": {
     "test": "echo 'hello world!'",
-    "start": "npm install",
-    "postinstall": "node server/server.js"
+    "start": "npm install"
   },
   "repository": {
     "type": "git",

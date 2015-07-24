@@ -26,7 +26,7 @@ window.fbAsyncInit = function() {
   FB.init({
     // localhost appId : 503699336462357 (Icarus)
     // the webApp : 846989622054922 (PicarusDeploy)
-    appId      : '846989622054922',
+    appId      : '503699336462357',
     cookie     : true,  // enable cookies to allow the server to access 
                         // the session
     xfbml      : true,  // parse social plugins on this page
