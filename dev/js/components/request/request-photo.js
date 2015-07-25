@@ -108,7 +108,6 @@ var Photo = React.createClass({
     RequestStore.addChangeListener(this._onChange);
     RequestStore.addChangeListener(this._onLikeOrUnlike);
 
-    console.log('current user id: ', currUserId);
     AppActions.getPhotoLikes(currUserId, RequestStore.getPhotos());
     AppActions.loadComments(this.props.data.id);
 

@@ -68,7 +68,6 @@ module.exports = {
   },
 
   getPhotoLikes: function(user_id, photos) {
-    console.log('appActions sent dbutils this: ', user_id);
     dbUtils = require("../utils/database-utils");
     dbUtils.getPhotoLikes(user_id, photos);
   },
@@ -176,7 +175,6 @@ module.exports = {
   },
 
   receivePhotoLike: function(data) {
-    console.log('like data received on front-end: ', data);
     AppDispatcher.dispatch({
       type: AppConstants.LIKE_PHOTO,
       data: data

@@ -49,20 +49,11 @@ var getToggleState = function(id){
   };
 };
 
-// LIKE FIX
-// var checkLiked = function(id){
-//   return UserStore.getPhotoLikeStatus(id);
-// };
-
 var checkLiked = function(id){
   currUserId = AuthStore.getId() || 0;
   // return bool based on whether there is entry in join table
   return UserStore.getPhotoLikeStatus(currUserId, id);
 };
-
-///////////////////////////////////
-
-
 
 
 var ProfilePhoto = React.createClass({
@@ -130,7 +121,6 @@ var ProfilePhoto = React.createClass({
   statics: {
     willTransitionTo: function(transition, params, element) {
       // pass in current user and all the photos on this current request page
-      console.log('currUserId from profPhoto comp: ', currUserId);
       AppActions.getPhotoLikes(currUserId);
       AppActions.loadComments(this.props.data.id);
     }
@@ -145,7 +135,6 @@ var ProfilePhoto = React.createClass({
 
     AppActions.getPhotoLikes(currUserId);
     AppActions.loadComments(this.props.data.id);
-    console.log('currUserId from profPhoto comp: ', currUserId);
 
     // // commenting out for now, throwing error on user change
     // if (this.state.showModal){

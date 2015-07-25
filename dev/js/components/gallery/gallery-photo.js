@@ -51,8 +51,6 @@ var getToggleState = function(id){
 
 var checkLiked = function(id){
   currUserId = AuthStore.getId();
-  console.log('from checkLiked of gallery-photo: ', currUserId);
-  console.log('photo id from checkLiked: ', id);
   return GalleryStore.getPhotoLikeStatus(currUserId, id);
 };
 
@@ -118,7 +116,6 @@ var GalleryPhoto = React.createClass({
   _onLog: function () {
     this.setState({loggedIn: AuthStore.loggedIn()});
     var curr = AuthStore.getId();
-    console.log('this is gallery photo\'s onLog: ', curr, currUserId);
     AppActions.getPhotoLikes(curr);
   },
 
@@ -136,7 +133,6 @@ var GalleryPhoto = React.createClass({
     GalleryStore.addChangeListener(this._onLikeOrUnlike);
     GalleryStore.addChangeListener(this._onChange);
 
-    console.log('currUserId from gallery photo comp: ', currUserId);
     AppActions.getPhotoLikes(currUserId);
     AppActions.loadComments(this.props.data.id);
 

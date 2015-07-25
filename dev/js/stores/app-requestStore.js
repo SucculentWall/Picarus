@@ -44,7 +44,6 @@ var _receiveNewComment = function(commentData) {
 };
 
 var _receiveNewLike = function(likeData) {
-  console.log('this is likeData received, please have user: ', likeData);
   var likeOrUnlike = likeData.config.data.like; // true or false
   var photoId = likeData.data.id;
   var currUserId = likeData.config.data.currUserId;
@@ -70,12 +69,10 @@ var _receiveNewLike = function(likeData) {
 var _receiveAllPhotoLikes = function(joinData) {
   // joinData is an array of objects
   _likeLog = {};
-  console.log('wipe like_log for new fill: ', _likeLog);
   for (var i = 0; i < joinData.length; i++) {
     var obj = joinData[i];
     _likeLog[obj.photo_id] = obj.user_id; 
   }
-  console.log('this is _likeLog AFTER fill: ', _likeLog);
 };
 
 var RequestStore = assign({},EventEmitter.prototype, {
@@ -105,7 +102,6 @@ var RequestStore = assign({},EventEmitter.prototype, {
   },
 
   getLikes: function(id) {
-    // console.log('this is the id that was passed in--- ', id);
     var searched = _request.photos.filter(function(eachPhoto){
       return eachPhoto.id === id;
     });
@@ -138,10 +134,6 @@ var RequestStore = assign({},EventEmitter.prototype, {
   },
 
   getPhotoLikeStatus: function (user_id, photo_id) {
-    console.log('should be called again on a liek event');
-    console.log(_likeLog);
-    // need to have this information passed to the database
-    console.log('this is user_id: ', user_id);
     // if the picture has 0 likes
     if (Object.keys(_likeLog).length === 0) {
       return true;

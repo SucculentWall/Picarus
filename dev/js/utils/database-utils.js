@@ -208,7 +208,6 @@ module.exports = {
   },
 
   getPhotoLikes: function(user_id, photos) {
-    console.log('db utils sent the photocontroller this: ', user_id); 
     // axios.get('/api/photos/check', {params: {user_id: user_id, photos: photos}})
     axios.post('/api/photos/check', {user_id: user_id, photos: photos})
       .then(function(response) {

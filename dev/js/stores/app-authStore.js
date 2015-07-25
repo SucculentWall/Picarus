@@ -24,7 +24,6 @@ var AuthStore = assign({},EventEmitter.prototype, {
   },
 
   getId: function() {
-    console.log('async issue? : ', _user.id);
     return _user.id || 0;
   },
 

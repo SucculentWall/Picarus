@@ -46,7 +46,6 @@ var _receiveAllPhotoLikes = function(joinData) {
 };
 
 var _updatePhotoLikes = function(data) {
-  console.log('this is the update data: ',data);
   var likeOrUnlike = data.config.data.like; // true or false
   var photoId = data.data.id;
   var currUserId = data.config.data.currUserId;
@@ -91,7 +90,6 @@ var _receiveAvatar = function(filename, id) {
   id = +id;
   _user.id = +_user.id;
   if (_user.id === id) {
-    console.log('it was true');
     _user.avatar = filename;
   }
 };
