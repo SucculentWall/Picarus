@@ -86,41 +86,67 @@ table {
 
 body {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: 200;
 }
 
-a.sign {
-  color: #fff;
-  text-decoration: none;
+.facebook-button {
+  color: @fg-dark;
+  background-color: @bg-mid;
+  .bordered;
+  margin: 0 10px;
 }
-
-// a.active {
-//   color: #fff;
-//   text-decoration: none;
-// }
 
 .bordered {
   border: 1px solid @fg-mid;
   border-radius: 5px;
 }
+
+.straight-border {
+  border-left: 1px solid @fg-mid;
+  border-right: 1px solid @fg-mid;
+}
+
+.straight-border-right {
+  border-right: 1px solid @fg-mid;
+}
+
+.straight-border-bottom {
+  border-right: 1px solid @fg-mid;
+}
+
 .darkbordered {
   border: 1px solid #000;
 }
 
 #logo {
+  float: left;
+  margin: 5px 10px;
   font-size: 2em;
-  margin: 1em;
   text-decoration: none;
   color: #fff;
 }
 
+a.active {
+  &:hover {
+    text-decoration: none;
+  }
+}
+
 .nav {
+  text-align: center;
   padding: 10px;
   background: @bg-dark;
   height: 60px;
   color: #fff;
 }
 
+.header-sign {
+  float: right;
+  margin: 10px 10px;
+}
+
 .sign {
+  float: right;
   margin: 1em;
   text-decoration: none;
   color: #fff;
@@ -206,6 +232,7 @@ div.request-photo {
 
 .request {
   padding: 1em;
+  .straight-border-right;
   li {
     width: 100%;
     .bordered;
@@ -241,7 +268,6 @@ div.request-photo {
     margin-right: 2%; 
     float: left;
   }
-  .bordered;
 }
 
 ///////////////////////////////////////////
@@ -253,8 +279,12 @@ div.request-photo {
 }
 .feed {
   padding: 5px;
-  .bordered;
   height: 500px;
+  a {
+    &:hover {
+      text-decoration: none;
+    }
+  }
   li {
     &:hover {
       background: @bg-light;
@@ -326,19 +356,24 @@ img.gallery-photo {
 
 a.header-tag {
   margin: 0 5px;
+  font-weight: 400;
+  &:hover {
+    text-decoration: none;
+  }
 }
 .header-tag {
   cursor: pointer;
   padding: 5px;
   text-align: center;
   &.active {
-    background: @purple;
-    color: @white;
+    text-decoration: underline;
   }
 }
 
 .gallery {
   padding: 5px;
+  min-height: 750px;
+  .straight-border-right;
   li {
     &:hover {
       background: @bg-light;
@@ -386,9 +421,17 @@ a.header-tag {
     background-color: @hl-primary-h;
   }
 }
-.search-form {
+
+form.search-form {
   display: inline;
+  margin: 5px 10px;
 }
+
+input.search-bar {
+  margin: 5px 0;
+  width: 300px;
+}
+
 .search-bar {
   color: @black;
 }
