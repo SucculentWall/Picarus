@@ -57,14 +57,14 @@ module.exports = {
     dbUtils.addPhoto(photo, username, request_id, tags, description, size);
   },
 
-  likePhoto: function(id) {
+  likePhoto: function(id, currUserId) {
     dbUtils = require('../utils/database-utils');
-    dbUtils.likePhoto(id);
+    dbUtils.likePhoto(id, currUserId);
   },
 
-  unlikePhoto: function(id) {
+  unlikePhoto: function(id, currUserId) {
     dbUtils = require('../utils/database-utils');
-    dbUtils.unlikePhoto(id);
+    dbUtils.unlikePhoto(id, currUserId);
   },
 
   getPhotoLikes: function(user_id, photos) {

@@ -11,7 +11,7 @@ var _comments = {};
 var _commentDisplay = {}; // photo_ids are keys
 var _modalDisplay = {}; // eg photo_id: true
 
-// whether or not a photo is liked (photo_id : true)
+// whether or not a photo is liked user_id: photo_id
 var _likeLog = {};
 
 var _receiveRequest = function(data) {
@@ -46,10 +46,12 @@ var _receiveNewComment = function(commentData) {
 var _receiveNewLike = function(likeData) {
   var likeOrUnlike = likeData.config.data.like; // true or false
   var photoId = likeData.data.id;
+  var currUserId = likeData.config.data.currUserId;
+
   // if was a like
   if (likeOrUnlike) {
     // put in log
-    _likeLog[photoId] = true;
+    _likeLog[photoId] = currUserId;
   } else {
     // remove from log
     delete _likeLog[photoId];
@@ -69,7 +71,7 @@ var _receiveAllPhotoLikes = function(joinData) {
   _likeLog = {};
   for (var i = 0; i < joinData.length; i++) {
     var obj = joinData[i];
-    _likeLog[obj.photo_id] = true; 
+    _likeLog[obj.photo_id] = obj.user_id; 
   }
 };
 
@@ -100,7 +102,6 @@ var RequestStore = assign({},EventEmitter.prototype, {
   },
 
   getLikes: function(id) {
-    // console.log('this is the id that was passed in--- ', id);
     var searched = _request.photos.filter(function(eachPhoto){
       return eachPhoto.id === id;
     });
@@ -132,12 +133,12 @@ var RequestStore = assign({},EventEmitter.prototype, {
     return _request.text;
   },
 
-  getPhotoLikeStatus: function (photo_id) {
+  getPhotoLikeStatus: function (user_id, photo_id) {
     // if the picture has 0 likes
     if (Object.keys(_likeLog).length === 0) {
       return true;
     }
-    if (_likeLog[photo_id] === undefined) {
+    if (_likeLog[photo_id] !== user_id) {
       // this is how we try to init unliked
       return true;
     } else {

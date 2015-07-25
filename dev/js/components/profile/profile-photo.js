@@ -10,7 +10,7 @@ var Modal = require('react-bootstrap').Modal;
 
 var photoComments, comments, numTemplates;
 
-var currUserId = AuthStore.getId();
+var currUserId = AuthStore.getId() || 0;
 
 var photoTemplateClasses = [
   //column layout for 1st row of photos (adds up to 12)
@@ -50,7 +50,9 @@ var getToggleState = function(id){
 };
 
 var checkLiked = function(id){
-  return UserStore.getPhotoLikeStatus(id);
+  currUserId = AuthStore.getId() || 0;
+  // return bool based on whether there is entry in join table
+  return UserStore.getPhotoLikeStatus(currUserId, id);
 };
 
 
@@ -81,18 +83,16 @@ var ProfilePhoto = React.createClass({
   _onClick: function () {
     AppActions.loadComments(this.props.data.id);
     AppActions.toggleCommentDisplay(this.props.data.id);
-
-    // this.setState({showCommentEntry: !this.state.showCommentEntry});
   },
 
   _likeOrUnlike: function() {
     this.setState({unclicked: !this.state.unclicked});
     if (this.state.unclicked === true) {
       // increment
-      AppActions.likePhoto(this.props.data.id);
+      AppActions.likePhoto(this.props.data.id, currUserId);
     } else {
       // decrement
-      AppActions.unlikePhoto(this.props.data.id);
+      AppActions.unlikePhoto(this.props.data.id, currUserId);
     }
   },
 
@@ -115,6 +115,7 @@ var ProfilePhoto = React.createClass({
 
   _onLog: function () {
     this.setState({loggedIn: AuthStore.loggedIn()});
+    AppActions.getPhotoLikes(currUserId, RequestStore.getPhotos());
   },
 
   statics: {
@@ -126,14 +127,15 @@ var ProfilePhoto = React.createClass({
   },
 
   componentDidMount: function() {
+    AuthStore.addChangeListener(this._onLog);
     UserStore.addChangeListener(this._onChange);
     UserStore.addChangeListener(this._onLikeOrUnlike);
 
     RequestStore.addChangeListener(this._onChange);
-    AuthStore.addChangeListener(this._onLog);
 
-    AppActions.loadComments(this.props.data.id);
     AppActions.getPhotoLikes(currUserId);
+    AppActions.loadComments(this.props.data.id);
+
     // // commenting out for now, throwing error on user change
     // if (this.state.showModal){
     //   AppActions.togglePhotoModal(this.props.data.id);

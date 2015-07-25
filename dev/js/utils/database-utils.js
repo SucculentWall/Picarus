@@ -154,8 +154,8 @@ module.exports = {
       });
   },
 
-  likePhoto: function(photoId) {
-    axios.post('/api/photos/likes', {photo_id: photoId, like: true}) // this api request goes to photoRouter
+  likePhoto: function(photoId, currUserId) {
+    axios.post('/api/photos/likes', {photo_id: photoId, like: true, currUserId: currUserId }) // this api request goes to photoRouter
       .then(function(response) {  // this reponse AppActions to fire an action type
         AppActions.receivePhotoLike(response);
       })
@@ -164,8 +164,8 @@ module.exports = {
       });
   },
 
-  unlikePhoto: function(photoId) {
-    axios.post('/api/photos/likes', {photo_id: photoId, like: false}) // this api request goes to photoRouter
+  unlikePhoto: function(photoId, currUserId) {
+    axios.post('/api/photos/likes', {photo_id: photoId, like: false, currUserId: currUserId }) // this api request goes to photoRouter
       .then(function(response) {  // this reponse AppActions to fire an action type
         AppActions.receivePhotoLike(response);
       })
@@ -208,7 +208,8 @@ module.exports = {
   },
 
   getPhotoLikes: function(user_id, photos) {
-    axios.get('/api/photos/check', {user_id: user_id, photos: photos})
+    // axios.get('/api/photos/check', {params: {user_id: user_id, photos: photos}})
+    axios.post('/api/photos/check', {user_id: user_id, photos: photos})
       .then(function(response) {
         AppActions.receivePhotoLikesCheck(response);
       })

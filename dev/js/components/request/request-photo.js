@@ -21,7 +21,6 @@ var getNumComments = function(id){
 };
 
 var getToggleState = function(id){
-  // console.log('getToggleState getting from request store: ', RequestStore.getDisplayToggle(id) );
   return { // {showCommentEntry: , showModal: }
     showCommentEntry : RequestStore.getDisplayToggle(id).showCommentEntry || false,
     showModal : RequestStore.getDisplayToggle(id).showModal || false
@@ -29,20 +28,18 @@ var getToggleState = function(id){
 };
 
 var getPhotoLikes = function(id){
-  // console.log('currently has this many likes: ', RequestStore.getLikes(id));
   return RequestStore.getLikes(id) || 0;
 };
 
 var checkLiked = function(id){
+  currUserId = AuthStore.getId();
   // return bool based on whether there is entry in join table
-  // console.log('click status: ',RequestStore.getPhotoLikeStatus(currUserId, id));
-  return RequestStore.getPhotoLikeStatus(id);
+  return RequestStore.getPhotoLikeStatus(currUserId, id);
 };
 
 var Photo = React.createClass({
   
   getInitialState: function(){
-    //AppActions.getPhotoLikes();
     var stateObj = getPhotoComments(this.props.data.id);
     stateObj.loggedIn = AuthStore.loggedIn();
     stateObj.showCommentEntry = getToggleState(this.props.data.id).showCommentEntry;
@@ -59,12 +56,10 @@ var Photo = React.createClass({
 
   close: function (){
     AppActions.toggleRequestPhotoModal(this.props.data.id);
-    // this.setState({ showModal: false });
   },
 
   open: function (){
     AppActions.toggleRequestPhotoModal(this.props.data.id);
-    // this.setState({ showModal: true });
   },
 
   _openComments: function () {
@@ -75,20 +70,18 @@ var Photo = React.createClass({
 
   // click, this needs to change the store so a re-render happens (unclicked is not being reset for some reason)
   _likeOrUnlike: function() {
-    // console.log('current state! : ', this.state.unclicked)
     if (this.state.unclicked === true) {
       // increment
-      AppActions.likePhoto(this.props.data.id);
+      AppActions.likePhoto(this.props.data.id, currUserId);
       // needs to affect likelog
     } else {
       // decrement
-      AppActions.unlikePhoto(this.props.data.id);
+      AppActions.unlikePhoto(this.props.data.id, currUserId);
     }
   },
 
   // change callbacks
   _onLikeOrUnlike: function() {
-    // AppActions.getPhotoLikes(currUserId, RequestStore.getPhotos());
     if (this.isMounted()){
       this.setState({unclicked: checkLiked(this.props.data.id)});
       this.setState({likes: getPhotoLikes(this.props.data.id)});
@@ -96,8 +89,6 @@ var Photo = React.createClass({
   },
 
   _onChange: function () {
-
-    // console.log('change triggered on photo');
     if (this.isMounted()) { 
       this.setState(getPhotoComments(this.props.data.id));
       this.setState(getToggleState(this.props.data.id)); 
@@ -107,12 +98,15 @@ var Photo = React.createClass({
 
   _onLog: function () {
     this.setState({loggedIn: AuthStore.loggedIn()});
+    this.setState({unclicked: checkLiked(this.props.data.id)});
+
+    AppActions.getPhotoLikes(currUserId, RequestStore.getPhotos());
   },
   
   componentDidMount: function() {
+    AuthStore.addChangeListener(this._onLog);
     RequestStore.addChangeListener(this._onChange);
     RequestStore.addChangeListener(this._onLikeOrUnlike);
-    AuthStore.addChangeListener(this._onLog);
 
     AppActions.getPhotoLikes(currUserId, RequestStore.getPhotos());
     AppActions.loadComments(this.props.data.id);
@@ -123,10 +117,9 @@ var Photo = React.createClass({
   },
 
   componentWillUnmount: function() {
-    // console.log('unmounting ', this.props.data.id);
+    AuthStore.removeChangeListener(this._onLog);
     RequestStore.removeChangeListener(this._onChange);
     RequestStore.removeChangeListener(this._onLikeOrUnlike);
-    AuthStore.removeChangeListener(this._onLog);
   },
 
   render: function(){
@@ -155,8 +148,7 @@ var Photo = React.createClass({
         {this.state.loggedIn ? {heart} : null}
       </div>
     );
-    // console.log(this.props.data.id, ' current state stuff: ', this.state);
-    // console.log('unclicked status : ', this.state.unclicked);
+
     return (
       <li className='photo'>
 
