@@ -80,6 +80,46 @@ table {
 @hl-primary-h: @blue-light;
 @hl-secondary-h: @purple-light;
 
+//button colors
+@bt-primary: @blue;
+@bt-secondary: @purple;
+
+//on hover for buttons
+@bt-primary-h: @blue-light;
+@bt-secondary-h: @purple-light;
+
+
+///////////////////////////////////////////
+//           HEADER STYLING              //
+///////////////////////////////////////////
+
+#bs-navbar-collapse-1 {
+  height: 175px;
+}
+
+.header-container {
+  margin: 0 30px;
+}
+
+.navbar-default {
+  border: none;
+  border-radius: 0;
+  background-color: @bg-dark;
+}
+
+.navbar-collapse {
+  max-height: none;
+}
+
+#logo {
+  font-weight: 400;
+  float: left;
+  margin: 5px 10px;
+  font-size: 2em;
+  text-decoration: none;
+  color: #fff;
+}
+
 ///////////////////////////////////////////
 //             BODY STYLING              //
 ///////////////////////////////////////////
@@ -101,6 +141,10 @@ body {
   border-radius: 5px;
 }
 
+.straight-bordered {
+  border: 1px solid @fg-mid;
+}
+
 .straight-border {
   border-left: 1px solid @fg-mid;
   border-right: 1px solid @fg-mid;
@@ -118,14 +162,6 @@ body {
   border: 1px solid #000;
 }
 
-#logo {
-  float: left;
-  margin: 5px 10px;
-  font-size: 2em;
-  text-decoration: none;
-  color: #fff;
-}
-
 a.active {
   &:hover {
     text-decoration: none;
@@ -140,18 +176,22 @@ a.active {
   color: #fff;
 }
 
-.header-sign {
-  float: right;
-  margin: 10px 10px;
-}
-
 .sign {
-  float: right;
-  margin: 1em;
   text-decoration: none;
   color: #fff;
   font-size: 1em;
   cursor: pointer;
+}
+
+.navbar-nav li {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  line-height: 20px;
+  margin-left: 10px;
+}
+
+.navbar-nav li a {
+  padding: 0;
 }
 
 input {
@@ -232,7 +272,6 @@ div.request-photo {
 
 .request {
   padding: 1em;
-  .straight-border-right;
   li {
     width: 100%;
     .bordered;
@@ -273,6 +312,20 @@ div.request-photo {
 ///////////////////////////////////////////
 //             FEED STYLING              //
 ///////////////////////////////////////////
+
+.request-title h2 {
+  font-size: 1.25em;
+  padding: none;
+  color: @fg-light;
+}
+
+.request-title {
+  padding: 5px 0;
+  margin: 10px 0.5em;
+  text-align: center;
+  background-color: @hl-primary;
+}
+
 .photo-username {
   color: @fg-dark;
   float: right;
@@ -292,7 +345,7 @@ div.request-photo {
     }
     color: @fg-dark;
     background: @bg-mid;
-    padding: 5%;
+    padding: 1em;
     list-style-type: none;
     .bordered;
     margin: 0.5em;
@@ -372,8 +425,6 @@ a.header-tag {
 
 .gallery {
   padding: 5px;
-  min-height: 750px;
-  .straight-border-right;
   li {
     &:hover {
       background: @bg-light;
@@ -413,23 +464,23 @@ a.header-tag {
 ///////////////////////////////////////////
 
 .submission {
-  background-color: @hl-primary;
+  background-color: @bt-primary;
   border-radius: 5px;
   color: @fg-light;
   text-align: center;
   &:hover {
-    background-color: @hl-primary-h;
+    background-color: @bt-primary-h;
   }
 }
 
 form.search-form {
   display: inline;
-  margin: 5px 10px;
+  margin: 10px 10px;
 }
 
 input.search-bar {
   margin: 5px 0;
-  width: 300px;
+  width: 250px;
 }
 
 .search-bar {

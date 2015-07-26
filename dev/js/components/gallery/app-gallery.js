@@ -94,12 +94,12 @@ var Gallery = React.createClass({
 
     var searchHeader = (
       <div className = "filterbar">
-        <span className={photoClasses} onClick={this._searchPhotos}>PHOTO RESULTS ({photoCount})</span><span className={requestClasses} onClick={this._searchRequests}>REQUEST RESULTS ({requestCount})</span>
+        <span className={photoClasses} onClick={this._searchPhotos}>PHOTOS ({photoCount})</span><span className={requestClasses} onClick={this._searchRequests}>REQUESTS ({requestCount})</span>
       </div>
     );
 
     return (
-      <div className = "gallery col-xs-8">
+      <div className = "gallery col-md-8 clearfix">
         { !this.props.params.query ? <GalleryHeader data={this.state.tags} /> : searchHeader }
         <div>
           { this.state.searchPhotos ? photos : requests }
