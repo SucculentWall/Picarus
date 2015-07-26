@@ -51,7 +51,8 @@ var Feed = React.createClass({
       photoRequests.push(<Request key={key} data={reqs[key]} />);
     }
     return (
-      <div className = "feed col-xs-4">
+      <div className = "feed col-md-4">
+        <div className="request-title"><h2>Picture Requests</h2></div>
         { this.state.loggedIn ? <MakeRequest /> : <span><Auth /> to make a Request</span> }
         <ul>
           {photoRequests}

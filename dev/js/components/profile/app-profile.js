@@ -99,7 +99,7 @@ var Profile = React.createClass({
     };
 
     return (
-      <div className = 'request col-xs-8 container'>
+      <div className = 'request col-md-8 container'>
         { this.state.user_id ? valid(this.state) : null }
       </div>
       );

@@ -66,7 +66,7 @@ var SelectedRequest = React.createClass({
       photosList.push(<Photo key={i} data={photos[i]} />);
     }
     return (
-      <div className = 'request col-xs-8 container'>
+      <div className = 'request col-md-8 container'>
         <RequestHeader data={this.state} />
         <ul>
           {photosList}
