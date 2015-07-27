@@ -111,13 +111,13 @@ gulp.task('testClient', function (done) {
 
 gulp.task('tester', function () {
   gulp.src('./environment.js')
-    .pipe(replace('false','true'))
+    .pipe(replace('process.env.TEST = false','process.env.TEST = true'))
     .pipe(gulp.dest('./'));
 });
 
 gulp.task('auth', function () {
   gulp.src('./environment.js')
-    .pipe(replace('true','false'))
+    .pipe(replace('process.env.TEST = true','process.env.TEST = false'))
     .pipe(gulp.dest('./'));
 });
 

@@ -196,18 +196,18 @@ var GalleryPhoto = React.createClass({
             <Modal.Title modalClassName='modal-title'>Submitted by: <Link className='user-link' to='user' params={{user_id: this.props.data.user_id}} >{this.props.data.username}</Link></Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <img className = 'requestphoto' src={'https://s3-us-west-1.amazonaws.com/picarus/' + this.props.data.filename} />
+            <img className = 'requestphoto' src={process.env.PHOTOS_HOST + this.props.data.filename} />
           </Modal.Body>
           {/* Modal.Footer includes the comments */}
           <Modal.Footer>
           <span className='modal-description'>{this.props.data.description}</span>
-            <a href={'https://s3-us-west-1.amazonaws.com/picarus/' + this.props.data.filename} target='_blank'>Full image</a>
+            <a href={process.env.PHOTOS_HOST + this.props.data.filename} target='_blank'>Full image</a>
             {likes}
             {comments}
           </Modal.Footer>
         </Modal>
         <div>
-          <img onClick={this.open} className={'gallery-photo ' + photoTemplateClasses[this.props.count%numTemplates]} src={'https://s3-us-west-1.amazonaws.com/picarus/' + this.props.data.filename} />
+          <img onClick={this.open} className={'gallery-photo ' + photoTemplateClasses[this.props.count%numTemplates]} src={process.env.PHOTOS_HOST + this.props.data.filename} />
         </div>
       </div>
     );
