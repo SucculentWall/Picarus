@@ -1,4 +1,5 @@
 var React = require('react');
+
 var Modal = require('react-bootstrap').Modal;
 var AppActions = require('../../actions/app-actions');
 
@@ -76,14 +77,14 @@ var ProfileAvatar = React.createClass({
               </form>
             </Modal.Footer>
           </Modal>
-          { data.props.data.avatar === null ? null : <img className='avatar' onClick={data.open} src={'https://s3-us-west-1.amazonaws.com/picarus/'+data.props.data.avatar}/>}
+          { data.props.data.avatar === null ? null : <img className='avatar' onClick={data.open} src={process.env.PHOTOS_HOST+data.props.data.avatar}/>}
           <p>Click avatar to change</p>
         </div>
         );
     };
     var other = (
       <div>
-        { this.props.data.avatar === null ? null : <img className='avatar' src={'https://s3-us-west-1.amazonaws.com/picarus/'+this.props.data.avatar}/>}
+        { this.props.data.avatar === null ? null : <img className='avatar' src={process.env.PHOTOS_HOST+this.props.data.avatar}/>}
       </div>
     );
     return (
