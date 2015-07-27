@@ -159,7 +159,7 @@ var Photo = React.createClass({
             <Modal.Title modalClassName='modal-title'>Submitted by: <Link className='user-link' to='user' params={{user_id: this.props.data.user_id}} >{this.props.data.username}</Link></Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <img className='request-photo' src={process.env.PHOTOS_HOST + this.props.data.filename} />
+            <img className='request-photo-modal' src={process.env.PHOTOS_HOST + this.props.data.filename} />
           </Modal.Body>
           {/* Modal.Footer includes the comments */}
           <Modal.Footer>
