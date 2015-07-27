@@ -24,8 +24,6 @@ module.exports = {
             })
             .save()
             .then(function (createdRequest) {
-              console.log('===== Feed Submission =====\n* request :', createdRequest.attributes);
-              console.log('* tags: ', data.tags, '\n===========================');
               // create tags
               if (data.tags) {
                 var addTag = function (tag) {

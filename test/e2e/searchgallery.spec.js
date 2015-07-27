@@ -106,8 +106,8 @@ describe('Gallery', function() {
         // and click it
         browser.getCurrentUrl().then(function(url){
           expect(url).toBe('http://127.0.0.1:8888/#/search/test');
-          expect($$('.header-tag').get(0).getText()).toContain('PHOTO RESULTS');
-          expect($$('.header-tag').get(1).getText()).toContain('REQUEST RESULTS');
+          expect($$('.header-tag').get(0).getText()).toContain('PHOTOS');
+          expect($$('.header-tag').get(1).getText()).toContain('REQUESTS');
         });
       });
     });

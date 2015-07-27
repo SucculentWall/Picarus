@@ -160,5 +160,9 @@ gulp.task('default', function () {
 });
 
 gulp.task('testnode', function () {
-  runSequence('tester', 'clean', 'scripts', 'styles', 'images', 'copy', 'nodemon');
+  runSequence('tester', 'clean', 'scripts', 'styles', 'images', 'copy');
+});
+
+gulp.task('test', function() {
+  runSequence('testClient', 'testnode', 'protractor');
 });

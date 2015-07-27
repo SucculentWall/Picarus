@@ -33,8 +33,8 @@ describe('Requests', function() {
     browser.get('/#/requests/1');
 
     // check if the Gallery link exists
-    var galleryLink = $('.gallery-link');
-    expect(galleryLink.getText()).toBe('Gallery');
+    var galleryLink = $('#logo');
+    expect(galleryLink.getText()).toBe('Picarus');
 
     // check if the Gallery link works
     galleryLink.click();
