@@ -3,7 +3,7 @@
 var istanbul = require('browserify-istanbul');
 
 module.exports = function(config) {
-  config.set({
+  var configuration = {
 
     // base path that will be used to resolve all patterns (eg. files, exclude)
     basePath: '',
@@ -33,7 +33,8 @@ module.exports = function(config) {
 
     browserify: {
         debug: true,
-        transform: ['reactify', istanbul]
+        transform: ['reactify'],
+        bundleDelay: 1000
     },
 
 
@@ -43,11 +44,11 @@ module.exports = function(config) {
     // If you wanted to use Istanbul (e.g. for coverage reporting), for example, 
     // you'd use a transform and not a preprocessor.
     preprocessors: {
+        'dev/js/**/*.js': ['browserify'],
         'test/helper/*.js': ['browserify'],
         'test/example/*.spec.js': ['browserify'],
         'test/unit/*.spec.js': ['browserify'],
-        'test/integration/*.spec.js': ['browserify'],
-        'dev/js/**/*.js': ['browserify']
+        'test/integration/*.spec.js': ['browserify']
     },
 
 
@@ -81,11 +82,11 @@ module.exports = function(config) {
 
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-    browsers: ['Chrome'],
+    browsers: ['Chrome_travis_ci'],
 
     // Continuous Integration mode
     // if true, Karma captures browsers, runs the tests and exits
-    singleRun: false,
+    singleRun: true,
 
     plugins: [
         'karma-coverage',
@@ -94,6 +95,16 @@ module.exports = function(config) {
         'karma-chai',
         'karma-sinon',
         'karma-chrome-launcher'
-    ]
-  })
+    ],
+    customLaunchers: {
+      Chrome_travis_ci: {
+        base: 'Chrome',
+        flags: ['--no-sandbox']
+      }
+    },
+  };
+  if(process.env.TRAVIS){
+    configuration.browsers = ['Chrome_travis_ci'];
+  }
+  config.set(configuration);
 }

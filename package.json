@@ -4,7 +4,8 @@
   "description": "A photo sharing app",
   "main": "server/server.js",
   "scripts": {
-    "start": "npm install"
+    "start": "npm install",
+    "test": "gulp testClient"
   },
   "repository": {
     "type": "git",
@@ -20,7 +21,7 @@
     "url": "https://github.com/SucculentWall/Icarus/issues"
   },
   "homepage": "https://github.com/SucculentWall/Icarus#readme",
-  "devDependencies" : {
+  "devDependencies": {
     "jsdom": "^5.6.1",
     "karma": "^0.13.2",
     "karma-browserify": "^4.2.1",
@@ -46,6 +47,8 @@
     "busboy": "^0.2.9",
     "classnames": "^2.1.3",
     "del": "^1.2.0",
+    "express": "^4.13.1",
+    "flux": "^2.0.3",
     "gulp": "^3.9.0",
     "gulp-autoprefixer": "^2.3.1",
     "gulp-if": "^1.2.5",
@@ -62,18 +65,18 @@
     "gulp-shell": "^0.4.2",
     "gulp-uglify": "^1.2.0",
     "gulp-util": "^3.0.6",
+    "karma-phantomjs-launcher": "^0.2.0",
     "knex": "^0.8.6",
     "lodash": "^3.10.0",
-    "reactify": "^1.1.1",
-    "express": "^4.13.1",
-    "flux": "^2.0.3",
     "morgan": "^1.6.1",
     "pg": "^4.4.0",
+    "phantomjs": "^1.9.17",
     "q": "^1.4.1",
     "react": "^0.13.3",
     "react-async": "^2.1.0",
     "react-bootstrap": "^0.23.7",
     "react-router": "^0.13.3",
+    "reactify": "^1.1.1",
     "requirejs": "^2.1.19",
     "run-sequence": "^1.1.1",
     "socket.io": "^1.3.5",
