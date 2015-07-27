@@ -103,7 +103,6 @@ module.exports = {
         ContentType: 'image/jpg'
       }, function(error, response) {
         console.log('uploaded profile avatar file[' + data.filename + '] to [' + data.filename + '] as image/jpg');
-        console.log(arguments);
       });
 
     });
@@ -132,7 +131,6 @@ module.exports = {
               .set('avatar', data.filename)
               .save()
               .then(function (created) {
-                console.log(' this is data: ', data);
                 io.emit('updateAvatar', data.filename, data.user_id);
               });
             res.send('avatar added');

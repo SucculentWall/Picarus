@@ -67,8 +67,6 @@ module.exports = {
         Body: filestream,
         ContentType: 'image/jpg'
       }, function(error, response) {
-        console.log('uploaded file[' + data.filename + '] to [' + data.filename + '] as image/jpg');
-        console.log(arguments);
 
         new User({
             username: data.username
@@ -129,7 +127,51 @@ module.exports = {
       //     height: 400
       //   }))
       //   .pipe(gulp.dest('photos/small'));
-      console.log('busboy finished parsing upload');
+
+      new User({
+          username: data.username
+        })
+        .fetch()
+        .then(function (found) {
+          if (!found) {
+            res.send('User not found');
+          } else {
+            new Photo({
+                filename: data.filename,
+                filetype: data.filetype,
+                username: data.username,
+                description: data.description,
+                likes: 0,
+                user_id: found.id,
+                request_id: parseInt(data.request_id, 10) // assume this is how front-end passes it
+              })
+              .save()
+              .then(function (createdPhoto) {
+                // assume that tags are also passed in
+                var parsedTags = JSON.parse(data.tags);
+                if (parsedTags) {
+                  for (var i = 0; i < parsedTags.length; i++) {
+                    tagController.findOrCreate(parsedTags[i])
+                      .then(function (tag) {
+                        //increment the photos count for the tag
+                        tag.save({photos_count: (tag.get('photos_count') || 0) + 1}, {patch: true})
+                          .then(function (model) {});
+
+                        // put tag id and request id in join table
+                        new PhotoTag({
+                            photo_id: createdPhoto.id,
+                            tag_id: tag.id
+                          })
+                          .save()
+                          .then(function (PhotoTag) {});
+                      }) // tagController.findOrCreate.then
+                  } // for i < parsedTags.length
+                } // if parsedTags
+                io.emit('updateRequest', createdPhoto);
+              }); // new Photo.save.then
+            res.send('photo added');
+          }
+        });
     });
 
     req.pipe(busboy);
@@ -163,7 +205,6 @@ module.exports = {
     var photo_id = req.body.photo_id;
     var liked = req.body.like ? 1 : -1;
     var currUserId = req.body.currUserId;
-    console.log('currUserId received on backend: ', currUserId);
     // increment likes in Photo table
     new Photo({
         id: photo_id
@@ -197,7 +238,6 @@ module.exports = {
               });
             }
           });
-          console.log('this is updatedPhoto (trying to put user on it) : ', updatedPhoto);
           updatedPhoto.currUserId = currUserId;
           res.send(updatedPhoto);
         });
@@ -208,15 +248,12 @@ module.exports = {
   },
 
   getPhotoLikes: function(req, res, next) {
-    console.log('this is req.body: ', req.params);
     var user_id = req.body.user_id;
 
-    console.log('the server side controller receives this user_id: ', user_id);
     new PhotoUser()
     .query('where', 'user_id', '=', user_id)
     .fetchAll()
     .then(function(collection) {
-      console.log('this was fetched with the given user_id: ', collection.models);
       res.send(collection.models); // [{attributes: {user_id: 1, photo_id: 3}}]
     });
   }
