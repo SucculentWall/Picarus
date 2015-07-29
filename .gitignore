@@ -33,6 +33,9 @@ bower_components/
 # AWS NOTE: ignore again before pushing to github
 AWSConfig.json
 
+# FB crendentials
+FBkeys.js
+
 # Compiled Dirs (http://nodejs.org/api/addons.html)
 build/
 dist/

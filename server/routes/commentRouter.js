@@ -1,3 +1,4 @@
+var accessRestriction = require('../utils/auth.js').accessRestriction;
 var express = require('express');
 var commentController = require('../controllers/commentController');
 var photoController = require('../controllers/photoController');
@@ -9,7 +10,7 @@ router.get('/photo/:photo_id', function(req, res, next){
   photoController.getInfoForPhoto(req, res, next);
 });
 
-router.post('/', function(req,res,next){
+router.post('/', accessRestriction, function(req,res,next){
   commentController.addComment(req, res, next);
 });
 

@@ -30,7 +30,6 @@ var imageResize = require('gulp-image-resize');
 
 module.exports = {
   addUser: function (req, res, next) {
-    // console.log(req.body);
     var data = req.body;
     new User({FacebookId: data.FacebookId})
       .fetch()

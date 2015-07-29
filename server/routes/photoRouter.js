@@ -1,10 +1,11 @@
+var accessRestriction = require('../utils/auth.js').accessRestriction;
 var express = require('express');
 var photoController = require('../controllers/photoController');
 var router = express.Router();
 
-router.post('/', function(req,res,next){
-  photoController.addPhoto(req, res, next);
-});
+// router.post('/', passport.authenticate('facebook-token'), function(req,res,next){
+//   photoController.addPhoto(req, res, next);
+// });
 
 router.get('/', function(req,res,next){
   photoController.getAllPhotos(req, res, next);
@@ -14,11 +15,11 @@ router.get('/', function(req,res,next){
 //   photoController.getInfoForPhoto(req, res, next);
 // });
 
-router.post('/likes', function(req, res, next){
+router.post('/likes', accessRestriction, function(req, res, next){
   photoController.handlePhotoLike(req, res, next);
 });
 
-router.post('/avatars/', function(req,res,next){
+router.post('/avatars/', accessRestriction, function(req,res,next){
   photoController.addAvatar(req, res, next);
 });
 

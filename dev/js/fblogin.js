@@ -1,4 +1,5 @@
 require('../../environment');
+var FBKeys = require('../../FBKeys');
 var dbUtils = require('./utils/database-utils.js');
 var AppActions = require('./actions/app-actions.js');
 
@@ -9,12 +10,10 @@ else {
 
 
 window.checkLoginState = function () {
-
   FB.getLoginStatus(function(response) {
     if (response.authResponse) {
       FB.api('/me', function (resp) {
-        console.log(resp);
-        dbUtils.findOrCreateUser(response.authResponse.userID.toString(),resp.name, response);
+        dbUtils.findOrCreateUser(response.authResponse.userID.toString(), resp.name, response.authResponse.accessToken);
       }); 
     } else {
       AppActions.notLoggedIn();
@@ -26,7 +25,7 @@ window.fbAsyncInit = function() {
   FB.init({
     // localhost appId : 503699336462357 (Icarus)
     // the webApp : 846989622054922 (PicarusDeploy)
-    appId      : '503699336462357',
+    appId      : FBKeys.FB_APP_ID,
     cookie     : true,  // enable cookies to allow the server to access 
                         // the session
     xfbml      : true,  // parse social plugins on this page
@@ -47,7 +46,11 @@ window.fbAsyncInit = function() {
 
   FB.getLoginStatus(function(response) {
     FB.api('/me', function (resp) {
-      dbUtils.findOrCreateUser(resp.id.toString(),resp.name, response);
+      console.log('FB Login success: ', resp);
+
+      if (response.authResponse) {
+        dbUtils.findOrCreateUser(resp.id.toString(), resp.name, response.authResponse.accessToken);
+      }
     });
   });
 

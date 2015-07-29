@@ -1,15 +1,25 @@
 // database
 var db = require('./db/config');
+
+
 // express
 var express = require('express');
+var session = require('express-session')
 var path = require('path');
 var bodyParser = require('body-parser');
 var morgan = require('morgan');
 var app = express();
+
+
 // socket.io
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
+io.on('connection', function (socket) {
+  console.log('connected');
+});
 module.exports = io;
+
+
 // routes
 var requestRouter = require('./routes/requestRouter');
 var photoRouter = require('./routes/photoRouter');
@@ -18,9 +28,16 @@ var tagRouter = require('./routes/tagRouter');
 var commentRouter = require('./routes/commentRouter');
 var searchRouter = require('./routes/searchRouter');
 
-io.on('connection', function (socket) {
-  console.log('connected');
-});
+
+// passport auth
+var passport = require('./utils/auth.js').passport;
+app.use(session({
+  saveUninitialized: true,
+  resave: true,
+  secret: 'HotChickenWingsOnDemand'
+}));
+app.use(passport.initialize());
+app.use(passport.session());
 
 // for data parsing
 app.use(bodyParser.json());

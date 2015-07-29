@@ -29,7 +29,6 @@ module.exports = {
             })
             .save()
             .then(function (createdComment) {
-              console.log('BAANANANANANA', createdComment);
               io.emit('updateComment', createdComment);
             });
           res.send('comment added');
