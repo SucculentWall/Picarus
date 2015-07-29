@@ -26,6 +26,7 @@ var inspect = require('util').inspect;
 
 var gulp = require('gulp');
 var vs3 = require('vinyl-s3');
+var through2 = require('through2');
 var imageResize = require('gulp-image-resize');
 
 module.exports = {
@@ -94,8 +95,6 @@ module.exports = {
       // filestream.pipe(output);
       filestream.length = +data.size;
 
-
-
       s3.putObject({
         ACL: 'public-read',
         Bucket: 'picarus',
@@ -114,42 +113,38 @@ module.exports = {
           width: 400,
           height: 400
         }))
-        .pipe(vs3.dest(
-          {
-           Bucket: 'picarus/small',
-           Key: data.filename,
-           ACL: 'public-read'
-          }));
+        .pipe(vs3.dest('s3://picarus/small'))
+        .pipe(through2.obj(function(file, enc, next){
+          new User({
+              id: data.user_id
+            })
+            .fetch()
+            .then(function (found) {
+              if (!found) {
+                res.send('User not found');
+              } else {
+                found
+                  .set('avatar', data.filename)
+                  .save()
+                  .then(function (created) {
+                    console.log(' this is data: ', data);
+                    io.emit('updateAvatar', data.filename, data.user_id);
+                  });
+                res.send('avatar added');
+              }
+            });
+          next();
+        }));
 
       });
 
     });
 
     busboy.on('finish', function () {
-
-      new User({
-          id: data.user_id
-        })
-        .fetch()
-        .then(function (found) {
-          if (!found) {
-            res.send('User not found');
-          } else {
-            found
-              .set('avatar', data.filename)
-              .save()
-              .then(function (created) {
-                console.log(' this is data: ', data);
-                io.emit('updateAvatar', data.filename, data.user_id);
-              });
-            res.send('avatar added');
-          }
-        });
+      console.log('busboy finished parsing');
     });
 
     req.pipe(busboy);
-
   }
-
 
 };
