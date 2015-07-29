@@ -81,7 +81,7 @@ describe('FeedStore', function() {
 
     it('getAllRequests should retrieve requests', function(){
       var obj = FeedStore.getAllRequests();
-      expect(obj).to.be.an('object');
+      expect(obj).to.be.an('array');
       expect(obj[1]).to.be.an('object');
       expect(obj[2]).to.be.an('object');
       expect(obj[3]).to.be.an('object');
