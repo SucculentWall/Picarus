@@ -27,7 +27,7 @@ var userRouter = require('./routes/userRouter');
 var tagRouter = require('./routes/tagRouter');
 var commentRouter = require('./routes/commentRouter');
 var searchRouter = require('./routes/searchRouter');
-
+var authRouter = require('./routes/authRouter');
 
 // passport auth
 var passport = require('./utils/auth.js').passport;
@@ -58,7 +58,7 @@ app.use('/api/photos', photoRouter);
 app.use('/api/tags', tagRouter);
 app.use('/api/comments', commentRouter);
 app.use('/api/search', searchRouter);
-
+app.use('/api/logout', authRouter);
 
 // listen on port
 var port = process.env.PORT || 8888;

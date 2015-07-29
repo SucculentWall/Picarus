@@ -158,6 +158,16 @@ module.exports = {
       });
   },
 
+  logout: function() {
+    axios.post('/api/logout', {})
+      .then(function(response) {
+        console.log(response.data);
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
+  },
+
   likePhoto: function(photoId, currUserId) {
     axios.post('/api/photos/likes', {photo_id: photoId, like: true, currUserId: currUserId }) // this api request goes to photoRouter
       .then(function(response) {  // this reponse AppActions to fire an action type
