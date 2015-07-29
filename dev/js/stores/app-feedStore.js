@@ -6,16 +6,14 @@ var EventEmitter = require('events').EventEmitter;
 
 
 //  all or most recent photo requests
-var _requestList = {};
+var _requestList = [];
 
 var _receiveRequests = function(requests) {
-  for (var i = 0; i < requests.length; i++) {
-    _requestList[requests[i].id] = requests[i];
-  }
+  _requestList = requests;
 };
 
 var _addToRequestList = function(request) {
-  _requestList[request.id] = request;
+  _requestList.push(request);
 };
 
 var FeedStore = assign({},EventEmitter.prototype, {
@@ -24,7 +22,9 @@ var FeedStore = assign({},EventEmitter.prototype, {
   },
 
   getRequest: function(id) {
-    return _requestList[id];
+    for (var i = 0; i < _requestList.length; i++) {
+      if (_requestList[i].id === id) { return _requestList[i];}
+    }
   },
 
   emitChange: function() {

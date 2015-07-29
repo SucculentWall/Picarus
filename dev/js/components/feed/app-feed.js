@@ -16,6 +16,7 @@ var Feed = React.createClass({
   getInitialState: function(){
     var obj = getPhotoRequests();
     obj.loggedIn = AuthStore.loggedIn();
+    obj.count = 20;
     return obj;
   },
 
@@ -43,21 +44,28 @@ var Feed = React.createClass({
     FeedStore.removeChangeListener(this._onChange);
     AuthStore.removeChangeListener(this._onLog);
   },
+
+  loadMore: function() {
+    this.setState({count: this.state.count+20});
+  },
   
   render: function(){
     photoRequests = [];
     var reqs = this.state.photoRequests;
     for (var key in reqs) {
-        photoRequests.push(<Request key={key} data={reqs[key]} />);
+        photoRequests.push(<Request ref={key} key={key} data={reqs[key]} />);
     }
     return (
       <div className = "feed col-md-4">
         <div className="request-title"><h2>Picture Requests</h2></div>
         { this.state.loggedIn ? <MakeRequest /> : <span><Auth /> to make a Request</span> }
         <div> Recent Requests </div>
-        <ul>
-          {photoRequests.slice(0,10)}
-        </ul>
+        <div className='feed-list'>
+          <ul>
+            {photoRequests.slice(0,this.state.count)}
+          </ul>
+          {this.state.count < photoRequests.length ? <button onClick={this.loadMore}> Load more requests </button> : <div> Displaying all requests </div>}
+        </div>
       </div>
     );
   }
