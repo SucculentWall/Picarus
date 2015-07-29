@@ -55,8 +55,11 @@ var Gallery = React.createClass({
     this.setState({searchPhotos: true, searchRequests: false});
   },
 
-  _pageTurn: function(i) {
-    this.setState({page : i});
+  _photoPageTurn: function(i) {
+    this.setState({photoPage : i});
+  },
+  _reqPageTurn: function(i) {
+    this.setState({reqPage : i});
   },
 
   componentDidMount: function() {
@@ -89,7 +92,7 @@ var Gallery = React.createClass({
     var photoPages = Math.ceil(photoCount/16);
     var photoButtons = [];
     for (i = photoPages-1; i >=0; i--) {
-      photoButtons.push((<li className='page-button' onClick={this._pageTurn.bind(this, i)} key={i}>{i+1}</li> ));
+      photoButtons.push((<li className='page-button' onClick={this._photoPageTurn.bind(this, i)} key={i}>{i+1}</li> ));
     }
 
     var requests = [];
@@ -104,7 +107,7 @@ var Gallery = React.createClass({
     var requestPages = Math.ceil(requestCount/16);
     var requestButtons = [];
     for (i = requestPages.length-1; i >= 0; i--) {
-      requestButtons.push((<li className='page-button' onClick={this._pageTurn.bind(this, i)} key={i}>{i+1}</li> ));
+      requestButtons.push((<li className='page-button' onClick={this._reqPageTurn.bind(this, i)} key={i}>{i+1}</li> ));
     }
 
     var photoClasses = classNames('header-tag','col-xs-6',{'active': this.state.searchPhotos});
