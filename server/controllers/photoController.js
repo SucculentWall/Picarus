@@ -163,7 +163,6 @@ module.exports = {
     var photo_id = req.body.photo_id;
     var liked = req.body.like ? 1 : -1;
     var currUserId = req.body.currUserId;
-    console.log('currUserId received on backend: ', currUserId);
     // increment likes in Photo table
     new Photo({
         id: photo_id
@@ -197,7 +196,6 @@ module.exports = {
               });
             }
           });
-          console.log('this is updatedPhoto (trying to put user on it) : ', updatedPhoto);
           updatedPhoto.currUserId = currUserId;
           res.send(updatedPhoto);
         });
@@ -208,15 +206,11 @@ module.exports = {
   },
 
   getPhotoLikes: function(req, res, next) {
-    console.log('this is req.body: ', req.params);
     var user_id = req.body.user_id;
-
-    console.log('the server side controller receives this user_id: ', user_id);
     new PhotoUser()
     .query('where', 'user_id', '=', user_id)
     .fetchAll()
     .then(function(collection) {
-      console.log('this was fetched with the given user_id: ', collection.models);
       res.send(collection.models); // [{attributes: {user_id: 1, photo_id: 3}}]
     });
   }

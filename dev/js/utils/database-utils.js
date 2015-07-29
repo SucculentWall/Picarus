@@ -1,5 +1,6 @@
 var axios = require('axios');
 var AppActions = require('../actions/app-actions');
+var AuthStore = require('../stores/app-authStore');
 
 module.exports = {
   
@@ -28,7 +29,8 @@ module.exports = {
     axios.post('/api/requests', {
         text: text,
         username: username,
-        tags: tags
+        tags: tags,
+        access_token: AuthStore.getToken()
       })
       .then()
       .catch(function(error) {
@@ -68,7 +70,8 @@ module.exports = {
         text: text,
         username: username,
         photo_id: photo_id,
-        request_id: request_id
+        request_id: request_id,
+        access_token: AuthStore.getToken()
       })
       .then(function(response) {
         AppActions.receiveComments(response);
@@ -87,6 +90,7 @@ module.exports = {
     data.append('description', description);
     data.append('size', size);
     data.append('photo', photo);
+    data.append('access_token', AuthStore.getToken());
     console.log('DATA FROM DBUTILS: ', data);
     axios.post('/api/photos', data)
       .then(function(response) {
@@ -145,7 +149,7 @@ module.exports = {
   },
 
   findOrCreateUser: function(id, name, token) {
-    axios.post('/api/users', {FacebookId: id, username: name })
+    axios.post('/api/users', {FacebookId: id, username: name, access_token: token})
       .then(function(response) {
         AppActions.loggedIn(response.data, token);
       })
