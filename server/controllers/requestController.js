@@ -50,8 +50,11 @@ module.exports = {
 
   getAllRequests: function (req, res, next) {
     Requests.reset()
+      .query(function(qb){
+        qb.orderBy('created_at'); 
+      })
       .fetch({
-        withRelated: ['user'] // refers to property on model
+        withRelated: ['user', ] // refers to property on model
       })
       .then(function (requests) {
         res.send(requests.models);
