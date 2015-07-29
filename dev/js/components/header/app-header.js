@@ -1,5 +1,6 @@
 var React = require('react');
 var Link = require('react-router').Link;
+var AppActions = require('../../actions/app-actions');
 var AuthStore = require('../../stores/app-authStore');
 var Auth = require('../app-auth');
 var Navigation = require('react-router').Navigation;
@@ -12,6 +13,7 @@ var Header = React.createClass({
   },
 
   _handleLogout: function() {
+    AppActions.logout();
     FB.logout(function() {
       checkLoginState();
     });

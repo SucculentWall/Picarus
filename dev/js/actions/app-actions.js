@@ -197,6 +197,11 @@ module.exports = {
     });
   },
 
+  logout: function () {
+    dbUtils = require('../utils/database-utils');
+    dbUtils.logout();
+  },
+
   notLoggedIn: function(data) {
     AppDispatcher.dispatch({
       type: AppConstants.NOT_LOGGED_IN,
