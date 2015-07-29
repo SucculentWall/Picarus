@@ -25,7 +25,7 @@ var inspect = require('util').inspect;
 // brew install graphicsmagick
 
 var gulp = require('gulp');
-var imagemin = require('gulp-imagemin');
+var vs3 = require('vinyl-s3');
 var imageResize = require('gulp-image-resize');
 
 module.exports = {
@@ -104,22 +104,28 @@ module.exports = {
         ContentType: 'image/jpg'
       }, function(error, response) {
         console.log('uploaded profile avatar file[' + data.filename + '] to [' + data.filename + '] as image/jpg');
-        console.log(arguments);
+
+        // resize image to store and then use for display retrieval (speeds page load)
+        vs3.src({
+          Bucket: 'picarus',
+          Key: data.filename
+        })
+        .pipe(imageResize({
+          width: 400,
+          height: 400
+        }))
+        .pipe(vs3.dest(
+          {
+           Bucket: 'picarus/small',
+           Key: data.filename,
+           ACL: 'public-read'
+          }));
+
       });
 
     });
 
     busboy.on('finish', function () {
-
-      // gulp.src('dist/img/' + data.filename)
-        // .pipe(imagemin())
-        // .pipe(gulp.dest('dist/img'))
-        // .pipe(imageResize({
-        //   width: 150,
-        //   height: 150,
-        //   crop: true
-        // }))
-        // .pipe(gulp.dest('dist/img'));
 
       new User({
           id: data.user_id

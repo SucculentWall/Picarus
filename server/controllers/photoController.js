@@ -27,7 +27,7 @@ var inspect = require('util').inspect;
 // brew install graphicsmagick
 
 var gulp = require('gulp');
-var imagemin = require('gulp-imagemin');
+var vs3 = require('vinyl-s3');
 var imageResize = require('gulp-image-resize');
 
 module.exports = {
@@ -68,7 +68,17 @@ module.exports = {
         ContentType: 'image/jpg'
       }, function(error, response) {
         console.log('uploaded file[' + data.filename + '] to [' + data.filename + '] as image/jpg');
-        console.log(arguments);
+
+        // resize image to store and then use for display retrieval (speeds page load)
+        vs3.src({
+          Bucket: 'picarus',
+          Key: data.filename
+        })
+        .pipe(imageResize({
+          width: 400,
+          height: 400
+        }))
+        .pipe(vs3.dest('s3://picarus/small'));
 
         new User({
             username: data.username
@@ -119,21 +129,10 @@ module.exports = {
 
     });
 
-
     busboy.on('finish', function () {
-      // gulp.src('photos/' + data.filename)
-      //   .pipe(imagemin())
-      //   .pipe(gulp.dest('photos/small'))
-      //   .pipe(imageResize({
-      //     width: 400,
-      //     height: 400
-      //   }))
-      //   .pipe(gulp.dest('photos/small'));
       console.log('busboy finished parsing upload');
     });
-
     req.pipe(busboy);
-
   },
 
   getAllPhotos: function (req, res, next) {

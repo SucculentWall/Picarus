@@ -171,7 +171,7 @@ var Photo = React.createClass({
         </Modal>
 
         <div className='request-photo'>
-          <img onClick={this.open} className='request-photo' src={process.env.PHOTOS_HOST + this.props.data.filename} />
+          <img onClick={this.open} className='request-photo' src={process.env.PHOTOS_THUMBHOST + this.props.data.filename} />
         </div>
         <span className="description">{this.props.data.description}</span>
         <span className='photo-username'>Submitted by: <Link to='user' params={{user_id: this.props.data.user_id}} >{this.props.data.username}</Link></span>
