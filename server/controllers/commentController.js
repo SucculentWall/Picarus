@@ -30,15 +30,22 @@ module.exports = {
             .save()
             .then(function (createdComment) {
               io.emit('updateComment', createdComment);
+              // increment likes in Photo table
+              new Photo({
+                  id: data.photo_id
+                })
+                .fetch()
+                .then(function (photo) {
+                  photo.save({comments: photo.get('comments')+1}, {patch: true})
+                    .then(function(updatedPhoto){
+                      console.log('>>>>>>>>>>>>>>> Increment comments count for photo ', data.photo_id, ' to: ', updatedPhoto.get('comments'));
+                    });
+                });
             });
           res.send('comment added');
         }
       });
 
   }
-
-  // getCommentsForPhoto : function (req, res, next) {
-
-  // }
 
 };
