@@ -25,7 +25,8 @@ var inspect = require('util').inspect;
 // brew install graphicsmagick
 
 var gulp = require('gulp');
-var imagemin = require('gulp-imagemin');
+var vs3 = require('vinyl-s3');
+var through2 = require('through2');
 var imageResize = require('gulp-image-resize');
 
 module.exports = {
@@ -94,8 +95,6 @@ module.exports = {
       // filestream.pipe(output);
       filestream.length = +data.size;
 
-
-
       s3.putObject({
         ACL: 'public-read',
         Bucket: 'picarus',
@@ -104,46 +103,48 @@ module.exports = {
         ContentType: 'image/jpg'
       }, function(error, response) {
         console.log('uploaded profile avatar file[' + data.filename + '] to [' + data.filename + '] as image/jpg');
-        console.log(arguments);
+
+        // resize image to store and then use for display retrieval (speeds page load)
+        vs3.src({
+          Bucket: 'picarus',
+          Key: data.filename
+        })
+        .pipe(imageResize({
+          width: 400,
+          height: 400
+        }))
+        .pipe(vs3.dest('s3://picarus/small'))
+        .pipe(through2.obj(function(file, enc, next){
+          new User({
+              id: data.user_id
+            })
+            .fetch()
+            .then(function (found) {
+              if (!found) {
+                res.send('User not found');
+              } else {
+                found
+                  .set('avatar', data.filename)
+                  .save()
+                  .then(function (created) {
+                    console.log(' this is data: ', data);
+                    io.emit('updateAvatar', data.filename, data.user_id);
+                  });
+                res.send('avatar added');
+              }
+            });
+          next();
+        }));
+
       });
 
     });
 
     busboy.on('finish', function () {
-
-      // gulp.src('dist/img/' + data.filename)
-        // .pipe(imagemin())
-        // .pipe(gulp.dest('dist/img'))
-        // .pipe(imageResize({
-        //   width: 150,
-        //   height: 150,
-        //   crop: true
-        // }))
-        // .pipe(gulp.dest('dist/img'));
-
-      new User({
-          id: data.user_id
-        })
-        .fetch()
-        .then(function (found) {
-          if (!found) {
-            res.send('User not found');
-          } else {
-            found
-              .set('avatar', data.filename)
-              .save()
-              .then(function (created) {
-                console.log(' this is data: ', data);
-                io.emit('updateAvatar', data.filename, data.user_id);
-              });
-            res.send('avatar added');
-          }
-        });
+      console.log('busboy finished parsing');
     });
 
     req.pipe(busboy);
-
   }
-
 
 };

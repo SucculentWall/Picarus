@@ -202,7 +202,7 @@ var ProfilePhoto = React.createClass({
           </Modal.Footer>
         </Modal>
         <div>
-          <img onClick={this.open} className={'gallery-photo ' + photoTemplateClasses[this.props.count%numTemplates]} src={process.env.PHOTOS_HOST + this.props.data.filename} />
+          <img onClick={this.open} className={'gallery-photo ' + photoTemplateClasses[this.props.count%numTemplates]} src={process.env.PHOTOS_THUMBHOST + this.props.data.filename} />
         </div>
       </div>
     );

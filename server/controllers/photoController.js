@@ -27,7 +27,8 @@ var inspect = require('util').inspect;
 // brew install graphicsmagick
 
 var gulp = require('gulp');
-var imagemin = require('gulp-imagemin');
+var vs3 = require('vinyl-s3');
+var through2 = require('through2');
 var imageResize = require('gulp-image-resize');
 
 module.exports = {
@@ -68,72 +69,74 @@ module.exports = {
         ContentType: 'image/jpg'
       }, function(error, response) {
         console.log('uploaded file[' + data.filename + '] to [' + data.filename + '] as image/jpg');
-        console.log(arguments);
 
-        new User({
-            username: data.username
-          })
-          .fetch()
-          .then(function (found) {
-            if (!found) {
-              res.send('User not found');
-            } else {
-              new Photo({
-                  filename: data.filename,
-                  filetype: data.filetype,
-                  username: data.username,
-                  description: data.description,
-                  likes: 0,
-                  user_id: found.id,
-                  request_id: parseInt(data.request_id, 10) // assume this is how front-end passes it
-                })
-                .save()
-                .then(function (createdPhoto) {
-                  // assume that tags are also passed in
-                  var parsedTags = JSON.parse(data.tags);
-                  if (parsedTags) {
-                    for (var i = 0; i < parsedTags.length; i++) {
-                      tagController.findOrCreate(parsedTags[i])
-                        .then(function (tag) {
-                          //increment the photos count for the tag
-                          // console.log('getting photo count for ', tag.get('tagname'), ': ', tag.get('photos_count'));
-                          tag.save({photos_count: (tag.get('photos_count') || 0) + 1}, {patch: true})
-                            .then(function (model) {});
+        // resize image to store and then use for display retrieval (speeds page load)
+        vs3.src({
+          Bucket: 'picarus',
+          Key: data.filename
+        })
+        .pipe(imageResize({
+          width: 400,
+          height: 400
+        }))
+        .pipe(vs3.dest('s3://picarus/small'))
+        .pipe(through2.obj(function(file, enc, next){
+          new User({
+              username: data.username
+            })
+            .fetch()
+            .then(function (found) {
+              if (!found) {
+                res.send('User not found');
+              } else {
+                new Photo({
+                    filename: data.filename,
+                    filetype: data.filetype,
+                    username: data.username,
+                    description: data.description,
+                    likes: 0,
+                    user_id: found.id,
+                    request_id: parseInt(data.request_id, 10) // assume this is how front-end passes it
+                  })
+                  .save()
+                  .then(function (createdPhoto) {
+                    // assume that tags are also passed in
+                    var parsedTags = JSON.parse(data.tags);
+                    if (parsedTags) {
+                      for (var i = 0; i < parsedTags.length; i++) {
+                        tagController.findOrCreate(parsedTags[i])
+                          .then(function (tag) {
+                            //increment the photos count for the tag
+                            // console.log('getting photo count for ', tag.get('tagname'), ': ', tag.get('photos_count'));
+                            tag.save({photos_count: (tag.get('photos_count') || 0) + 1}, {patch: true})
+                              .then(function (model) {});
 
-                          // put tag id and request id in join table
-                          new PhotoTag({
-                              photo_id: createdPhoto.id,
-                              tag_id: tag.id
-                            })
-                            .save()
-                            .then(function (PhotoTag) {});
-                        }) // tagController.findOrCreate.then
-                    } // for i < parsedTags.length
-                  } // if parsedTags
-                  io.emit('updateRequest', createdPhoto);
-                }); // new Photo.save.then
-              res.send('photo added');
-            }
-          });
+                            // put tag id and request id in join table
+                            new PhotoTag({
+                                photo_id: createdPhoto.id,
+                                tag_id: tag.id
+                              })
+                              .save()
+                              .then(function (PhotoTag) {});
+                          }) // tagController.findOrCreate.then
+                      } // for i < parsedTags.length
+                    } // if parsedTags
+                    io.emit('updateRequest', createdPhoto);
+                  }); // new Photo.save.then
+                res.send('photo added');
+              }
+            });
+          next();
+        }));
+
       });
 
     });
 
-
     busboy.on('finish', function () {
-      // gulp.src('photos/' + data.filename)
-      //   .pipe(imagemin())
-      //   .pipe(gulp.dest('photos/small'))
-      //   .pipe(imageResize({
-      //     width: 400,
-      //     height: 400
-      //   }))
-      //   .pipe(gulp.dest('photos/small'));
       console.log('busboy finished parsing upload');
     });
-
     req.pipe(busboy);
-
   },
 
   getAllPhotos: function (req, res, next) {
