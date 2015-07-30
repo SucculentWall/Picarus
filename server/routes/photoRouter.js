@@ -4,7 +4,8 @@ var photoController = require('../controllers/photoController');
 var router = express.Router();
 
 router.post('/', accessRestriction, function(req,res,next){
-  photoController.addPhoto(req, res, next);
+  if (req.body.photo) photoController.addMobilePhoto(req,res,next);
+  else photoController.addPhoto(req, res, next);
 });
 
 router.get('/', function(req,res,next){
