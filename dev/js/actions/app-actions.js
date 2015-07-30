@@ -52,9 +52,9 @@ module.exports = {
     dbUtils.getRequestsForSearch(query);
   },
 
-  addPhoto: function(photo, username, request_id, tags, description, size){
+  addPhoto: function(photo, username, request_id, tags, description){
     dbUtils = require('../utils/database-utils');
-    dbUtils.addPhoto(photo, username, request_id, tags, description, size);
+    dbUtils.addPhoto(photo, username, request_id, tags, description);
   },
 
   likePhoto: function(id, currUserId) {

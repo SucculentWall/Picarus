@@ -11,6 +11,7 @@ var PhotoUpload = React.createClass({
     var self = this;
     var reader = new FileReader();
     reader.onload = function(e) {
+      console.log('e target files', e);
       preview = <span class="preview">Preview: <img id='preview' src={e.target.result}/></span>;
       self.setState({preview: true});
     };
@@ -35,6 +36,7 @@ var PhotoUpload = React.createClass({
     var request_id = this.props.data.id;
     // photo from state
     var photo = this.state.photo;
+    console.log('PHOTO', photo);
     // tags from data passed down from app-request
     var tags = this.props.data.tags.map(function(tagObj){
       return tagObj.tagname;

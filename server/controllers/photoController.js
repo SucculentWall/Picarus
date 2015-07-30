@@ -34,7 +34,6 @@ var imageResize = require('gulp-image-resize');
 module.exports = {
 
   addPhoto: function (req, res, next) {
-
     var data = {};
 
     var busboy = new Busboy({
@@ -47,8 +46,19 @@ module.exports = {
     });
 
     busboy.on('file', function (fieldname, filestream, filename, encoding, mimetype) {
-      data.filename = utils.makeid(10) + '_' + filename; // random alphanum string + icarus.jpg
-      data.filetype = filename.split('.').pop();
+      console.log('what', fieldname, filestream, filename, encoding, mimetype);
+      // get length of filestream
+      filestream.fileRead = [];
+      filestream.on('data', function(dataChunk){
+        this.fileRead.push(dataChunk);
+      });
+      filestream.on('end',  function() {
+        var finalBuffer = Buffer.concat(this.fileRead);
+        console.log('FILESTREAM LENGTH', finalBuffer.length);
+
+        data.filename = utils.makeid(10) + '_' + filename; // random alphanum string + icarus.jpg
+        data.filetype = filename.split('.').pop();
+
       // Grid.mongo = mongoose.mongo;
       // var conn = mongoose.createConnection('mongodb://127.0.0.1/picarus');
       // conn.once('open', function() {
@@ -59,13 +69,12 @@ module.exports = {
 
       // var output = fs.createWriteStream('photos/' + data.filename);
       // filestream.pipe(output);
-      filestream.length = +data.size;
 
       s3.putObject({
         ACL: 'public-read',
         Bucket: 'picarus',
         Key: data.filename,
-        Body: filestream,
+        Body: fileBuffer,
         ContentType: 'image/jpg'
       }, function(error, response) {
         console.log('uploaded file[' + data.filename + '] to [' + data.filename + '] as image/jpg');
@@ -119,19 +128,20 @@ module.exports = {
                               .save()
                               .then(function (PhotoTag) {});
                           }) // tagController.findOrCreate.then
-                      } // for i < parsedTags.length
-                    } // if parsedTags
-                    io.emit('updateRequest', createdPhoto);
-                  }); // new Photo.save.then
-                res.send('photo added');
-              }
-            });
-          next();
-        }));
+                        } // for i < parsedTags.length
+                      } // if parsedTags
+                      io.emit('updateRequest', createdPhoto);
+                    }); // new Photo.save.then
+                  res.send('photo added');
+                }
+              });
+            next();
+          }));
 
-      });
+        }); // end of s3
+      }); // end of filestream.on('end')
 
-    });
+    }); // end of busboy.on('file')
 
     busboy.on('finish', function () {
       console.log('busboy finished parsing upload');
