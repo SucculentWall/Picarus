@@ -35,24 +35,96 @@ module.exports = {
 
   addMobilePhoto: function (req, res, next) {
 
+    var filename = utils.makeid(10) + '_' + req.body.photo.slice(5,10) + '.jpg';
+
+    var data = {
+      username: req.body.username,
+      request_id: req.body.request_id,
+      tags: req.body.tags,
+      description: req.body.description,
+      filename: filename,
+      filetype: '.jpg'
+    };
+
     var finalBuffer = new Buffer(req.body.photo, 'base64');
-    
-    console.log(finalBuffer);
+
     s3.putObject({
       ACL: 'public-read',
       Bucket: 'picarus',
-      Key: req.body.username,
+      Key: filename,
       Body: finalBuffer,
       ContentEncoding: 'base64',
       ContentType: 'image/jpeg'
-    }, function(err, data){
-        if (err) { 
-          console.log(err);
-          console.log('Error uploading data: ', data); 
-        } else {
-          console.log('succesfully uploaded the image!');
-        }
-    });
+    }, function(error, response) {
+
+        console.log('uploaded file[' + data.filename + '] to [' + data.filename + '] as image/jpg');
+
+        // resize image to store and then use for display retrieval (speeds page load)
+        vs3.src({
+          Bucket: 'picarus',
+          Key: data.filename
+        })
+        .pipe(imageResize({
+          width: 400,
+          height: 400
+        }))
+        .pipe(vs3.dest('s3://picarus/small'))
+        .pipe(through2.obj(function(file, enc, next){
+          new User({
+              username: data.username
+            })
+            .fetch()
+            .then(function (found) {
+
+              console.log('found', found);
+
+              if (!found) {
+                res.send('User not found');
+              } else {
+                new Photo({
+                    filename: data.filename,
+                    filetype: data.filetype,
+                    username: data.username,
+                    description: data.description,
+                    likes: 0,
+                    user_id: found.id,
+                    request_id: parseInt(data.request_id, 10) // assume this is how front-end passes it
+                  })
+                  .save()
+                  .then(function (createdPhoto) {
+
+                    console.log('createdPhoto', createdPhoto);
+
+                    // assume that tags are also passed in
+                    var parsedTags = JSON.parse(data.tags);
+                    if (parsedTags) {
+                      for (var i = 0; i < parsedTags.length; i++) {
+                        tagController.findOrCreate(parsedTags[i])
+                          .then(function (tag) {
+                            //increment the photos count for the tag
+                            // console.log('getting photo count for ', tag.get('tagname'), ': ', tag.get('photos_count'));
+                            tag.save({photos_count: (tag.get('photos_count') || 0) + 1}, {patch: true})
+                              .then(function (model) {});
+
+                            // put tag id and request id in join table
+                            new PhotoTag({
+                                photo_id: createdPhoto.id,
+                                tag_id: tag.id
+                              })
+                              .save()
+                              .then(function (PhotoTag) {});
+                          }) // tagController.findOrCreate.then
+                        } // for i < parsedTags.length
+                      } // if parsedTags
+                      io.emit('updateRequest', createdPhoto);
+                    }); // new Photo.save.then
+                  res.send('photo added');
+                }
+              });
+            next();
+          }));
+
+        }); // end of s3
   },
 
   addPhoto: function (req, res, next) {
