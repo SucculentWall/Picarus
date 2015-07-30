@@ -3,9 +3,9 @@ var express = require('express');
 var photoController = require('../controllers/photoController');
 var router = express.Router();
 
-// router.post('/', passport.authenticate('facebook-token'), function(req,res,next){
-//   photoController.addPhoto(req, res, next);
-// });
+router.post('/', accessRestriction, function(req,res,next){
+  photoController.addPhoto(req, res, next);
+});
 
 router.get('/', function(req,res,next){
   photoController.getAllPhotos(req, res, next);
@@ -25,6 +25,6 @@ router.post('/avatars/', accessRestriction, function(req,res,next){
 
 router.post('/check', function(req, res, next){
   photoController.getPhotoLikes(req, res, next);
-})
+});
 
 module.exports = router;

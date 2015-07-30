@@ -81,14 +81,13 @@ module.exports = {
       });
   },
 
-  addPhoto: function(photo, username, request_id, tags, description, size) {
+  addPhoto: function(photo, username, request_id, tags, description) {
     var context = this;
     var data = new FormData();
     data.append('username', username);
     data.append('request_id', request_id);
     data.append('tags', JSON.stringify(tags));
     data.append('description', description);
-    data.append('size', size);
     data.append('photo', photo);
     data.append('access_token', AuthStore.getToken());
     console.log('DATA FROM DBUTILS: ', data);
