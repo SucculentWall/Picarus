@@ -33,6 +33,28 @@ var imageResize = require('gulp-image-resize');
 
 module.exports = {
 
+  addMobilePhoto: function (req, res, next) {
+
+    var finalBuffer = new Buffer(req.body.photo, 'base64');
+    
+    console.log(finalBuffer);
+    s3.putObject({
+      ACL: 'public-read',
+      Bucket: 'picarus',
+      Key: req.body.username,
+      Body: finalBuffer,
+      ContentEncoding: 'base64',
+      ContentType: 'image/jpeg'
+    }, function(err, data){
+        if (err) { 
+          console.log(err);
+          console.log('Error uploading data: ', data); 
+        } else {
+          console.log('succesfully uploaded the image!');
+        }
+    });
+  },
+
   addPhoto: function (req, res, next) {
     var data = {};
 
@@ -58,17 +80,6 @@ module.exports = {
         data.filename = utils.makeid(10) + '_' + filename; // random alphanum string + icarus.jpg
         data.filetype = filename.split('.').pop();
 
-      // Grid.mongo = mongoose.mongo;
-      // var conn = mongoose.createConnection('mongodb://127.0.0.1/picarus');
-      // conn.once('open', function() {
-      //   var gfs = Grid(conn.db);
-      //   var output = gfs.createWriteStream({filename: data.filename});
-      //   filestream.pipe(output);
-      // });
-
-      // var output = fs.createWriteStream('photos/' + data.filename);
-      // filestream.pipe(output);
-
       s3.putObject({
         ACL: 'public-read',
         Bucket: 'picarus',
@@ -76,6 +87,7 @@ module.exports = {
         Body: finalBuffer,
         ContentType: 'image/jpg'
       }, function(error, response) {
+        console.log('FINAL BUFFER ', finalBuffer);
         console.log('uploaded file[' + data.filename + '] to [' + data.filename + '] as image/jpg');
 
         // resize image to store and then use for display retrieval (speeds page load)
