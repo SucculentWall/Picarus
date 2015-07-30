@@ -46,7 +46,6 @@ module.exports = {
     });
 
     busboy.on('file', function (fieldname, filestream, filename, encoding, mimetype) {
-      console.log('what', fieldname, filestream, filename, encoding, mimetype);
       // get length of filestream
       filestream.fileRead = [];
       filestream.on('data', function(dataChunk){
@@ -74,7 +73,7 @@ module.exports = {
         ACL: 'public-read',
         Bucket: 'picarus',
         Key: data.filename,
-        Body: fileBuffer,
+        Body: finalBuffer,
         ContentType: 'image/jpg'
       }, function(error, response) {
         console.log('uploaded file[' + data.filename + '] to [' + data.filename + '] as image/jpg');
