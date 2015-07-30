@@ -57,6 +57,7 @@ db.knex.schema.hasTable('photos').then(function(exists) {
       photo.string('username', 100);
       photo.string('description', 100);
       photo.integer('likes', 11).defaultTo(0);
+      photo.integer('comments', 11).defaultTo(0);
       photo.integer('user_id').unsigned();
       photo.integer('request_id').unsigned();
       photo.timestamps();
