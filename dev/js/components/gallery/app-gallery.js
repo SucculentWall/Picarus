@@ -84,6 +84,7 @@ var Gallery = React.createClass({
     var photosList = this.state.photos;
     var photoCount = 0;
 
+
     for (var key in photosList) {
       photos.push(<GalleryPhoto key={key} count={photoCount} data={photosList[key]} />);
       photoCount++;
@@ -91,8 +92,10 @@ var Gallery = React.createClass({
 
     var photoPages = Math.ceil(photoCount/16);
     var photoButtons = [];
+    var photoPageClasses;
     for (i = photoPages-1; i >=0; i--) {
-      photoButtons.push((<li className='page-button' onClick={this._photoPageTurn.bind(this, i)} key={i}>{i+1}</li> ));
+      photoPageClasses = classNames('page-button', {'active': this.state.photoPage === i});
+      photoButtons.push((<li className={photoPageClasses} onClick={this._photoPageTurn.bind(this, i)} key={i}>{i+1}</li> ));
     }
 
     var requests = [];
@@ -106,8 +109,10 @@ var Gallery = React.createClass({
 
     var requestPages = Math.ceil(requestCount/16);
     var requestButtons = [];
+    var reqPageClasses;
     for (i = requestPages.length-1; i >= 0; i--) {
-      requestButtons.push((<li className='page-button' onClick={this._reqPageTurn.bind(this, i)} key={i}>{i+1}</li> ));
+      reqPageClasses = classNames('page-button', {'active': this.state.reqPage === i});
+      requestButtons.push((<li className={reqPageClasses} onClick={this._reqPageTurn.bind(this, i)} key={i}>{i+1}</li> ));
     }
 
     var photoClasses = classNames('header-tag','col-xs-6',{'active': this.state.searchPhotos});
@@ -127,10 +132,10 @@ var Gallery = React.createClass({
       <div className = "gallery col-md-8 clearfix">
         { !this.props.params.query ? <GalleryHeader data={this.state.tags} /> : searchHeader }
         <div className='col-xs-12'>
-          <span> Displaying { displayResults+1 } - {Math.min(displayResults+16, total)} of {total} results </span>
           <ul className="page-button-ul">
             { this.state.searchPhotos && total > 16 ? photoButtons : requestButtons }
           </ul>
+          <span className='page-display'> Displaying { displayResults+1 } - {Math.min(displayResults+16, total)} of {total} results </span>
         </div>
         <div>
           { this.state.searchPhotos ? photos.splice(this.state.photoPage*16,(this.state.photoPage*16)+16) : requests.splice(this.state.reqPage*16,(this.state.reqPage*16)+16) }

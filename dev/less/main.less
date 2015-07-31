@@ -55,10 +55,22 @@ table {
 @black: #000;
 @blue: #4F7CAC;
 @blue-light: #6093C8;
+@lightblue: #BDE1EB;
+@lighterblue: #E4F1F6;
 @grey: #DADAD9;
 @darkgrey: #36382E;
 @offwhite: #FFFBFE;
 @white: #FFF;
+
+// rainbow
+
+@red: #E10;
+@orange: #FEAE2D;
+@yellow: #CB3;
+@green: #AC2;
+@blue: #1AB;
+@purple: #44D;
+@indigo: #429;
 
 
 // COLOR SCHEME
@@ -102,6 +114,7 @@ table {
 }
 
 .navbar-default {
+  margin: 0;
   border: none;
   border-radius: 0;
   background-color: @bg-dark;
@@ -111,7 +124,28 @@ table {
   max-height: none;
 }
 
-#logo {
+.logo {
+  .p&:hover {
+    color: @red;
+  }
+  .i&:hover {
+    color: @orange;
+  }
+  .c&:hover {
+    color: @yellow;
+  }
+  .a&:hover {
+    color: @green;
+  }
+  .r&:hover {
+    color: @blue;
+  }
+  .u&:hover {
+    color: @purple;
+  }
+  .s&:hover {
+    color: @indigo;
+  }
   font-weight: 400;
   float: left;
   margin: 5px 10px;
@@ -127,6 +161,10 @@ table {
 body {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-weight: 200;
+  background-color: @grey;
+}
+.container {
+  background-color: @white;
 }
 
 .facebook-button {
@@ -201,13 +239,20 @@ form {
   width: 100%;
 }
 .request-input {
+  &::-webkit-input-placeholder {
+    color: @blue;
+  }
+  padding-left: 10px;
   float: left;
   margin: 0 3%;
   width: 70%;
+  border: 1px solid @lightblue;
+  border-radius: 5px;
 }
 
 .request-submit {
   width: 20%;
+  border: 1px solid @lightblue;
 }
 
 ///////////////////////////////////////////
@@ -321,24 +366,29 @@ div.request-photo {
 
 .request-title h2 {
   font-size: 1.25em;
-  padding: none;
-  color: @fg-light;
+  padding: 0;
 }
 
 .request-title {
-  padding: 5px 0;
-  margin: 10px 0.5em;
+  padding: 10px 0;
   text-align: center;
-  background-color: @hl-primary;
 }
 
 .photo-username {
   color: @fg-dark;
   float: right;
 }
+
+.req-form {
+  margin-bottom: 10px;
+}
+
 .feed {
+  background: @lighterblue;
+  margin-top: 10px;
+  .bordered;
   padding: 5px;
-  height: 500px;
+  height: 1000px;
   a {
     &:hover {
       text-decoration: none;
@@ -358,9 +408,16 @@ div.request-photo {
   }
 }
 
+.recent-requests {
+  text-align: center;
+}
+
 .feed-list {
-  height: 450px;
-  overflow: auto;
+  background: @white;
+  margin-top: 10px;
+  .bordered;
+  height: 880px;
+  overflow: scroll;
 }
 
 .modal-title {
@@ -419,12 +476,35 @@ img.gallery-photo {
 }
 
 a.header-tag {
-  margin: 0 5px;
+  width: 20%;
+  display: inline-block;
+  color: @white;
+  text-decoration: none;
+  background-color: @darkgrey;
+  border: 1px solid @white;
+  padding: 2% 6%;
   font-weight: 400;
   &:hover {
-    text-decoration: none;
+    background-color: @white;
+    color: @darkgrey;
+  }
+  &.active {
+    color: @white;
+    background-color: @purple-light;
+    &:hover {
+      background-color: @blue-light;
+    }
   }
 }
+
+a.header-tag:first-child {
+  border-radius: 0 0 0 10px;
+} 
+
+a.header-tag:last-child {
+  border-radius: 0 0 10px 0;
+}
+
 .header-tag {
   cursor: pointer;
   padding: 5px;
@@ -435,7 +515,6 @@ a.header-tag {
 }
 
 .gallery {
-  padding: 5px;
   li {
     &:hover {
       background: @bg-light;
@@ -453,19 +532,35 @@ a.header-tag {
 li.page-button {
   float: right;
   display: inline;
-  background: @white;
+  color: @white;
+  background: @purple-light;
   border: 1px solid @black;
   border-radius: 5px;
   padding: 1%;
   margin: 1px;
   cursor: pointer;
   font-size: 12px;
+  &:hover {
+    background: @blue;
+    color: @white;
+  }
+  &.active {
+    background: @white;
+    color: @black;
+    &:hover {
+      background: @darkgrey;
+      color: @white;
+    }
+  }
+}
+
+.page-button-ul {
+  display: inline;
+  padding: 5px;
 }
 
 .filterbar {
-  padding: 5px;
   margin-bottom: 1%;
-  padding: 10px;
 }
 
 .modal.fade .modal-dialog {

@@ -59,7 +59,7 @@ var Feed = React.createClass({
       <div className = "feed col-md-4">
         <div className="request-title"><h2>Picture Requests</h2></div>
         { this.state.loggedIn ? <MakeRequest /> : <span><Auth /> to make a Request</span> }
-        <div> Recent Requests </div>
+        <div className="recent-requests"> Recent Requests </div>
         <div className='feed-list'>
           <ul>
             {photoRequests.slice(0,this.state.count)}
