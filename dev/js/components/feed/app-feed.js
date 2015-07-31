@@ -58,7 +58,7 @@ var Feed = React.createClass({
     return (
       <div className = "feed col-md-4">
         <div className="request-title"><h2>Picture Requests</h2></div>
-        { this.state.loggedIn ? <MakeRequest /> : <span><Auth /> to make a Request</span> }
+        { this.state.loggedIn ? <MakeRequest /> : <div className='signin-info'><Auth text='to make a request' /></div> }
         <div className="recent-requests"> Recent Requests </div>
         <div className='feed-list'>
           <ul>

@@ -68,7 +68,6 @@ table {
 @orange: #FEAE2D;
 @yellow: #CB3;
 @green: #AC2;
-@blue: #1AB;
 @purple: #44D;
 @indigo: #429;
 
@@ -238,21 +237,24 @@ input {
 form {
   width: 100%;
 }
-.request-input {
+input.request-input {
   &::-webkit-input-placeholder {
-    color: @blue;
+    color: @bt-primary-h;
   }
   padding-left: 10px;
   float: left;
   margin: 0 3%;
   width: 70%;
-  border: 1px solid @lightblue;
+  border: none;
   border-radius: 5px;
+  &:focus{
+    outline: none;
+  }
 }
 
 .request-submit {
   width: 20%;
-  border: 1px solid @lightblue;
+  border: none;
 }
 
 ///////////////////////////////////////////
@@ -367,12 +369,22 @@ div.request-photo {
 .request-title h2 {
   font-size: 1.25em;
   padding: 0;
+  color: @white;
+}
+
+.signin-info {
+  margin-bottom: 10px;
+  text-align: center;
+  border-radius: 5px;
+  background-color: @bg-dark;
 }
 
 .request-title {
   padding: 10px 0;
   text-align: center;
 }
+
+.feed
 
 .photo-username {
   color: @fg-dark;
@@ -384,7 +396,7 @@ div.request-photo {
 }
 
 .feed {
-  background: @lighterblue;
+  background: @bg-dark;
   margin-top: 10px;
   .bordered;
   padding: 5px;
@@ -410,6 +422,7 @@ div.request-photo {
 
 .recent-requests {
   text-align: center;
+  color: @white;
 }
 
 .feed-list {
@@ -478,22 +491,19 @@ img.gallery-photo {
 a.header-tag {
   width: 20%;
   display: inline-block;
-  color: @white;
+  color: @bg-dark;
   text-decoration: none;
-  background-color: @darkgrey;
-  border: 1px solid @white;
+  background-color: @bg-light;
+  border: 1px solid @bg-mid;
   padding: 2% 6%;
   font-weight: 400;
   &:hover {
-    background-color: @white;
-    color: @darkgrey;
+    color: @bt-primary-h;
   }
   &.active {
-    color: @white;
-    background-color: @purple-light;
-    &:hover {
-      background-color: @blue-light;
-    }
+    border: 1px solid @bt-primary-h;
+    color: @bt-primary-h;
+    text-decoration: none;
   }
 }
 
@@ -506,6 +516,7 @@ a.header-tag:last-child {
 }
 
 .header-tag {
+  margin: 10px 0;
   cursor: pointer;
   padding: 5px;
   text-align: center;
@@ -532,8 +543,8 @@ a.header-tag:last-child {
 li.page-button {
   float: right;
   display: inline;
-  color: @white;
-  background: @purple-light;
+  background: @white;
+  color: @black;
   border: 1px solid @black;
   border-radius: 5px;
   padding: 1%;
@@ -545,8 +556,8 @@ li.page-button {
     color: @white;
   }
   &.active {
-    background: @white;
-    color: @black;
+    color: @white;
+    background: @blue-light;
     &:hover {
       background: @darkgrey;
       color: @white;
@@ -584,12 +595,12 @@ li.page-button {
 ///////////////////////////////////////////
 
 .submission {
-  background-color: @bt-primary;
+  background-color: @bt-primary-h;
   border-radius: 5px;
   color: @fg-light;
   text-align: center;
   &:hover {
-    background-color: @bt-primary-h;
+    background-color: @bt-primary;
   }
 }
 
@@ -599,8 +610,17 @@ form.search-form {
 }
 
 input.search-bar {
+  border-radius: 0 5px 5px 0;
+  border: none;
   margin: 5px 0;
   width: 250px;
+  &:focus {
+    outline: none;
+  }
+}
+i.search-submit {
+  color: #c3c3c3;
+  border-radius: 5px 0 0 5px;
 }
 
 .search-bar {
