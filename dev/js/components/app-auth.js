@@ -31,7 +31,7 @@ var Auth = React.createClass({
 
     // <fb:login-button scope="public_profile,email" onlogin="checkLoginState();">
     // </fb:login-button>
-    return <button className='facebook-button' onClick={this._handleSignin}>Sign In</button>;
+    return <button className='facebook-button' onClick={this._handleSignin}>Sign In {this.props.text}</button>;
   }
 });
 

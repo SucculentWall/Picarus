@@ -68,7 +68,6 @@ table {
 @orange: #FEAE2D;
 @yellow: #CB3;
 @green: #AC2;
-@blue: #1AB;
 @purple: #44D;
 @indigo: #429;
 
@@ -238,21 +237,21 @@ input {
 form {
   width: 100%;
 }
-.request-input {
-  &::-webkit-input-placeholder {
-    color: @blue;
-  }
+input.request-input {
   padding-left: 10px;
   float: left;
   margin: 0 3%;
   width: 70%;
-  border: 1px solid @lightblue;
+  border: none;
   border-radius: 5px;
+  &:focus{
+    outline: none;
+  }
 }
 
 .request-submit {
   width: 20%;
-  border: 1px solid @lightblue;
+  border: none;
 }
 
 ///////////////////////////////////////////
@@ -354,9 +353,36 @@ div.request-photo {
     width: 20%;
   }
   .photo-description {
+    border: 1px solid @bg-mid;
+    border-radius: 5px;
     width: 80%;
     margin-right: 2%; 
     float: left;
+    &:focus {
+      outline: none;
+    }
+  }
+}
+
+li.req-page-button {
+  cursor: pointer;
+  width: 4%;
+  margin: 0.5%;
+  padding: 1%;
+  text-align: center;
+  display: inline;
+  float: right;
+  &:hover {
+    background: @blue;
+    color: @white;
+  }
+  &.active {
+    color: @white;
+    background: @blue-light;
+    &:hover {
+      background: @darkgrey;
+      color: @white;
+    }
   }
 }
 
@@ -367,6 +393,14 @@ div.request-photo {
 .request-title h2 {
   font-size: 1.25em;
   padding: 0;
+  color: @white;
+}
+
+.signin-info {
+  margin-bottom: 10px;
+  text-align: center;
+  border-radius: 5px;
+  background-color: @bg-dark;
 }
 
 .request-title {
@@ -384,7 +418,7 @@ div.request-photo {
 }
 
 .feed {
-  background: @lighterblue;
+  background: @bg-dark;
   margin-top: 10px;
   .bordered;
   padding: 5px;
@@ -410,6 +444,7 @@ div.request-photo {
 
 .recent-requests {
   text-align: center;
+  color: @white;
 }
 
 .feed-list {
@@ -478,22 +513,19 @@ img.gallery-photo {
 a.header-tag {
   width: 20%;
   display: inline-block;
-  color: @white;
+  color: @bg-dark;
   text-decoration: none;
-  background-color: @darkgrey;
-  border: 1px solid @white;
+  background-color: @bg-light;
+  border: 1px solid @bg-mid;
   padding: 2% 6%;
   font-weight: 400;
   &:hover {
-    background-color: @white;
-    color: @darkgrey;
+    color: @bt-primary-h;
   }
   &.active {
-    color: @white;
-    background-color: @purple-light;
-    &:hover {
-      background-color: @blue-light;
-    }
+    border: 1px solid @bt-primary-h;
+    color: @bt-primary-h;
+    text-decoration: none;
   }
 }
 
@@ -506,6 +538,7 @@ a.header-tag:last-child {
 }
 
 .header-tag {
+  margin: 10px 0;
   cursor: pointer;
   padding: 5px;
   text-align: center;
@@ -532,8 +565,8 @@ a.header-tag:last-child {
 li.page-button {
   float: right;
   display: inline;
-  color: @white;
-  background: @purple-light;
+  background: @white;
+  color: @black;
   border: 1px solid @black;
   border-radius: 5px;
   padding: 1%;
@@ -545,8 +578,8 @@ li.page-button {
     color: @white;
   }
   &.active {
-    background: @white;
-    color: @black;
+    color: @white;
+    background: @blue-light;
     &:hover {
       background: @darkgrey;
       color: @white;
@@ -584,12 +617,13 @@ li.page-button {
 ///////////////////////////////////////////
 
 .submission {
-  background-color: @bt-primary;
+  background-color: @bt-primary-h;
+  border:none;
   border-radius: 5px;
   color: @fg-light;
   text-align: center;
   &:hover {
-    background-color: @bt-primary-h;
+    background-color: @bt-primary;
   }
 }
 
@@ -599,8 +633,17 @@ form.search-form {
 }
 
 input.search-bar {
+  border-radius: 0 5px 5px 0;
+  border: none;
   margin: 5px 0;
   width: 250px;
+  &:focus {
+    outline: none;
+  }
+}
+i.search-submit {
+  color: #c3c3c3;
+  border-radius: 5px 0 0 5px;
 }
 
 .search-bar {
@@ -644,4 +687,23 @@ input.search-bar {
 
 .unclicked {
   color: #DCDCDC
+}
+
+///////////////////////////////////////////
+//            PAGES STYLING              //
+///////////////////////////////////////////
+
+.page-display {
+  float: right;
+  padding: 1%;
+}
+
+.req-page-display {
+  float: right;
+  padding: 2%;
+}
+
+div .page-list {
+  height: 40px;
+  float: none;
 }
