@@ -1,12 +1,20 @@
 var React = require('react');
 var AppActions = require('../../actions/app-actions');
 var AuthStore = require("../../stores/app-authStore");
+var RequestStore = require('../../stores/app-requestStore');
+var ProgressBar = require('react-bootstrap').ProgressBar;
 var preview = null;
 
 var PhotoUpload = React.createClass({
+
   getInitialState: function() {
-    return { photo: null };
+    return { 
+        photo: null,
+        isLoading: false
+      };
   },
+
+
   _handleFile: function(e){
     var self = this;
     var reader = new FileReader();
@@ -28,6 +36,13 @@ var PhotoUpload = React.createClass({
       size: size
     });
   },
+
+
+  _onChange: function () {
+    this.setState({isLoading: false});
+  },
+
+
   _onSubmit: function(e){
     e.preventDefault();
     //Username from AuthStore
@@ -65,17 +80,35 @@ var PhotoUpload = React.createClass({
     React.findDOMNode(this.refs.file).value = null;
     React.findDOMNode(this.refs.description).value = null;
     this.setState({preview : false});
+    this.setState({isLoading: true});
   },
+
+
+  componentDidMount: function() {
+    RequestStore.addChangeListener(this._onChange);
+  },
+
+
+  componentWillUnmount: function() {
+    RequestStore.removeChangeListener(this._onChange);
+  },
+
+
   render: function(){
-    // BOB is the placeholder in the username for now, but any valid username can be submitted
-    return (
-      <form onSubmit={this._onSubmit} encType="multipart/form-data">
-        {this.state.preview ? preview :null}
-        <input className="photo-upload" ref="file" type="file" onChange={this._handleFile} required />
-        <input className="photo-description" ref="description" type="text" placeholder="write a short description" required />
-        <input className="photo-submission submission" type="submit" value="Submit" />
-      </form>
-    );
+    if (this.state.isLoading) {
+      return (
+        <ProgressBar active now={100} />
+      );
+    } else {
+      return (
+        <form onSubmit={this._onSubmit} encType="multipart/form-data">
+          {this.state.preview ? preview :null}
+          <input className="photo-upload" ref="file" type="file" onChange={this._handleFile} required />
+          <input className="photo-description" ref="description" type="text" placeholder="write a short description" required />
+          <input className="photo-submission submission" type="submit" value="Submit" />
+        </form>
+      );
+    }
   }
 });
 
