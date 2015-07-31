@@ -52,8 +52,8 @@ var Feed = React.createClass({
   render: function(){
     photoRequests = [];
     var reqs = this.state.photoRequests;
-    for (var key in reqs) {
-        photoRequests.push(<Request ref={key} key={key} data={reqs[key]} />);
+    for (var i = reqs.length-1; i >= 0; i--) {
+        photoRequests.push(<Request ref={reqs[i].id} key={reqs[i].id} data={reqs[i]} />);
     }
     return (
       <div className = "feed col-md-4">
