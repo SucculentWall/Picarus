@@ -238,9 +238,6 @@ form {
   width: 100%;
 }
 input.request-input {
-  &::-webkit-input-placeholder {
-    color: @bt-primary-h;
-  }
   padding-left: 10px;
   float: left;
   margin: 0 3%;
@@ -356,9 +353,36 @@ div.request-photo {
     width: 20%;
   }
   .photo-description {
+    border: 1px solid @bg-mid;
+    border-radius: 5px;
     width: 80%;
     margin-right: 2%; 
     float: left;
+    &:focus {
+      outline: none;
+    }
+  }
+}
+
+li.req-page-button {
+  cursor: pointer;
+  width: 4%;
+  margin: 0.5%;
+  padding: 1%;
+  text-align: center;
+  display: inline;
+  float: right;
+  &:hover {
+    background: @blue;
+    color: @white;
+  }
+  &.active {
+    color: @white;
+    background: @blue-light;
+    &:hover {
+      background: @darkgrey;
+      color: @white;
+    }
   }
 }
 
@@ -383,8 +407,6 @@ div.request-photo {
   padding: 10px 0;
   text-align: center;
 }
-
-.feed
 
 .photo-username {
   color: @fg-dark;
@@ -596,6 +618,7 @@ li.page-button {
 
 .submission {
   background-color: @bt-primary-h;
+  border:none;
   border-radius: 5px;
   color: @fg-light;
   text-align: center;
@@ -664,4 +687,23 @@ i.search-submit {
 
 .unclicked {
   color: #DCDCDC
+}
+
+///////////////////////////////////////////
+//            PAGES STYLING              //
+///////////////////////////////////////////
+
+.page-display {
+  float: right;
+  padding: 1%;
+}
+
+.req-page-display {
+  float: right;
+  padding: 2%;
+}
+
+div .page-list {
+  height: 40px;
+  float: none;
 }

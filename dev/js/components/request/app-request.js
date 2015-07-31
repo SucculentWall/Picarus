@@ -6,6 +6,7 @@ var Photo = require('./request-photo');
 var Auth = require('../app-auth');
 var PhotoUpload = require('./request-photoUpload');
 var AuthStore = require('../../stores/app-authStore');
+var classNames = require('classnames');
 
 var currUserId = AuthStore.getId() || 0;
 
@@ -29,7 +30,8 @@ var SelectedRequest = React.createClass({
       username: '',
       tags: [],
       text: '',
-      loggedIn: AuthStore.loggedIn()
+      loggedIn: AuthStore.loggedIn(),
+      page: 0
     };
   },
 
@@ -58,18 +60,37 @@ var SelectedRequest = React.createClass({
     AuthStore.removeChangeListener(this._onLog);
     RequestStore.removeChangeListener(this._onChange);
   },
+
+  _pageTurn: function(i) {
+    this.setState({page : i});
+  },
   
   render: function(){
+    
     var photosList = [];
     var photos = this.state.photos;
     for (var i=0; i<photos.length; i++) {
       photosList.push(<Photo key={i} data={photos[i]} />);
     }
+    var total = photosList.length;
+    var photoPages = Math.ceil(total/8);
+    var photoButtons = [];
+    var photoPageClasses;
+    for (i = photoPages-1; i >=0; i--) {
+      photoPageClasses = classNames('req-page-button', {'active': this.state.page === i});
+      photoButtons.push((<li className={photoPageClasses} onClick={this._pageTurn.bind(this, i)} key={i}>{i+1}</li> ));
+    }
     return (
       <div className = 'request col-md-8 container'>
         <RequestHeader data={this.state} />
+        <div className='page-list col-xs-12'>
+          <ul className="page-button-ul">
+            { total > 8 ? photoButtons : null }
+          </ul>
+          <span className='req-page-display'> Displaying { total ? this.state.page*8+1 : 0 } - {Math.min(this.state.page*8+8, total)} of {total} results </span>
+        </div>
         <ul>
-          {photosList}
+          {photosList.splice(this.state.page*8,(this.state.page*8)+8)}
         </ul>
         { this.state.loggedIn ? <PhotoUpload data={this.state} /> : <span><Auth text='to upload photos'/></span> }
       </div>

@@ -135,7 +135,7 @@ var Gallery = React.createClass({
           <ul className="page-button-ul">
             { this.state.searchPhotos && total > 16 ? photoButtons : requestButtons }
           </ul>
-          <span className='page-display'> Displaying { displayResults+1 } - {Math.min(displayResults+16, total)} of {total} results </span>
+          <span className='page-display'> Displaying { total ? displayResults+1 : 0 } - {Math.min(displayResults+16, total)} of {total} results </span>
         </div>
         <div>
           { this.state.searchPhotos ? photos.splice(this.state.photoPage*16,(this.state.photoPage*16)+16) : requests.splice(this.state.reqPage*16,(this.state.reqPage*16)+16) }
