@@ -111,7 +111,8 @@ module.exports = {
         })
         .pipe(imageResize({
           width: 400,
-          height: 400
+          height: 400,
+          imageMagick: true
         }))
         .pipe(vs3.dest('s3://picarus/small'))
         .pipe(through2.obj(function(file, enc, next){
