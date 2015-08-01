@@ -84,11 +84,10 @@ var Gallery = React.createClass({
     var photosList = this.state.photos;
     var photoCount = 0;
 
-
-    for (var key in photosList) {
-      photos.push(<GalleryPhoto key={key} count={photoCount} data={photosList[key]} />);
+    for (var i = 0; i < photosList.length; i++) {
+      photos.push(<GalleryPhoto key={photosList[i].id} count={photoCount} data={photosList[i]} />);
       photoCount++;
-    }
+    };
 
     var photoPages = Math.ceil(photoCount/16);
     var photoButtons = [];
@@ -102,10 +101,10 @@ var Gallery = React.createClass({
     var requestsList = this.state.requests;
     var requestCount = 0;
 
-    for (key in requestsList) {
-      requests.push(<Request key={key} count={requestCount} data={requestsList[key]} />);
+    for (var i = 0; i < requestsList.length; i++) {
+      requests.push(<Request key={requestsList[i].id} count={requestCount} data={requestsList[i]} />);
       requestCount++;
-    }
+    };
 
     var requestPages = Math.ceil(requestCount/16);
     var requestButtons = [];

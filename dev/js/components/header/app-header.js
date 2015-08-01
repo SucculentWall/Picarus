@@ -52,7 +52,7 @@ var Header = React.createClass({
               <span className="icon-bar"></span>
               <span className="icon-bar"></span>
             </button>
-            <div className="navbar-brand"> <Link to='/'><span className='logo'>Picarus</span></Link> </div>
+            <div className="navbar-brand"> <Link to='/'><span className='logo'>P i c a r u s</span></Link> </div>
           </div>
 
           <div className="collapse navbar-collapse navbar-header navbar-right" id="bs-navbar-collapse-1">
@@ -64,7 +64,7 @@ var Header = React.createClass({
             </form>
             <ul className="nav navbar-nav navbar-right">
               { AuthStore.getUsername() ? <li className='sign'><Link to={'/user/' + AuthStore.getId()} paramstwo={{user_id: 3}}>Hi, {AuthStore.getUsername().split(' ')[0]}!</Link></li>: null }
-              { this.state.loggedIn ? <li className='sign' onClick={this._handleLogout}>Logout</li> : <li className="header-sign"><Auth /></li> }
+              { this.state.loggedIn ? <li className='sign' onClick={this._handleLogout}><span className='logout'>Logout</span></li> : <li className="header-sign"><Auth /></li> }
             </ul>
           </div>
         </div>

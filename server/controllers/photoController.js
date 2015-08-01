@@ -162,6 +162,9 @@ module.exports = {
 
   getAllPhotos: function (req, res, next) {
     Photos.reset()
+      .query(function(qb){
+        qb.orderBy('created_at', 'DESC'); 
+      })
       .fetch({
         withRelated: ['user']
       })

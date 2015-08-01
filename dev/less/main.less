@@ -113,6 +113,7 @@ table {
 }
 
 .navbar-default {
+  height: 62px;
   margin: 0;
   border: none;
   border-radius: 0;
@@ -124,11 +125,12 @@ table {
 }
 
 .logo {
+  width: 100%;
   &:hover {
     color: @lighterblue;
   }
   padding: 1%;
-  font-weight: 400;
+  font-weight: 100;
   float: left;
   margin: 5px 10px;
   font-size: 2em;
@@ -196,11 +198,19 @@ a.active {
   color: #fff;
 }
 
-.sign {
+.sign span {
   text-decoration: none;
-  color: #fff;
+  color: @lighterblue;
   font-size: 1em;
   cursor: pointer;
+}
+
+span.logout {
+  background-color: @grey;
+  color: @bg-dark;
+  padding: 6px;
+  margin-left: 10px;
+  border-radius: 5px;
 }
 
 .navbar-nav li {
@@ -382,7 +392,7 @@ li.req-page-button {
   margin-bottom: 10px;
   text-align: center;
   border-radius: 5px;
-  background-color: @bg-dark;
+  background-color: @lighterblue;
 }
 
 .request-title {
@@ -615,7 +625,7 @@ li.page-button {
 
 form.search-form {
   display: inline;
-  margin: 10px 10px;
+  margin: 10px 0;
 }
 
 input.search-bar {
