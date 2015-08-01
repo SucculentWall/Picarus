@@ -156,6 +156,7 @@ gulp.task('build', function () {
 // });
 
 gulp.task('default', function () {
+  process.env.NODE_ENV = 'production';
   runSequence('auth', 'clean', 'scripts', 'styles', 'images', 'copy', 'watch');
 });
 

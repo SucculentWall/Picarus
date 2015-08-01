@@ -180,7 +180,6 @@ module.exports = {
       data: data
     });
   },
-  // - also still need to consider sockets
 
   receivePhotoLikesCheck: function(data) {
     AppDispatcher.dispatch({
