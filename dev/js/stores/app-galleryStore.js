@@ -67,7 +67,6 @@ var _updatePhotoLikes = function(data) {
     // remove from log
     delete _likeLog[photoId];
   }
-  // TODO: this is causing inconsistent gallery photo
   for (var i = 0; i < _photoList.length; i++) {
     var aPhoto = _photoList[i];
     if (aPhoto.id === data.data.id){
