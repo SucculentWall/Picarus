@@ -124,27 +124,10 @@ table {
 }
 
 .logo {
-  .p&:hover {
-    color: @red;
+  &:hover {
+    color: @lighterblue;
   }
-  .i&:hover {
-    color: @orange;
-  }
-  .c&:hover {
-    color: @yellow;
-  }
-  .a&:hover {
-    color: @green;
-  }
-  .r&:hover {
-    color: @blue;
-  }
-  .u&:hover {
-    color: @purple;
-  }
-  .s&:hover {
-    color: @indigo;
-  }
+  padding: 1%;
   font-weight: 400;
   float: left;
   margin: 5px 10px;
@@ -377,10 +360,10 @@ li.req-page-button {
     color: @white;
   }
   &.active {
-    color: @white;
-    background: @blue-light;
+    color: @bg-dark;
+    border: 1px solid @blue;
     &:hover {
-      background: @darkgrey;
+      background: @blue;
       color: @white;
     }
   }
@@ -393,7 +376,6 @@ li.req-page-button {
 .request-title h2 {
   font-size: 1.25em;
   padding: 0;
-  color: @white;
 }
 
 .signin-info {
@@ -418,11 +400,13 @@ li.req-page-button {
 }
 
 .feed {
-  background: @bg-dark;
+  border: 1px solid @lightblue;
+  border-radius: 5px;
+  background: @lighterblue;
   margin-top: 10px;
-  .bordered;
-  padding: 5px;
+  padding: 0px;
   height: 1000px;
+  color: @bg-dark;
   a {
     &:hover {
       text-decoration: none;
@@ -433,24 +417,24 @@ li.req-page-button {
       background: @bg-light;
       color: @hl-primary;
     }
+    background-color: @white;
+    border-bottom: 1px solid @lightblue;
     color: @fg-dark;
-    background: @bg-mid;
     padding: 1em;
     list-style-type: none;
-    .bordered;
-    margin: 0.5em;
+    margin: 0.5em 0 ;
   }
 }
 
 .recent-requests {
   text-align: center;
-  color: @white;
 }
 
 .feed-list {
+  border-top: 1px solid @grey;
+  border-bottom: 1px solid @grey;
   background: @white;
   margin-top: 10px;
-  .bordered;
   height: 880px;
   overflow: scroll;
 }
@@ -511,13 +495,15 @@ img.gallery-photo {
 }
 
 a.header-tag {
+  margin: 0;
   width: 20%;
   display: inline-block;
   color: @bg-dark;
   text-decoration: none;
   background-color: @bg-light;
   border: 1px solid @bg-mid;
-  padding: 2% 6%;
+  padding: 2%;
+  text-align: center;
   font-weight: 400;
   &:hover {
     color: @bt-primary-h;
@@ -566,8 +552,8 @@ li.page-button {
   float: right;
   display: inline;
   background: @white;
-  color: @black;
-  border: 1px solid @black;
+  color: @bg-dark;
+  border: 1px solid @grey;
   border-radius: 5px;
   padding: 1%;
   margin: 1px;
@@ -578,10 +564,10 @@ li.page-button {
     color: @white;
   }
   &.active {
-    color: @white;
-    background: @blue-light;
+    color: @bg-dark;
+    border: 1px solid @blue;
     &:hover {
-      background: @darkgrey;
+      background: @blue;
       color: @white;
     }
   }
