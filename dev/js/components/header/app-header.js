@@ -52,7 +52,7 @@ var Header = React.createClass({
               <span className="icon-bar"></span>
               <span className="icon-bar"></span>
             </button>
-            <div className="navbar-brand"> <Link to='/'><span className='logo p'>P</span><span className='logo i'>i</span><span className='logo c'>c</span><span className='logo a'>a</span><span className='logo r'>r</span><span className='logo u'>u</span><span className='logo s'>s</span></Link> </div>
+            <div className="navbar-brand"> <Link to='/'><span className='logo'>Picarus</span></Link> </div>
           </div>
 
           <div className="collapse navbar-collapse navbar-header navbar-right" id="bs-navbar-collapse-1">
