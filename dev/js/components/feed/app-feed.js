@@ -64,7 +64,7 @@ var Feed = React.createClass({
           <ul>
             {photoRequests.slice(0,this.state.count)}
           </ul>
-          {this.state.count < photoRequests.length ? <button onClick={this.loadMore}> Load more requests </button> : <div> Displaying all requests </div>}
+          {this.state.count < photoRequests.length ? <button onClick={this.loadMore} className="display-more"> Load more requests </button> : <div className="display-more"> Displaying all requests </div>}
         </div>
       </div>
     );
