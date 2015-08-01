@@ -56,6 +56,7 @@ var _receiveSearchRequests = function(requests) {
 };
 
 var _updatePhotoLikes = function(data) {
+  console.log('the data that came in: ', data);
   var likeOrUnlike = data.config.data.like; // true or false
   var photoId = data.data.id;
   var currUserId = data.config.data.currUserId;
@@ -69,6 +70,7 @@ var _updatePhotoLikes = function(data) {
   }
   for (var i = 0; i < _photoList.length; i++) {
     var aPhoto = _photoList[i];
+    console.log('these are photos: ', aPhoto );
     if (aPhoto.id === data.data.id){
       _photoList[i] = data.data;
     }
@@ -109,10 +111,15 @@ var GalleryStore = assign({},EventEmitter.prototype, {
   },
 
   getLikes: function(id) {
-    if (_photoList[id]){
-      return _photoList[id].likes;
+    var searched = _photoList.filter(function(eachPhoto){
+      return eachPhoto.id === id;
+    });
+
+    if (searched.length){
+      return searched[0].likes;
+    } else {
+      return 0;
     }
-    return 0;
   },
 
   getPhotoLikeStatus: function(user_id, photo_id) {
