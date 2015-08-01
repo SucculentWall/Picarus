@@ -4,7 +4,7 @@ var assign = require("react/lib/Object.assign");
 var EventEmitter = require('events').EventEmitter;
 
 //  all or most recent photo requests
-var _photoList = {};
+var _photoList = [];
 var _requestList = {};
 var _tagList = [];
 
@@ -42,16 +42,16 @@ var _receiveAllPhotoLikes = function(joinData) {
 };
 
 var _receivePhotos = function(photos) {
-  _photoList = {};
+  _photoList = [];
   for (var i = 0; i < photos.length; i++) {
-    _photoList[photos[i].id] = photos[i];
+    _photoList.push(photos[i]);
   }
 };
 
 var _receiveSearchRequests = function(requests) {
-  _requestList = {};
+  _requestList = [];
   for (var i = 0; i < requests.length; i++) {
-    _requestList[requests[i].id] = requests[i];
+    _requestList.push(requests[i]);
   }
 };
 
@@ -96,7 +96,11 @@ var GalleryStore = assign({},EventEmitter.prototype, {
   },
 
   getPhoto: function (id) {
-    return _photoList[id];
+    for (var i = 0; i < _photoList.length; i++) {
+       if (_photoList[i].id === id) {
+        return _photoList[i].id
+       }
+    };
   },
 
   getLikes: function(id) {
