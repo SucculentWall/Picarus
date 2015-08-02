@@ -48,8 +48,10 @@ gulp.task('scripts', function () {
     .pipe(gulpif(process.env.NODE_ENV === 'deployment', uglify()))
     //.pipe(rename('app.min.js'))
     .pipe(gulp.dest('dist/js'));
+  gulp.src('dev/landing/*.js')
+    .pipe(uglify())
+    .pipe(gulp.dest('dist/js'));
 });
-
 //Styles: Compile, Minify 
 gulp.task('styles', function () {
   gulp.src('dev/less/*.less')
@@ -60,6 +62,9 @@ gulp.task('styles', function () {
     //.pipe(rename('app.min.css'))
     .pipe(gulp.dest('dist/css'))
     .pipe(livereload());
+  gulp.src('dev/css/bootstrap.min.css')
+    .pipe(plumber())
+    .pipe(gulp.dest('dist/css'));
 });
 
 //Images: Compress
@@ -73,6 +78,18 @@ gulp.task('copy', function () {
   gulp.src('dev/index.html')
     .pipe(plumber())
     .pipe(gulp.dest('dist'));
+  gulp.src('dev/main.html')
+    .pipe(plumber())
+    .pipe(gulp.dest('dist'));
+  gulp.src('dev/assets/**/*')
+    .pipe(plumber())
+    .pipe(gulp.dest('dist/assets'));
+  gulp.src('dev/fonts/**/*')
+    .pipe(plumber())
+    .pipe(gulp.dest('dist/fonts'));
+  gulp.src('dev/font-awesome/**/*')
+    .pipe(plumber())
+    .pipe(gulp.dest('dist/font-awesome'));
 });
 
 // calls each options first and then deletes /dist
@@ -90,6 +107,18 @@ gulp.task('cleanjs', function (done) {
 
 gulp.task('cleancss', function (done) {
   del(['./dist/css/**/*', './dist/css'], done);
+});
+
+gulp.task('cleanassets', function (done) {
+  del(['./dist/assets/**/*', './dist/assets'], done);
+});
+
+gulp.task('cleanfonts', function (done) {
+  del(['./dist/fonts/**/*', './dist/fonts'], done);
+});
+
+gulp.task('cleanfa', function (done) {
+  del(['./dist/font-awesome/**/*', './dist/font-awesome'], done);
 });
 
 gulp.task('nodemon', function () {
@@ -134,7 +163,7 @@ gulp.task('protractor', function () {
 gulp.task('watch', function () {
   livereload.listen();
   gulp.watch('dev/index.html', function () {
-    return runSequence('cleanhtml', 'copy');
+    return runSequence('cleanhtml', 'cleanassets', 'cleanfonts', 'cleanfa', 'copy');
   });
   gulp.watch('dev/img/*', ['images']);
   gulp.watch('dev/js/**/*.js', function () {
