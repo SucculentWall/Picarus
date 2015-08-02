@@ -18,6 +18,7 @@ coverage
 
 # Photos folder
 photos/
+dev/assets/psd
 
 # Elastic Beanstalk Files
 .elasticbeanstalk/*
