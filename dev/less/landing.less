@@ -280,7 +280,7 @@ a {
 }
 
 .content-section {
-    padding-top: 100px;
+    padding: 50px 50px;
 }
 
 .download-section {
@@ -392,7 +392,10 @@ body {
     border: 1px solid @black;
     background-color: rgba(0,0,0,0.7);
 }
-
+#about, #tech-stack {
+    background: @white;
+    color: @black;
+}
 .hero {
     width: 80%;
     height: 50px;
@@ -401,4 +404,12 @@ body {
 .profile {
     width: 100%;
     border-radius: 50%;
+}
+.tech-stack, .screenshot {
+    padding: auto;
+    max-width: 100%;
+}
+
+.img-container {
+    min-height: 100px;
 }
