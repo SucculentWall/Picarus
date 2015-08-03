@@ -92,6 +92,12 @@ gulp.task('copy', function () {
     .pipe(gulp.dest('dist/font-awesome'));
 });
 
+gulp.task('copyassets', function () {
+  gulp.src('dev/assets/**/*')
+    .pipe(plumber())
+    .pipe(gulp.dest('dist/assets'));
+});
+
 // calls each options first and then deletes /dist
 gulp.task('clean', function (done) {
   del(['./dist/**/*'], done);
@@ -165,7 +171,9 @@ gulp.task('watch', function () {
   gulp.watch('dev/index.html', function () {
     return runSequence('cleanhtml', 'cleanassets', 'cleanfonts', 'cleanfa', 'copy');
   });
-  gulp.watch('dev/img/*', ['images']);
+  gulp.watch('dev/assets/*', function () {
+    return runSequence('cleanassets', 'copyassets');
+  });
   gulp.watch('dev/js/**/*.js', function () {
     return runSequence('cleanjs', 'scripts');
   });
