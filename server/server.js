@@ -1,7 +1,6 @@
 // database
 var db = require('./db/config');
 
-
 // express
 var express = require('express');
 var session = require('express-session')
@@ -10,7 +9,6 @@ var bodyParser = require('body-parser');
 var morgan = require('morgan');
 var app = express();
 
-
 // socket.io
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
@@ -18,7 +16,6 @@ io.on('connection', function (socket) {
   console.log('connected');
 });
 module.exports = io;
-
 
 // routes
 var requestRouter = require('./routes/requestRouter');
@@ -46,10 +43,14 @@ app.use(bodyParser.urlencoded({
 }));
 // for logging
 app.use(morgan('dev'));
+
+// 
+app.get('/main', function(req, res) {
+  res.sendFile(path.join(__dirname, '../dist', 'main.html'));
+});
+
 // for serving /dist files at URL/
 app.use(express.static(path.join(__dirname, '../dist')));
-
-app.use('/photos', express.static(path.join(__dirname, '../photos')));
 
 // routing
 app.use('/api/users', userRouter);
