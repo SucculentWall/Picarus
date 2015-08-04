@@ -5,7 +5,6 @@ var AuthStore = require('../../stores/app-authStore');
 var Auth = require('../app-auth');
 var Navigation = require('react-router').Navigation;
 
-// dummy data, change when server hooked
 var Header = React.createClass({
   mixins: [Navigation],
   getInitialState: function() {

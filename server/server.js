@@ -44,7 +44,6 @@ app.use(bodyParser.urlencoded({
 // for logging
 app.use(morgan('dev'));
 
-// 
 app.get('/main', function(req, res) {
   res.sendFile(path.join(__dirname, '../dist', 'main.html'));
 });

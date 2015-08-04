@@ -21,7 +21,7 @@ var getNumComments = function(id){
 };
 
 var getToggleState = function(id){
-  return { // {showCommentEntry: , showModal: }
+  return { 
     showCommentEntry : RequestStore.getDisplayToggle(id).showCommentEntry || false,
     showModal : RequestStore.getDisplayToggle(id).showModal || false
   };
@@ -33,7 +33,6 @@ var getPhotoLikes = function(id){
 
 var checkLiked = function(id){
   currUserId = AuthStore.getId();
-  // return bool based on whether there is entry in join table
   return RequestStore.getPhotoLikeStatus(currUserId, id);
 };
 

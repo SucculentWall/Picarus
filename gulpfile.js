@@ -182,15 +182,9 @@ gulp.task('watch', function () {
   });
 });
 
-// cleans first, then builds the files again
-
 gulp.task('build', function () {
   runSequence('shell');
 });
-
-// gulp.task('default', function () {
-//   runSequence('auth', 'clean', 'scripts', 'styles', 'images', 'copy', 'nodemon', 'watch');
-// });
 
 gulp.task('default', function () {
   process.env.NODE_ENV = 'production';

@@ -165,7 +165,7 @@ describe('AppActions to Server integration', function() {
     });    
   });
 
-  // Optional TODOs 
+  // future TODOs 
   // The following are all AppActions that respond by using calling another AppAction
 
   // it('should pick a request', function(done){

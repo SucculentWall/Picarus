@@ -6,7 +6,6 @@ var AuthStore = require("../../stores/app-authStore");
 
 var _FacebookLoginButton;
 
-// dummy data, change when server hooked
 var Signin = React.createClass({
   _handleSignin: function() {
     FB.login(function(response) {

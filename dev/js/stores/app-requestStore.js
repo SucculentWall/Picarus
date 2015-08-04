@@ -5,13 +5,10 @@ var EventEmitter = require('events').EventEmitter;
 
 // the single request being shown on the page
 var _request = {};
-// the comments on the above single request
-  // each item within is an object tied to photoId key
 var _comments = {};
-var _commentDisplay = {}; // photo_ids are keys
-var _modalDisplay = {}; // eg photo_id: true
+var _commentDisplay = {}; 
+var _modalDisplay = {}; 
 
-// whether or not a photo is liked user_id: photo_id
 var _likeLog = {};
 
 var _receiveRequest = function(data) {
@@ -25,7 +22,6 @@ var _receivePhoto = function(photoData) {
 };
 
 var _receiveComments = function(photoData) {
-  // console.log('let\'s have us a look at comments: ',photoData.data.comments );
   _comments[photoData.data.id] = photoData.data.comments;
 };
 
@@ -98,7 +94,7 @@ var RequestStore = assign({},EventEmitter.prototype, {
   },
 
   getPhotos: function() {
-    return _request.photos; // an ARRAY of photos
+    return _request.photos; 
   },
 
   getLikes: function(id) {
@@ -126,7 +122,7 @@ var RequestStore = assign({},EventEmitter.prototype, {
   },
 
   getTags: function () {
-    return _request.tags; // [{tagname: 'dogs'}, {}, {} ]
+    return _request.tags;
   },
 
   getText: function () {
@@ -139,7 +135,6 @@ var RequestStore = assign({},EventEmitter.prototype, {
       return true;
     }
     if (_likeLog[photo_id] !== user_id) {
-      // this is how we try to init unliked
       return true;
     } else {
       return false;
@@ -162,13 +157,11 @@ var RequestStore = assign({},EventEmitter.prototype, {
 RequestStore.dispatchToken = AppDispatcher.register(function(action) {
   
   switch(action.type) {
-    // pickRequest in SelectedRequest View (on mount) -> getRequest ajax fn -> receiveRequest action type dispatch
     case AppConstants.RECEIVE_REQUEST:
       _receiveRequest(action.data.data);
       RequestStore.emitChange();
       break;
 
-    // when a new picture is added (photos are what update the single request page)
     case AppConstants.UPDATE_REQUEST:
       if (RequestStore.getId() === action.data.request_id){
         _receivePhoto(action.data);

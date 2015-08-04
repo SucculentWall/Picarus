@@ -8,8 +8,7 @@ var io = require('../server.js');
 module.exports = {
 
   addRequest: function (req, res, next) {
-    //TODO: write function to save request
-    var data = req.body; // {username: 'myname', text: 'some request', tags: ['barcelona', 'sunset']}
+    var data = req.body; 
     new User({
         username: data.username
       })

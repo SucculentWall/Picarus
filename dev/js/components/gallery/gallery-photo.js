@@ -43,7 +43,7 @@ var getNumComments = function(id){
 };
 
 var getToggleState = function(id){
-  return { // {showCommentEntry: , showModal: }
+  return { 
     showCommentEntry : GalleryStore.getDisplayToggle(id).showCommentEntry || false,
     showModal : GalleryStore.getDisplayToggle(id).showModal || false
   };
@@ -69,19 +69,15 @@ var GalleryPhoto = React.createClass({
 
   close: function (){
     AppActions.togglePhotoModal(this.props.data.id);
-    // this.setState({ showModal: false });
   },
 
   open: function (){
     AppActions.togglePhotoModal(this.props.data.id);
-    // this.setState({ showModal: true });
   },
 
   _onClick: function () {
     AppActions.loadComments(this.props.data.id);
     AppActions.toggleCommentDisplay(this.props.data.id);
-
-    // this.setState({showCommentEntry: !this.state.showCommentEntry});
   },
 
   _likeOrUnlike: function() {
@@ -103,7 +99,6 @@ var GalleryPhoto = React.createClass({
   },
 
   _onChange: function () {
-    // console.log('change triggered on photo');
     if (this.isMounted()){
       this.setState(getPhotoComments(this.props.data.id));
       this.setState(getToggleState(this.props.data.id)); 
@@ -135,14 +130,6 @@ var GalleryPhoto = React.createClass({
 
     AppActions.getPhotoLikes(currUserId);
     AppActions.loadComments(this.props.data.id);
-
-    // // commenting out for now, throwing error on user change
-    // if (this.state.showModal){
-    //   AppActions.togglePhotoModal(this.props.data.id);
-    // }
-    // if (this.state.showCommentEntry) {
-    //   AppActions.toggleCommentDisplay(this.props.data.id);
-    // }
   },
 
   componentWillUnmount: function() {
@@ -150,16 +137,6 @@ var GalleryPhoto = React.createClass({
     GalleryStore.removeChangeListener(this._onLikeOrUnlike);
     GalleryStore.removeChangeListener(this._onChange);
     AuthStore.removeChangeListener(this._onLog);
-    // set states to false when going to new page
-
-    // //commenting out for now, throwing error on user change
-    // if (this.state.showModal){
-    //   AppActions.togglePhotoModal(this.props.data.id);
-    // }
-    // if (this.state.showCommentEntry) {
-    //   AppActions.toggleCommentDisplay(this.props.data.id);
-    // }
-
   },
 
   render: function(){

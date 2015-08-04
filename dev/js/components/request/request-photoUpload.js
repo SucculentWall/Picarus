@@ -14,7 +14,6 @@ var PhotoUpload = React.createClass({
       };
   },
 
-
   _handleFile: function(e){
     var self = this;
     var reader = new FileReader();
@@ -26,7 +25,6 @@ var PhotoUpload = React.createClass({
 
     reader.readAsDataURL(e.target.files[0]);
 
-
     // select the event target (the selected image file)
     var file = e.target.files[0];
     var size = e.target.files[0].size;
@@ -37,11 +35,9 @@ var PhotoUpload = React.createClass({
     });
   },
 
-
   _onChange: function () {
     this.setState({isLoading: false});
   },
-
 
   _onSubmit: function(e){
     e.preventDefault();

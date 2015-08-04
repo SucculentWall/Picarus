@@ -16,7 +16,7 @@ var getData = function(){
     photos: RequestStore.getPhotos(),
     user_id: RequestStore.getUserId(),
     username: RequestStore.getUsername(),
-    tags: RequestStore.getTags(), // [{tagname: 'dogs'}, {}, {} ]
+    tags: RequestStore.getTags(), 
     text: RequestStore.getText()
   };
 };

@@ -25,7 +25,6 @@ module.exports = {
   },
 
   addRequest: function(text, username, tags) {
-    // var context = this;
     axios.post('/api/requests', {
         text: text,
         username: username,
@@ -65,7 +64,6 @@ module.exports = {
   },
 
   addComment: function(text, username, photo_id, request_id) {
-    // var context = this;
     axios.post('/api/comments', {
         text: text,
         username: username,
@@ -93,8 +91,7 @@ module.exports = {
     console.log('DATA FROM DBUTILS: ', data);
     axios.post('/api/photos', data)
       .then(function(response) {
-        // no longer need to requery (socket emit will trigger it)
-        // context.getRequest(request_id);
+        // the socket handles the live updating
       })
       .catch(function(error) {
         console.log(error);
@@ -166,8 +163,8 @@ module.exports = {
   },
 
   likePhoto: function(photoId, currUserId) {
-    axios.post('/api/photos/likes', {photo_id: photoId, like: true, currUserId: currUserId }) // this api request goes to photoRouter
-      .then(function(response) {  // this reponse AppActions to fire an action type
+    axios.post('/api/photos/likes', {photo_id: photoId, like: true, currUserId: currUserId }) 
+      .then(function(response) {  
         AppActions.receivePhotoLike(response);
       })
       .catch(function(error) {
@@ -176,8 +173,8 @@ module.exports = {
   },
 
   unlikePhoto: function(photoId, currUserId) {
-    axios.post('/api/photos/likes', {photo_id: photoId, like: false, currUserId: currUserId }) // this api request goes to photoRouter
-      .then(function(response) {  // this reponse AppActions to fire an action type
+    axios.post('/api/photos/likes', {photo_id: photoId, like: false, currUserId: currUserId }) 
+      .then(function(response) {  
         AppActions.receivePhotoLike(response);
       })
       .catch(function(error) {
@@ -219,7 +216,6 @@ module.exports = {
   },
 
   getPhotoLikes: function(user_id, photos) {
-    // axios.get('/api/photos/check', {params: {user_id: user_id, photos: photos}})
     axios.post('/api/photos/check', {user_id: user_id, photos: photos})
       .then(function(response) {
         AppActions.receivePhotoLikesCheck(response);
