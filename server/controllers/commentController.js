@@ -1,7 +1,6 @@
 var User = require('../db/models/user');
 var Photo = require('../db/models/photo');
 var Comment = require('../db/models/comment');
-var Comments = require('../db/collections/comments');
 var io = require('../server.js');
 
 var inspect = require('util').inspect;

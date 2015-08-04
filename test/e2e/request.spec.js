@@ -40,7 +40,6 @@ describe('Requests', function() {
     galleryLink.click();
     browser.sleep(1000).then(function(){
       // check if it redirected
-      // browser.getLocationAbsUrl() requires Angular
       // browser.getCurrentUrl() is webdriver.Webdriver.getCurrentUrl() in the documentation
       // it returns a promise that puts the url in as the first argument
       browser.getCurrentUrl().then(function(url){

@@ -10,8 +10,4 @@ router.get('/', function(req, res, next){
   tagController.getAllTags(req, res, next);
 });
 
-// router.post('/', function(req,res,next){
-//   tagController.findOrCreate(req, res, next);
-// });
-
 module.exports = router;

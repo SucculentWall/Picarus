@@ -14,15 +14,9 @@ var aws = require('aws-sdk');
 aws.config.loadFromPath('./AWSConfig.json');
 
 var s3 = new aws.S3();
-//Mongoose setup
-// var mongoose = require('mongoose');
-// var Grid = require('gridfs-stream');
+
 var fs = require('fs');
 var inspect = require('util').inspect;
-
-// must install the following during deployment for resize to work:
-// brew install imagemagick
-// brew install graphicsmagick
 
 var gulp = require('gulp');
 var vs3 = require('vinyl-s3');
@@ -83,16 +77,7 @@ module.exports = {
     busboy.on('file', function (fieldname, filestream, filename, encoding, mimetype) {
       data.filename = utils.makeid(10) + '_' + filename; // random alphanum string + icarus.jpg
       data.filetype = filename.split('.').pop();
-      // Grid.mongo = mongoose.mongo;
-      // var conn = mongoose.createConnection('mongodb://127.0.0.1/picarus');
-      // conn.once('open', function() {
-      //   var gfs = Grid(conn.db);
-      //   var output = gfs.createWriteStream({filename: data.filename});
-      //   filestream.pipe(output);
-      // });
 
-      // var output = fs.createWriteStream('dist/img/' + data.filename);
-      // filestream.pipe(output);
       filestream.length = +data.size;
 
       s3.putObject({

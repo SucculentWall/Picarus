@@ -1,4 +1,4 @@
-# Icarus
+# Picarus
 
 > An on demand photo sharing app that allows users to both post their own original photos and request new photos from others.
 

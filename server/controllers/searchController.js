@@ -54,47 +54,6 @@ module.exports = {
           }
         });
       }); 
-    // requests
-    // photos
+
   }
 };
-
-/*
-
-// getInfoForUser: function(req, res, next) {
-//   var username = req.params.username;
-
-//   new User({username: username})
-//     .fetch({
-//       withRelated: ['requests', 'photos']
-//     })
-//     .then(function (found) {
-//       if (found) {
-//         res.send(found);
-//       } else {
-//         res.send('User not found!');
-//       }
-//     });
-// }
-
-
-
-// // checks for #thisIsHashtag
-// var tagRegEx = /\S*#(?:\[[^\]]+\]|\S+)/ig;
-// var tags = data.text.match(tagRegEx); // ['#barcelona, #sunset']
-// var refinedTags = tags.map(function(tag){});
-// ^--- move into client! 
-
-// loop over the tags
-for (var i = 0; i < data.tags.length; i++) {
-  var tag = data.tags[i];
-  // find or create each tag
-  new Tag({tagname: tag})
-    .fetch()
-    .then(function(found){
-      if (found){
-        
-      }
-    })
-}
-*/

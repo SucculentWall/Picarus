@@ -17,7 +17,6 @@ coverage
 
 
 # Photos folder
-photos/
 dev/assets/psd
 
 # Elastic Beanstalk Files
@@ -29,7 +28,6 @@ dev/assets/psd
 # Deployed apps should consider commenting these lines out:
 # see https://npmjs.org/doc/faq.html#Should-I-check-my-node_modules-folder-into-git
 node_modules/
-bower_components/
 
 # AWS NOTE: ignore again before pushing to github
 AWSConfig.json
@@ -38,5 +36,4 @@ AWSConfig.json
 FBkeys.js
 
 # Compiled Dirs (http://nodejs.org/api/addons.html)
-build/
 dist/

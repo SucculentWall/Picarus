@@ -16,15 +16,8 @@ aws.config.loadFromPath('./AWSConfig.json');
 
 var s3 = new aws.S3();
 
-//Mongoose setup
-// var mongoose = require('mongoose');
-// var Grid = require('gridfs-stream');
 var fs = require('fs');
 var inspect = require('util').inspect;
-
-// must install the following during deployment for resize to work:
-// brew install imagemagick
-// brew install graphicsmagick
 
 var gulp = require('gulp');
 var vs3 = require('vinyl-s3');
@@ -299,10 +292,8 @@ module.exports = {
           updatedPhoto.currUserId = currUserId;
           res.send(updatedPhoto);
         });
-        // res.send(photo);
       });
-      // create entry in users_likes_photo join table
-// increment the karma of the photo's OWNER <- handled by trigger
+
   },
 
   getPhotoLikes: function(req, res, next) {
@@ -311,7 +302,7 @@ module.exports = {
     .query('where', 'user_id', '=', user_id)
     .fetchAll()
     .then(function(collection) {
-      res.send(collection.models); // [{attributes: {user_id: 1, photo_id: 3}}]
+      res.send(collection.models); 
     });
   }
 }
