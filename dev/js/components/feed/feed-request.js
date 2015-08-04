@@ -3,9 +3,7 @@ var AppActions = require("../../actions/app-actions");
 var Link = require("react-router").Link;
 
 var Request = React.createClass({
-  // _handleClick: function(e) {
-  //   AppActions.pickRequest(this.props.data.id);
-  // },
+
   render: function(){
     return (
       <Link className = "req" to="requests" params={{requestId: this.props.data.id}} >

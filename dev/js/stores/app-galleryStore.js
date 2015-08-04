@@ -3,15 +3,13 @@ var AppConstants = require("../constants/app-constants");
 var assign = require("react/lib/Object.assign");
 var EventEmitter = require('events').EventEmitter;
 
-//  all or most recent photo requests
 var _photoList = [];
 var _requestList = {};
 var _tagList = [];
 
-var _commentDisplay = {}; // photo_ids are keys
-var _modalDisplay = {}; // eg photo_id: true
+var _commentDisplay = {}; 
+var _modalDisplay = {}; 
 
-// whether or not the current user has already liked (photo_id : true)
 var _likeLog = {};
 
 var _toggleCommentDisplay = function(id) {
@@ -123,12 +121,10 @@ var GalleryStore = assign({},EventEmitter.prototype, {
   },
 
   getPhotoLikeStatus: function(user_id, photo_id) {
-    // check photos_users
     if (Object.keys(_likeLog).length === 0) {
       return true;
     }
     if (_likeLog[photo_id] !== user_id) {
-      // this is how we try to init unliked
       return true;
     } else {
       return false;

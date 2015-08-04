@@ -9,7 +9,6 @@ var AuthStore = require("../../stores/app-authStore");
 var i;
 
 var getData = function(){
-  // TODO: retrieve photo requests from server
   return {
     photos: GalleryStore.getAllPhotos(),
     tags: GalleryStore.getAllTags(),

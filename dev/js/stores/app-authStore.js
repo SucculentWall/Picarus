@@ -3,8 +3,6 @@ var AppConstants = require("../constants/app-constants");
 var assign = require("react/lib/Object.assign");
 var EventEmitter = require('events').EventEmitter;
 
-
-//  all or most recent photo requests
 var _user = {};
 
 var _logOut = function() {

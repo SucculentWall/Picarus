@@ -11,10 +11,9 @@ var _user = {
 };
 
 // likes
-var _commentDisplay = {}; // photo_ids are keys
-var _modalDisplay = {}; // eg photo_id: true
+var _commentDisplay = {}; 
+var _modalDisplay = {}; 
 
-// whether or not the current user has already liked (photo_id : true)
 var _likeLog = {};
 
 var _toggleCommentDisplay = function(id) {
@@ -25,7 +24,6 @@ var _toggleCommentDisplay = function(id) {
 var _toggleModal = function(id) {
   var modal = _modalDisplay[id] || false;
   _modalDisplay[id] = !modal;
-  // console.log('modal toggle display toggled FROM ', modal, ' TO ', _modalDisplay[id]);
 };
 
 var _resetToggle = function(id) {
@@ -148,12 +146,10 @@ var UserStore = assign({},EventEmitter.prototype, {
   },
 
   getPhotoLikeStatus: function(user_id, photo_id) {
-    // check photos_users
     if (Object.keys(_likeLog).length === 0) {
       return true;
     }
     if (_likeLog[photo_id] !== user_id) {
-      // this is how we try to init unliked
       return true;
     } else {
       return false;

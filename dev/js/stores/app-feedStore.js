@@ -4,8 +4,6 @@ var assign = require("react/lib/Object.assign");
 var EventEmitter = require('events').EventEmitter;
 
 
-
-//  all or most recent photo requests
 var _requestList = [];
 
 var _receiveRequests = function(requests) {

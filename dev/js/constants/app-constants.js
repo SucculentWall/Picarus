@@ -1,5 +1,4 @@
 module.exports = {
-  // CONSTANTS to go here
 
   //AJAX actions
   RECEIVE_SEARCH_REQUESTS: 'RECEIVE_SEARCH_REQUESTS',

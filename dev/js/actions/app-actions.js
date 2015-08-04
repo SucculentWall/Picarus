@@ -1,6 +1,5 @@
 var AppDispatcher = require('../dispatchers/app-dispatcher');
 var AppConstants = require('../constants/app-constants');
-//var dbUtils = require('../utils/database-utils'); //can't require it here: causes circular reference
 
 var dbUtils;
 
