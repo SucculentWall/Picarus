@@ -21,26 +21,38 @@
 
 ## Usage
 
-> Go to the website and start using it!
+Visit Picarus to browse original, eye catching photos from the community.  Login with Facebook to submit a request for original photos in less than 60 seconds.  Earn karma points for submitting original photos.
 
 ## Requirements
 
+`ImageMagick`
+`Node`
+`PostgreSQL`
 
 ## Development
 
 ### Installing Dependencies
 
-From within the root directory:
+Then install PostgreSQL:
+
+- Install the Postgres app from [http://postgresapp.com/](http://postgresapp.com/)
+  - [Next, follow these instructions to set up your bash profile $PATH](http://postgresapp.com/documentation/cli-tools.html)
+- Run the Postgres app from your Applications folder
+- Create a `picarus` database
 
 ```sh
-sudo npm install -g bower
 npm install
-bower install
+gulp
+```
+
+Starting the server:
+```
+node server/server.js
 ```
 
 ### Roadmap
 
-View the project roadmap [here](https://github.com/SucculentWall/Icarus/issues)
+View the project roadmap [here](https://github.com/SucculentWall/Picarus/issues)
 
 
 ## Contributing
